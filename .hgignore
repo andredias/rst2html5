@@ -1,0 +1,7 @@
+syntax: glob
+*~
+*.pyc
+*.orig
+*.sublime*
+*.egg-info
+build
