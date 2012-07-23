@@ -15,7 +15,6 @@ References
 ==========
 
 * `Write your own ReStructuredText-Writer`__ from Arne Brodowski
-* `RST to semantic HTML5 Writer`__ from Bradley Wright
 
 License
 =======
@@ -23,5 +22,4 @@ License
 `MIT License`__
 
 .. __: http://www.arnebrodowski.de/blog/write-your-own-restructuredtext-writer.html
-.. __: https://github.com/bradleywright/rst-to-semantic-html5
 .. __: http://opensource.org/licenses/MIT

@@ -19,7 +19,7 @@ setup(
     long_description=long_description,
     license='MIT License',
     include_package_data=True,
-    install_requires=['distribute', 'docutils'],
+    install_requires=['distribute', 'docutils >= 0.9.1', 'Genshi >= 0.6.1'],
     scripts=['rst2html5'],
     classifiers = [
         'Development Status :: 1 - Alpha',
