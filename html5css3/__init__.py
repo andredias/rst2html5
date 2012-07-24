@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 __version__ = '0.1'
 
 import os
 import docutils
 from docutils import nodes, writers, frontend
-from genshi.builder import tag
+from genshi.builder import tag, Fragment
 from genshi.output import XHTMLSerializer
 
 class HTML5Writer(writers.Writer):
@@ -87,7 +89,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         self.indent_width = document.settings.tab_width
         self.show_id = document.settings.show_id
         self.indent_output = document.settings.indent_output
-        self.section_level = 0
+        self.heading_level = 0
         self.indent_level = 0
         self.context = []
         self.head = tag.head
@@ -96,9 +98,10 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
     @property
     def output(self):
-        output = '<!DOCTYPE html>\n<html>\n{head}\n{body}\n</html>'
+        output = '<!DOCTYPE html>\n<html>\n<head>{head}</head>\n' \
+                 '<body>{body}</body>\n</html>'
         self.head = ''.join(XHTMLSerializer()(self.head))
-        self.body = ''.join(XHTMLSerializer()(self.body))
+        self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context)))
         return output.format(head=self.head, body=self.body)
 
     def default_visit(self, node):
@@ -172,19 +175,20 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
     def visit_section(self, node):
         self.default_visit(node)
-        self.section_level += 1
+        self.heading_level += 1
 
     def depart_section(self, node):
-        self.section_level -= 1
+        self.heading_level -= 1
         self.default_departure(node)
 
     def depart_title(self, node):
-        self._new_elem('h' + unicode(self.section_level), node.attributes)
+        if self.heading_level == 0:
+            self.heading_level = 1
+        self._new_elem('h' + unicode(self.heading_level), node.attributes)
 
     def visit_substitution_definition(self, node):
         """Internal only"""
         raise nodes.SkipNode
 
     def depart_document(self, node):
-        self.body(*self.context)
-
+        pass
