@@ -92,15 +92,13 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         self.heading_level = 0
         self.indent_level = 0
         self.context = []
-        self.head = tag.head
-        self.body = tag.body
         return
 
     @property
     def output(self):
         output = '<!DOCTYPE html>\n<html>\n<head>{head}</head>\n' \
                  '<body>{body}</body>\n</html>'
-        self.head = ''.join(XHTMLSerializer()(self.head))
+        self.head = ''
         self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context)))
         return output.format(head=self.head, body=self.body)
 
@@ -138,12 +136,12 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
         return attrs
 
-    def _new_elem(self, name, attributes):
+    def _new_elem(self, name, attributes = None):
         '''
         A new element is create by removing its stack to make a tag.
         This tag is pushed back into its parent's stack.
         '''
-        attr = self._adjust_attributes(attributes)
+        attr = self._adjust_attributes(attributes) if attributes else dict()
         pop = self.context.pop()
         elem = tag.__getattr__(name)(*pop, **attr)
         parent_stack = self.context[-1]
@@ -171,7 +169,8 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         pass
 
     def depart_Text(self, node):
-        self.context[-1].append(node.astext())
+        text = node.astext().replace('\n', ' ')
+        self.context[-1].append(text)
 
     def visit_section(self, node):
         self.default_visit(node)
@@ -182,9 +181,28 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         self.default_departure(node)
 
     def depart_title(self, node):
+        assert self.heading_level >= 0
         if self.heading_level == 0:
             self.heading_level = 1
         self._new_elem('h' + unicode(self.heading_level), node.attributes)
+
+    def depart_subtitle(self, node):
+        '''
+        The subtitle and its predecessor title should be combined
+        into a hgroup
+        '''
+        # mount the subtitle heading
+        subheading_level = 'h' + unicode(self.heading_level + 1)
+        self._new_elem(subheading_level)
+        # create hgroup
+        parent_stack = self.context[-1]
+        num_fragments = -6 if self.indent_output else -2
+        fragments = parent_stack[num_fragments:]
+        self.context[-1] = parent_stack[:num_fragments]
+        self.context.append(fragments)
+        self._new_elem('hgroup')
+        self.heading_level -= 1
+
 
     def visit_substitution_definition(self, node):
         """Internal only"""

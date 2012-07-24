@@ -7,8 +7,8 @@ import unittest
 from html5css3 import HTML5Writer
 from docutils.core import publish_parts
 
-def rst_to_html5_body(rst, no_indent=True, no_id=True):
-    overrides = {'indent_output': not no_indent, 'show_id': not no_id}
+def rst_to_html5_body(rst, indent_output=False, show_id=False):
+    overrides = {'indent_output': indent_output, 'show_id': show_id}
     parts = publish_parts(writer=HTML5Writer(), source=rst,
                           settings_overrides=overrides)
     return parts['body']
@@ -59,10 +59,55 @@ Level 3
               '<section><h3>Level 3</h3></section></section>'
         self.assertEqual(rst_to_html5_body(rst), out)
 
+    def test_subtitle(self):
+        rst = '''
+================
+ Document Title
+================
+----------
+ Subtitle
+----------
+
+Section Title
+=============
+
+...'''
+        out = '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>' \
+              '<section><h1>Section Title</h1><p>...</p></section>'
+        self.assertEqual(rst_to_html5_body(rst), out)
+
+    def test_subtitle_2(self):
+        '''
+        The subtitle processing should deal with indentation
+        '''
+        rst = '''
+================
+ Document Title
+================
+----------
+ Subtitle
+----------
+
+Section Title
+=============
+
+...'''
+        out = '''
+<hgroup>
+    <h1>Document Title</h1>
+    <h2>Subtitle</h2>
+</hgroup>
+<section>
+    <h1>Section Title</h1>
+    <p>...</p>
+</section>
+'''
+        self.assertEqual(rst_to_html5_body(rst, indent_output=True), out)
+
     def test_paragraph(self):
-        rst = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+        rst = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' \
               'Vestibulum dignissim lacinia blandit. Suspendisse potenti.'
-        out = '<p>%s</p>' % rst
+        out = '<p>%s</p>' % rst.replace('\n', ' ')
         self.assertEqual(rst_to_html5_body(rst), out)
 
     def test_accented_paragraph(self):
