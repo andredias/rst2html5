@@ -10,8 +10,9 @@ with open('README.rst') as f:
 setup(
     name='rst2html5',
     version=__version__,
-    author='André Felipe Dias <andref.dias@gmail.com>',
-    url='https://bitbucket.org/tin_nqn/rst2slides',
+    author='André Felipe Dias',
+    author_email='andref dot dias at gmail dot com',
+    url='https://bitbucket.org/andre_felipe_dias/rst2html5',
     packages=find_packages(),
     test_suite='tests',
     keywords = "rst html5 doctutils",
@@ -19,7 +20,7 @@ setup(
     long_description=long_description,
     license='MIT License',
     include_package_data=True,
-    install_requires=['distribute', 'docutils >= 0.9.1', 'Genshi >= 0.6.1'],
+    install_requires=['distribute', 'docutils >= 0.9.1', 'Genshi >= 0.6'],
     scripts=['rst2html5'],
     classifiers = [
         'Development Status :: 1 - Alpha',

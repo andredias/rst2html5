@@ -5,13 +5,27 @@ __version__ = '0.1'
 
 import os
 import docutils
-from docutils import nodes, writers
+from docutils import nodes, writers, frontend
 from genshi.builder import tag
 from genshi.output import XHTMLSerializer
 
 class HTML5Writer(writers.Writer):
 
-    supported = ('html5', 'html5css3')
+    supported = ('html', 'html5', 'html5css3')
+
+    config_section = 'html5writer'
+    config_section_dependencies = ('writers')
+
+    settings_spec = (
+        'HTML5 Specific Options',
+        None, (
+        ("Don't indent output", ['--no-indent'],
+            {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
+        ("Don't show id in sections", ['--no-id'],
+            {'default': 1, 'action': 'store_false', 'dest': 'show_id'})
+    ))
+
+    settings_defaults = {'tab_width': 4}
 
     def __init__(self):
         writers.Writer.__init__(self)
@@ -22,7 +36,16 @@ class HTML5Writer(writers.Writer):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.output
+        self.head = visitor.head
+        self.body = visitor.body
         return
+
+    def assemble_parts(self):
+        writers.Writer.assemble_parts(self)
+        self.parts['head'] = self.head
+        self.parts['body'] = self.body
+        return
+
 
 HTMLEquivalency = {
     "abbreviation": "abbr",
@@ -56,17 +79,17 @@ HTMLEquivalency = {
     "transition": "hr",
   }
 
-class HTML5Translator(nodes.GenericNodeVisitor):
 
-    indent_width = 4
+class HTML5Translator(nodes.GenericNodeVisitor):
 
     def __init__(self, document):
         nodes.GenericNodeVisitor.__init__(self, document)
+        self.indent_width = document.settings.tab_width
+        self.show_id = document.settings.show_id
+        self.indent_output = document.settings.indent_output
         self.section_level = 0
         self.indent_level = 0
-        self.indent_output = True
         self.context = []
-        self.show_id = True
         self.head = tag.head
         self.body = tag.body
         return
@@ -74,9 +97,9 @@ class HTML5Translator(nodes.GenericNodeVisitor):
     @property
     def output(self):
         output = '<!DOCTYPE html>\n<html>\n{head}\n{body}\n</html>'
-        head = ''.join(XHTMLSerializer()(self.head))
-        body = ''.join(XHTMLSerializer()(self.body))
-        return output.format(head=head, body=body)
+        self.head = ''.join(XHTMLSerializer()(self.head))
+        self.body = ''.join(XHTMLSerializer()(self.body))
+        return output.format(head=self.head, body=self.body)
 
     def default_visit(self, node):
         '''
@@ -96,16 +119,19 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
             if k in ('names', 'dupnames', 'bullet'):
                 continue
-            elif k == 'ids' and self.show_id:
-                attrs['id'] = v
+            elif k == 'ids':
+                if not self.show_id:
+                    continue
+                k = 'id'
             elif k == 'refuri':
-                attrs['href'] = v
+                k = 'href'
             elif k == 'refi':
-                attrs['href'] = '#' + v
+                k = 'href'
+                v = '#' + v
             elif k == 'uri':
-                attrs['src'] = v
-            else:
-                attrs[k] = v
+                k = 'src'
+
+            attrs[k] = v
 
         return attrs
 
@@ -160,5 +186,5 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         raise nodes.SkipNode
 
     def depart_document(self, node):
-        self.body(*self.context, **self._adjust_attributes(node.attributes))
+        self.body(*self.context)
 
