@@ -6,6 +6,12 @@
 
 from __future__ import unicode_literals
 
+indentation = {
+    'rst': 'Paragraph',
+    'out': '\n    <p>Paragraph</p>\n',
+    'indent_output': True
+}
+
 title = {
     'rst': 'Title\n=====',
     'out':   '<h1>Title</h1>'

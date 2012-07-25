@@ -23,8 +23,8 @@ class HTML5Writer(writers.Writer):
         None, (
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
-        ("Don't show id in sections", ['--no-id'],
-            {'default': 1, 'action': 'store_false', 'dest': 'show_id'})
+        ("Don't show id in sections", ['--show-ids'],
+            {'default': 0, 'action': 'store_false', 'dest': 'show_ids'})
     ))
 
     settings_defaults = {'tab_width': 4}
@@ -82,76 +82,36 @@ HTMLEquivalency = {
   }
 
 
-class HTML5Translator(nodes.GenericNodeVisitor):
-
-    def __init__(self, document):
-        nodes.GenericNodeVisitor.__init__(self, document)
-        self.indent_width = document.settings.tab_width
-        self.show_id = document.settings.show_id
-        self.indent_output = document.settings.indent_output
-        self.heading_level = 0
+class ElemStack(object):
+    def __init__(self, settings):
+        self.stack = []
         self.indent_level = 0
-        self.context = []
-        return
+        self.indent_output = settings.indent_output
+        self.show_ids = settings.show_ids
+        self.indent_width = settings.tab_width
 
-    @property
-    def output(self):
-        output = '<!DOCTYPE html>\n<html>\n<head>{head}</head>\n' \
-                 '<body>{body}</body>\n</html>'
-        self.head = ''
-        self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context)))
-        return output.format(head=self.head, body=self.body)
-
-    def default_visit(self, node):
-        '''
-        Each level creates its own stack
-        '''
-        self.context.append([])
+    def begin_elem(self):
+        self.stack.append([])
         self.indent_level += 1
         return
 
-    def default_departure(self, node):
-        name = node.__class__.__name__
-        if name in HTMLEquivalency:
-            name = HTMLEquivalency[name]
-        self._new_elem(name, node.attributes)
+    def append(self, *fragments):
+        self.stack[-1].append(*fragments)
         return
 
-    def _adjust_attributes(self, attributes):
-        attrs = {}
-        for k, v in attributes.items():
-            if not v:
-                continue
-            elif isinstance(v, list):
-                v = ''.join(v)
+    def pop(self):
+        self.indent_level -= 1
+        return self.stack.pop()
 
-            if k in ('names', 'dupnames', 'bullet'):
-                continue
-            elif k == 'ids':
-                if not self.show_id:
-                    continue
-                k = 'id'
-            elif k == 'refuri':
-                k = 'href'
-            elif k == 'refi':
-                k = 'href'
-                v = '#' + v
-            elif k == 'uri':
-                k = 'src'
-
-            attrs[k] = v
-
-        return attrs
-
-    def _new_elem(self, name, attributes = None):
+    def commit_elem(self, name, attributes=None):
         '''
         A new element is create by removing its stack to make a tag.
         This tag is pushed back into its parent's stack.
         '''
         attr = self._adjust_attributes(attributes) if attributes else dict()
-        pop = self.context.pop()
+        pop = self.stack.pop()
         elem = getattr(tag, name)(*pop, **attr)
-        parent_stack = self.context[-1]
+        parent_stack = self.stack[-1]
         self.indent_level -= 1
         '''
         Indentation schema:
@@ -172,6 +132,79 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         if self.indent_output:
             indent = '\n' + self.indent_width * (self.indent_level - 1) * ' '
             parent_stack.append(indent)
+        return
+
+    def group_fragments(self, num_fragments, group_name, group_attributes=None):
+        assert num_fragments > 0
+        num_fragments *= -3 if self.indent_output else -1
+        parent_stack = self.stack[-1]
+        fragments = parent_stack[num_fragments:]
+        self.stack[-1] = parent_stack[:num_fragments]
+        self.stack.append(fragments)
+        self.commit_elem(group_name, group_attributes)
+
+    def append_to_previous_element(self, *args):
+        distance = -2 if self.indent_output else -1
+        parent_stack = self.stack[-1]
+        elem = parent_stack[distance]
+        elem(*args)
+
+    def _adjust_attributes(self, attributes):
+        attrs = {}
+        for k, v in attributes.items():
+            if not v:
+                continue
+            elif isinstance(v, list):
+                v = ''.join(v)
+
+            if k in ('names', 'dupnames', 'bullet'):
+                continue
+            elif k == 'ids':
+                if not self.show_ids:
+                    continue
+                k = 'id'
+            elif k == 'refuri':
+                k = 'href'
+            elif k == 'refi':
+                k = 'href'
+                v = '#' + v
+            elif k == 'uri':
+                k = 'src'
+
+            attrs[k] = v
+
+        return attrs
+
+
+
+class HTML5Translator(nodes.GenericNodeVisitor):
+
+    def __init__(self, document):
+        nodes.GenericNodeVisitor.__init__(self, document)
+        self.heading_level = 0
+        self.context = ElemStack(document.settings)
+        return
+
+    @property
+    def output(self):
+        output = '<!DOCTYPE html>\n<html>\n<head>{head}</head>\n' \
+                 '<body>{body}</body>\n</html>'
+        self.head = ''
+        self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context.pop())))
+        return output.format(head=self.head, body=self.body)
+
+    def default_visit(self, node):
+        '''
+        Each level creates its own stack
+        '''
+        self.context.begin_elem()
+        return
+
+    def default_departure(self, node):
+        name = node.__class__.__name__
+        if name in HTMLEquivalency:
+            name = HTMLEquivalency[name]
+        self.context.commit_elem(name, node.attributes)
         return
 
     def _compacted_paragraph(self, node):
@@ -195,19 +228,6 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             n, (nodes.Invisible, nodes.label))])
         return parent_length == 1
 
-    def _group_fragments(self, num_fragments, group_name, group_attributes=None):
-        parent_stack = self.context[-1]
-        fragments = parent_stack[num_fragments:]
-        self.context[-1] = parent_stack[:num_fragments]
-        self.context.append(fragments)
-        self._new_elem(group_name, group_attributes)
-
-    def _append_fragments_to_previous_element(self, *args):
-        distance = -2 if self.indent_output else -1
-        parent_stack = self.context[-1]
-        elem = parent_stack[distance]
-        elem(*args)
-
     def _depart_test(self, node):
         import pdb
         pdb.set_trace()
@@ -228,7 +248,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
     def depart_Text(self, node):
         text = node.astext().replace('\n', ' ')
-        self.context[-1].append(text)
+        self.context.append(text)
 
     def visit_section(self, node):
         self.default_visit(node)
@@ -242,7 +262,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         assert self.heading_level >= 0
         if self.heading_level == 0:
             self.heading_level = 1
-        self._new_elem('h' + unicode(self.heading_level), node.attributes)
+        self.context.commit_elem('h' + unicode(self.heading_level), node.attributes)
 
     def depart_subtitle(self, node):
         '''
@@ -251,10 +271,10 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         '''
         # mount the subtitle heading
         subheading_level = 'h' + unicode(self.heading_level + 1)
-        self._new_elem(subheading_level)
+        self.context.commit_elem(subheading_level)
         # create hgroup
-        num_fragments = -6 if self.indent_output else -2
-        self._group_fragments(num_fragments, 'hgroup')
+        num_fragments = 2
+        self.context.group_fragments(num_fragments, 'hgroup')
         self.heading_level -= 1
 
     def depart_enumerated_list(self, node):
@@ -281,7 +301,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         if attrs.get('suffix') == '.' and 'preffix' not in attrs:
             # default suffix doesn't need special treatment
             del attrs['suffix']
-        self._new_elem('ol', attrs)
+        self.context.commit_elem('ol', attrs)
 
 
     def visit_substitution_definition(self, node):
@@ -298,12 +318,10 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         pass
 
     def depart_classifier(self, node):
-        self.context.pop()
-        self._append_fragments_to_previous_element(
+        self.context.pop() # pop text element internal to classifier
+        self.context.append_to_previous_element(
             ' ',
             tag.span(':', class_='classifier-delimiter'),
             ' ',
             tag.span(node.astext(), class_='classifier')
         )
-        self.indent_level -= 1
-
