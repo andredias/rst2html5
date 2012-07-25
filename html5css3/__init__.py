@@ -189,7 +189,8 @@ class HTML5Translator(nodes.GenericNodeVisitor):
     def output(self):
         output = '<!DOCTYPE html>\n<html>\n<head>{head}</head>\n' \
                  '<body>{body}</body>\n</html>'
-        self.head = ''
+        self.head = tag.meta(charset=self.document.settings.output_encoding)
+        self.head = ''.join(XHTMLSerializer()(self.head))
         self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context.pop())))
         return output.format(head=self.head, body=self.body)
 
