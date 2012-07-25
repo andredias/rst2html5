@@ -110,6 +110,13 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         self.indent_level += 1
         return
 
+    def default_departure(self, node):
+        name = node.__class__.__name__
+        if name in HTMLEquivalency:
+            name = HTMLEquivalency[name]
+        self._new_elem(name, node.attributes)
+        return
+
     def _adjust_attributes(self, attributes):
         attrs = {}
         for k, v in attributes.items():
@@ -143,9 +150,21 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         '''
         attr = self._adjust_attributes(attributes) if attributes else dict()
         pop = self.context.pop()
-        elem = tag.__getattr__(name)(*pop, **attr)
+        elem = getattr(tag, name)(*pop, **attr)
         parent_stack = self.context[-1]
         self.indent_level -= 1
+        '''
+        Indentation schema:
+
+                current position
+                       |
+                       v
+                  <tag>|
+        |   indent   |<elem>
+        |indent-1|</tag>
+                 ^
+             ends here
+        '''
         if self.indent_output:
             indent = '\n' + self.indent_width * self.indent_level * ' '
             parent_stack.append(indent)
@@ -153,13 +172,6 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         if self.indent_output:
             indent = '\n' + self.indent_width * (self.indent_level - 1) * ' '
             parent_stack.append(indent)
-        return
-
-    def default_departure(self, node):
-        name = node.__class__.__name__
-        if name in HTMLEquivalency:
-            name = HTMLEquivalency[name]
-        self._new_elem(name, node.attributes)
         return
 
     def _compacted_paragraph(self, node):
@@ -182,6 +194,25 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         parent_length = len([n for n in node.parent if not isinstance(
             n, (nodes.Invisible, nodes.label))])
         return parent_length == 1
+
+    def _group_fragments(self, num_fragments, group_name, group_attributes=None):
+        parent_stack = self.context[-1]
+        fragments = parent_stack[num_fragments:]
+        self.context[-1] = parent_stack[:num_fragments]
+        self.context.append(fragments)
+        self._new_elem(group_name, group_attributes)
+
+    def _append_fragments_to_previous_element(self, *args):
+        distance = -2 if self.indent_output else -1
+        parent_stack = self.context[-1]
+        elem = parent_stack[distance]
+        elem(*args)
+
+    def _depart_test(self, node):
+        import pdb
+        pdb.set_trace()
+        self.default_departure(node)
+        return
 
     def visit_paragraph(self, node):
         if self._compacted_paragraph(node):
@@ -222,13 +253,35 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         subheading_level = 'h' + unicode(self.heading_level + 1)
         self._new_elem(subheading_level)
         # create hgroup
-        parent_stack = self.context[-1]
         num_fragments = -6 if self.indent_output else -2
-        fragments = parent_stack[num_fragments:]
-        self.context[-1] = parent_stack[:num_fragments]
-        self.context.append(fragments)
-        self._new_elem('hgroup')
+        self._group_fragments(num_fragments, 'hgroup')
         self.heading_level -= 1
+
+    def depart_enumerated_list(self, node):
+        '''
+        Ordered list.
+        It may have a preffix and suffix that must be handled by CSS3 and javascript to
+        be presented as intended.
+
+        See:
+            http://dev.opera.com/articles/view/automatic-numbering-with-css-counters/
+            http://stackoverflow.com/questions/2558358/how-to-add-brackets-a-to-ordered-list-compatible-in-all-browsers
+        '''
+        attrs = node.attributes.copy()
+        if 'enumtype' in node:
+            del attrs['enumtype']
+            enumtypes = {
+                'arabic': '1',
+                'loweralpha': 'a',
+                'upperalpha': 'A',
+                'lowerroman': 'i',
+                'upperroman': 'I'
+            }
+            attrs['type'] = enumtypes.get(node['enumtype'], '1')
+        if attrs.get('suffix') == '.' and 'preffix' not in attrs:
+            # default suffix doesn't need special treatment
+            del attrs['suffix']
+        self._new_elem('ol', attrs)
 
 
     def visit_substitution_definition(self, node):
@@ -237,3 +290,20 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
     def depart_document(self, node):
         pass
+
+    def visit_definition_list_item(self, node):
+        pass
+
+    def depart_definition_list_item(self, node):
+        pass
+
+    def depart_classifier(self, node):
+        self.context.pop()
+        self._append_fragments_to_previous_element(
+            ' ',
+            tag.span(':', class_='classifier-delimiter'),
+            ' ',
+            tag.span(node.astext(), class_='classifier')
+        )
+        self.indent_level -= 1
+

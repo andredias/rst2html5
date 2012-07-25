@@ -160,3 +160,72 @@ bullet_list = {
         'rst': '* item 1\n* item 2\n  more text',
         'out': '<ul><li>item 1</li><li>item 2 more text</li></ul>'
 }
+
+ordered_list_decimal = {
+    'rst': '#. item 1\n#. item 2',
+    'out': '<ol type="1"><li>item 1</li><li>item 2</li></ol>'
+}
+
+ordered_list_decimal_autonumerated = {
+    'rst': '3. item 3\n#. item 4',
+    'out': '<ol start="3" type="1"><li>item 3</li><li>item 4</li></ol>'
+}
+
+ordered_list_lower_alpha = {
+    'rst': '(a) item 1\n(#) item 2\n(#) item 3',
+    'out': '<ol prefix="(" type="a" suffix=")"><li>item 1</li><li>item 2</li>' \
+           '<li>item 3</li></ol>'
+}
+
+ordered_list_upper_alpha = {
+    'rst': 'A) item 1\n#) item 2\n#) item 3',
+    'out': '<ol type="A" suffix=")"><li>item 1</li><li>item 2</li><li>item 3'\
+           '</li></ol>'
+}
+
+ordered_list_lower_roman = {
+    'rst': 'i. item 1\n#. item 2\n#. item 3',
+    'out': '<ol type="i"><li>item 1</li><li>item 2</li><li>item 3</li></ol>'
+}
+
+ordered_list_upper_roman = {
+    'rst': 'I. item 1\n#. item 2\n#. item 3',
+    'out': '<ol type="I"><li>item 1</li><li>item 2</li><li>item 3</li></ol>'
+}
+
+definition_list = {
+    'rst': '''term 1
+    Definition 1.
+
+term 2
+    Definition 2, paragraph 1.
+
+    Definition 2, paragraph 2.
+
+term 3 : classifier
+    Definition 3.
+
+term 4 : classifier one : classifier two
+    Definition 4.''',
+    'out': '''
+    <dl>
+        <dt>term 1</dt>
+        <dd>Definition 1.</dd>
+        <dt>term 2</dt>
+        <dd>
+            <p>Definition 2, paragraph 1.</p>
+            <p>Definition 2, paragraph 2.</p>
+        </dd>
+        <dt>term 3 <span class="classifier-delimiter">:</span> \
+<span class="classifier">\
+classifier</span></dt>
+        <dd>Definition 3.</dd>
+        <dt>term 4 <span class="classifier-delimiter">:</span> <span \
+class="classifier">classifier one</span> <span class="classifier-delimiter">\
+:</span> <span class="classifier">\
+classifier two</span></dt>
+        <dd>Definition 4.</dd>
+    </dl>
+''',
+    'indent_output': True
+}
