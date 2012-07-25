@@ -115,3 +115,96 @@ Section Title
               'queira tê-la, simplesmente por ser dor...'
         out = '<p>%s</p>' % rst
         self.assertEqual(rst_to_html5_body(rst), out)
+
+    def test_quoted_paragraph(self):
+        rst = '''This is a paragraph.  It's quite
+short.
+
+   This paragraph will result in an indented block of
+   text, typically used for quoting other text.
+
+This is another one.'''
+        out = "<p>This is a paragraph.  It's quite short.</p>" \
+              "<blockquote><p>This paragraph will result in an indented " \
+              "block of text, typically used for quoting other text.</p>" \
+              "</blockquote><p>This is another one.</p>"
+        self.assertEqual(rst_to_html5_body(rst), out)
+
+    def test_image(self):
+        rst = '''.. image:: images/biohazard.png
+   :width: 200
+   :height: 100
+   :scale: 50
+   :alt: alternate text'''
+        out = '<img src="images/biohazard.png" alt="alternate text" ' \
+              'scale="50" width="200" height="100" />'
+        self.assertEqual(rst_to_html5_body(rst), out)
+
+    def test_inline_markup_1(self):
+        rst = '''*emphasis*
+**strong emphasis**
+`interpreted text`
+`interpreted text with role`:emphasis:
+``inline literal text``
+'''
+        out = '<p><em>emphasis</em> <strong>strong emphasis</strong> ' \
+              '<cite>interpreted text</cite> <em>interpreted text with ' \
+              'role</em> <tt>inline literal text</tt></p>'
+        self.assertEqual(rst_to_html5_body(rst), out)
+
+    @unittest.SkipTest
+    def test_inline_markup_2(self):
+        rst = '''standalone hyperlink, http://docutils.sourceforge.net
+named reference, reStructuredText_
+`anonymous reference`__
+footnote reference, [1]_
+citation reference, [CIT2002]_
+|substitution|
+_`inline internal target`.
+
+.. _inline internal target:
+
+.. _reStructuredText:
+__ http://www.pronus.eng.br
+.. [#] footnote reference
+.. [CIT2002] Citation
+.. |substitution| replace:: substituted'''
+        out = ''
+        self.assertEqual(rst_to_html5_body(rst), out)
+
+    @unittest.SkipTest
+    def test_grid_table(self):
+        rst = '''
++--------------------------------+-----------------------------------+
+| Paragraphs are flush-left,     | Literal block, preceded by "::":: |
+| separated by blank lines.      |                                   |
+|                                |     Indented                      |
+|     Block quotes are indented. |                                   |
++--------------------------------+ or::                              |
+| >>> print 'Doctest block'      |                                   |
+| Doctest block                  | > Quoted                          |
++--------------------------------+-----------------------------------+
+| | Line blocks preserve line breaks & indents. [new in 0.3.6]       |
+| |     Useful for addresses, verse, and adornment-free lists; long  |
+|       lines can be wrapped with continuation lines.                |
++--------------------------------------------------------------------+'''
+        out = ''
+        self.assertEqual(rst_to_html5_body(rst), out)
+
+    @unittest.SkipTest
+    def test_simple_table(self):
+        rst = '''
+================  ============================================================
+List Type         Examples
+================  ============================================================
+Bullet list       * items begin with "-", "+", or "*"
+Enumerated list   1. items use any variation of "1.", "A)", and "(i)"
+                  #. also auto-enumerated
+Definition list   Term is flush-left : optional classifier
+                      Definition is indented, no blank line between
+Field list        :field name: field body
+Option list       -o  at least 2 spaces between option & description
+================  ============================================================
+'''
+        out = ''
+        self.assertEqual(rst_to_html5_body(rst), out)
