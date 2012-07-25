@@ -162,6 +162,33 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         self._new_elem(name, node.attributes)
         return
 
+    def _compacted_paragraph(self, node):
+        """
+        Determine if the <p> tags around paragraph ``node`` can be omitted.
+        Based on from docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph
+        """
+        if (isinstance(node.parent, nodes.document) or
+            isinstance(node.parent, nodes.compound)):
+            # Never compact paragraphs in document or compound.
+            return False
+        first = isinstance(node.parent[0], nodes.label) # skip label
+        for child in node.parent.children[first:]:
+            # only first paragraph can be compact
+            if isinstance(child, nodes.Invisible):
+                continue
+            if child is node:
+                break
+            return False
+        parent_length = len([n for n in node.parent if not isinstance(
+            n, (nodes.Invisible, nodes.label))])
+        return parent_length == 1
+
+    def visit_paragraph(self, node):
+        if self._compacted_paragraph(node):
+            raise nodes.SkipDeparture
+        else:
+            self.default_visit(node)
+
     def visit_Text(self, node):
         '''
         Text is a leaf node and has no element stack
