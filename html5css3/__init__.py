@@ -127,7 +127,8 @@ class ElemStack(object):
             elif isinstance(v, list):
                 v = ''.join(v)
 
-            if k in ('names', 'dupnames', 'bullet'):
+            if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth',
+                    'stub'):
                 continue
             elif k in replacements:
                 k = replacements[k]
@@ -230,12 +231,6 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             n, (nodes.Invisible, nodes.label))])
         return parent_length == 1
 
-    def _depart_test(self, node):
-        import pdb
-        pdb.set_trace()
-        self.default_departure(node)
-        return
-
     def visit_paragraph(self, node):
         if self._compacted_paragraph(node):
             raise nodes.SkipDeparture
@@ -283,9 +278,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             http://dev.opera.com/articles/view/automatic-numbering-with-css-counters/
             http://stackoverflow.com/questions/2558358/how-to-add-brackets-a-to-ordered-list-compatible-in-all-browsers
         '''
-        attrs = node.attributes.copy()
         if 'enumtype' in node:
-            del attrs['enumtype']
             enumtypes = {
                 'arabic': '1',
                 'loweralpha': 'a',
@@ -293,11 +286,11 @@ class HTML5Translator(nodes.GenericNodeVisitor):
                 'lowerroman': 'i',
                 'upperroman': 'I'
             }
-            attrs['type'] = enumtypes.get(node['enumtype'], '1')
-        if attrs.get('suffix') == '.' and 'preffix' not in attrs:
+            node['type'] = enumtypes.get(node['enumtype'], '1')
+        if node.get('suffix') == '.' and 'preffix' not in node:
             # default suffix doesn't need special treatment
-            del attrs['suffix']
-        self.context.commit_elem('ol', attrs)
+            del node['suffix']
+        self.context.commit_elem('ol', node.attributes)
 
     def visit_substitution_definition(self, node):
         """Internal only"""
@@ -332,11 +325,8 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         It could be resolved by CSS3 instead...
         see http://demosthenes.info/blog/556/The-HTML-col-and-colgroup-elements
         '''
-        if 'colwidth' in node.attributes:
-            del node.attributes['colwidth']
-        if 'stub' in node.attributes:
+        if 'stub' in node:
             self.th_required += 1
-            del node.attributes['stub']
         self.default_departure(node)
 
     def visit_thead(self, node):
@@ -362,13 +352,12 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         else:
             name = 'td'
 
-        attr = node.attributes
-        if 'morerows' in attr:
-            attr['morerows'] = attr['morerows'] + 1
-        if 'morecols' in attr:
-            attr['morecols'] = attr['morecols'] + 1
+        if 'morerows' in node:
+            node['morerows'] = node['morerows'] + 1
+        if 'morecols' in node:
+            node['morecols'] = node['morecols'] + 1
 
-        self.context.commit_elem(name, attr)
+        self.context.commit_elem(name, node.attributes)
 
 
 
