@@ -49,38 +49,6 @@ class HTML5Writer(writers.Writer):
         return
 
 
-HTMLEquivalency = {
-    "abbreviation": "abbr",
-    "acronym": "acronym",
-    "attribution": "cite",
-    "block_quote": "blockquote",
-    "bullet_list": "ul",
-    "caption": "figcaption",
-    "definition": "dd",
-    "definition_list": "dl",
-    "description": "td",
-    "emphasis": "em",
-    "entry": "td",
-    "enumerated_list": "ol",
-    "image": "img",
-    "list_item": "li",
-    "literal": "tt",
-    "literal_block": "pre",
-    "option": "span",
-    "option_list": "table",
-    "option_list_item": "tr",
-    "option_string": "span",
-    "paragraph": "p",
-    "reference": "a",
-    "row": "tr",
-    "sidebar": "aside",
-    "subscript": "sub",
-    "superscript": "sup",
-    "term": "dt",
-    "title_reference": "cite",
-    "transition": "hr",
-  }
-
 
 class ElemStack(object):
     def __init__(self, settings):
@@ -151,6 +119,8 @@ class ElemStack(object):
 
     def _adjust_attributes(self, attributes):
         attrs = {}
+        replacements = {'refuri': 'href', 'uri': 'src',
+            'morerows': 'rowspan', 'morecols': 'colspan'}
         for k, v in attributes.items():
             if not v:
                 continue
@@ -159,22 +129,53 @@ class ElemStack(object):
 
             if k in ('names', 'dupnames', 'bullet'):
                 continue
+            elif k in replacements:
+                k = replacements[k]
             elif k == 'ids':
                 if not self.show_ids:
                     continue
                 k = 'id'
-            elif k == 'refuri':
-                k = 'href'
             elif k == 'refi':
                 k = 'href'
                 v = '#' + v
-            elif k == 'uri':
-                k = 'src'
 
             attrs[k] = v
 
         return attrs
 
+
+
+HTMLEquivalency = {
+    "abbreviation": "abbr",
+    "acronym": "acronym",
+    "attribution": "cite",
+    "block_quote": "blockquote",
+    "bullet_list": "ul",
+    "caption": "figcaption",
+    "colspec": "col",
+    "definition": "dd",
+    "definition_list": "dl",
+    "description": "td",
+    "emphasis": "em",
+    "enumerated_list": "ol",
+    "image": "img",
+    "list_item": "li",
+    "literal": "tt",
+    "literal_block": "pre",
+    "option": "span",
+    "option_list": "table",
+    "option_list_item": "tr",
+    "option_string": "span",
+    "paragraph": "p",
+    "reference": "a",
+    "row": "tr",
+    "sidebar": "aside",
+    "subscript": "sub",
+    "superscript": "sup",
+    "term": "dt",
+    "title_reference": "cite",
+    "transition": "hr",
+  }
 
 
 class HTML5Translator(nodes.GenericNodeVisitor):
@@ -241,12 +242,6 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         else:
             self.default_visit(node)
 
-    def visit_Text(self, node):
-        '''
-        Text is a leaf node and has no element stack
-        '''
-        pass
-
     def depart_Text(self, node):
         text = node.astext().replace('\n', ' ')
         self.context.append(text)
@@ -304,19 +299,9 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             del attrs['suffix']
         self.context.commit_elem('ol', attrs)
 
-
     def visit_substitution_definition(self, node):
         """Internal only"""
         raise nodes.SkipNode
-
-    def depart_document(self, node):
-        pass
-
-    def visit_definition_list_item(self, node):
-        pass
-
-    def depart_definition_list_item(self, node):
-        pass
 
     def depart_classifier(self, node):
         self.context.pop() # pop text element internal to classifier
@@ -326,3 +311,75 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             ' ',
             tag.span(node.astext(), class_='classifier')
         )
+
+    #
+    # table
+    #
+
+    def visit_table(self, node):
+        self.th_required = 0
+        self.in_thead = False
+        self.default_visit(node)
+
+    def depart_table(self, node):
+        del self.th_required
+        del self.in_thead
+        self.default_departure(node)
+
+    def depart_colspec(self, node):
+        '''
+        stub attribute indicates that the column should be a th tag.
+        It could be resolved by CSS3 instead...
+        see http://demosthenes.info/blog/556/The-HTML-col-and-colgroup-elements
+        '''
+        if 'colwidth' in node.attributes:
+            del node.attributes['colwidth']
+        if 'stub' in node.attributes:
+            self.th_required += 1
+            del node.attributes['stub']
+        self.default_departure(node)
+
+    def visit_thead(self, node):
+        self.in_thead = True
+        self.default_visit(node)
+
+    def depart_thead(self,node):
+        self.in_thead = False
+        self.default_departure(node)
+
+    def visit_row(self, node):
+        self.th_available = self.th_required
+        self.default_visit(node)
+
+    def depart_row(self, node):
+        del self.th_available
+        self.default_departure(node)
+
+    def depart_entry(self, node):
+        if self.in_thead or self.th_available:
+            name = 'th'
+            self.th_available -= 1
+        else:
+            name = 'td'
+
+        attr = node.attributes
+        if 'morerows' in attr:
+            attr['morerows'] = attr['morerows'] + 1
+        if 'morecols' in attr:
+            attr['morecols'] = attr['morecols'] + 1
+
+        self.context.commit_elem(name, attr)
+
+
+
+'''
+Some elements don't need any visit_ or depart_ processing in HTML5Translator.
+'Text', for example, is a leaf node.
+'''
+pass_visit = ('tgroup', 'definition_list_item', 'Text')
+pass_depart = ('document', 'tgroup', 'definition_list_item')
+
+for name in pass_visit:
+    setattr(HTML5Translator, 'visit_' + name, nodes._nop)
+for name in pass_depart:
+    setattr(HTML5Translator, 'depart_' + name, nodes._nop)

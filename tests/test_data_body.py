@@ -235,3 +235,127 @@ classifier two</span></dt>
 ''',
     'indent_output': True
 }
+
+grid_table = {
+    'rst': '''+--------------+----------+
+| row 1, col 1 | column 2 |
++--------------+----------+
+| row 2        |          |
++--------------+----------+''',
+    'out': '''
+    <table>
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <td>row 1, col 1</td>
+                <td>column 2</td>
+            </tr>
+            <tr>
+                <td>row 2</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'indent_output': True
+}
+
+grid_table_with_head = {
+    'rst': '''+--------------+----------+
+| row 1, col 1 | column 2 |
++==============+==========+
+| row 2        |          |
++--------------+----------+''',
+    'out': '''
+    <table>
+        <col />
+        <col />
+        <thead>
+            <tr>
+                <th>row 1, col 1</th>
+                <th>column 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>row 2</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'indent_output': True
+}
+
+csv_table = {
+    'rst': '''.. csv-table::
+    :header: "Command", "Subversion", "Mercurial", "Git"
+    :stub-columns: 2
+
+    add, 30, 23, 333
+''',
+    'out': '''
+    <table>
+        <col />
+        <col />
+        <col />
+        <col />
+        <thead>
+            <tr>
+                <th>Command</th>
+                <th>Subversion</th>
+                <th>Mercurial</th>
+                <th>Git</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>add</th>
+                <th>30</th>
+                <td>23</td>
+                <td>333</td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'indent_output': True
+}
+
+grid_table_span = {
+    'rst': '''+------------------------+------------+---------------------+
+| body row 1             | Cells may  | - Table cells       |
++------------------------+ span rows. | - contain           |
+| body row 2             |            | - body elements.    |
++------------------------+------------+---------------------+
+| body row 3             |       col span cell              |
++------------------------+------------+---------------------+''',
+    'out': '''
+    <table>
+        <col />
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <td>body row 1</td>
+                <td rowspan="2">Cells may span rows.</td>
+                <td rowspan="2">
+                    <ul>
+                        <li>Table cells</li>
+                        <li>contain</li>
+                        <li>body elements.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>body row 2</td>
+            </tr>
+            <tr>
+                <td>body row 3</td>
+                <td colspan="2">col span cell</td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'indent_output': True
+}
