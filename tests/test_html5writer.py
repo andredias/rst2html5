@@ -48,6 +48,6 @@ def _test_body(name, params, out):
         filename = os.path.join(tmpdir, name)
         with codecs.open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(params['rst'])
-        with codecs.open(filename + '.out', encoding='utf-8', mode='w') as f:
-            f.write(out)
+
+        error.args = ('%s: %s' % (name, error.message), )
         raise error
