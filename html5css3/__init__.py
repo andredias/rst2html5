@@ -450,6 +450,11 @@ class HTML5Translator(nodes.GenericNodeVisitor):
     def visit_math(self, node):
         self.visit_math_block(node)
 
+    def visit_document(self, node):
+        if 'title' in node:
+            self.head.append(tag.title(node['title']))
+        self.default_visit(node)
+
 '''
 Some elements don't need any visit_ or depart_ processing in HTML5Translator.
 'Text', for example, is a leaf node.
