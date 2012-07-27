@@ -11,11 +11,6 @@ Usage
 
 	$ rst2html5 document.rst
 
-References
-==========
-
-* `Write your own ReStructuredText-Writer`__ from Arne Brodowski
-
 License
 =======
 

@@ -14,7 +14,7 @@ indentation = {
 
 title = {
     'rst': 'Title\n=====',
-    'out':   '<h1>Title</h1>'
+    'out': '<h1>Title</h1>'
 }
 
 
@@ -108,8 +108,9 @@ Section Title
 
 
 paragraph = {
-        'rst': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n' \
-                'Vestibulum dignissim lacinia blandit. Suspendisse potenti.',
+        'rst': 'Lorem    ipsum dolor sit amet,        consectetur ' \
+               'adipiscing          elit.\n' \
+                'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.',
         'out': '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
                'Vestibulum dignissim lacinia blandit. Suspendisse potenti.</p>'
 }
@@ -124,14 +125,14 @@ accented_paragraph = {
 
 
 quoted_paragraph = {
-        'rst': '''This is a paragraph.  It's quite
+        'rst': '''This is a paragraph.  It's   quite
 short.
 
    This paragraph will result in an indented block of
    text, typically used for quoting other text.
 
 This is another one.''',
-        'out': "<p>This is a paragraph.  It's quite short.</p>" \
+        'out': "<p>This is a paragraph. It's quite short.</p>" \
                "<blockquote>This paragraph will result in an indented " \
                "block of text, typically used for quoting other text." \
                "</blockquote><p>This is another one.</p>"
@@ -440,3 +441,54 @@ Target paragraph.''',
     'indent_output': True
 }
 
+preformatted_text = {
+    'rst': r'''An example::
+
+    Whitespace, newlines, blank lines, and all kinds of markup
+      (like *this* or \this) is preserved by literal blocks.
+  Lookie here, I've dropped an indentation level
+  (but not far enough)''',
+    'out': r'''
+    <p>An example:</p>
+    <pre>  Whitespace, newlines, blank lines, and all kinds of markup
+    (like *this* or \this) is preserved by literal blocks.
+Lookie here, I've dropped an indentation level
+(but not far enough)</pre>
+''',
+    'indent_output': True
+}
+
+code_block = {
+    'rst': """.. code-block:: python
+
+    def extract_variables(module):
+        '''
+        Extract variables of a test data module.
+        Variables should be a dict().
+        For example, {'rst': rst, 'out':out, ...}
+        '''
+        return ((v, getattr(module, v)) for v in dir(module)
+            if not v.startswith('__') and isinstance(getattr(module, v), dict))
+""",
+    'out': """
+    <pre class="code python"><span class="k">def</span> <span class="nf">extract_variables</span>\
+<span class="p">(</span><span class="n">module</span><span class="p">):</span>
+    <span class="sd">'''
+    Extract variables of a test data module.
+    Variables should be a dict().
+    For example, {'rst': rst, 'out':out, ...}
+    '''</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">v</span>\
+<span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">\
+module</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>\
+ <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">\
+dir</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span>\
+<span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">\
+'__'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span>\
+<span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">\
+module</span><span class="p">,</span> <span class="n">v</span><span class="p">),\
+</span> <span class="nb">dict</span><span class="p">))</span></pre>
+""",
+    'indent_output': True
+}

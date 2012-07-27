@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 __version__ = '0.1'
 
 import os
+import re
 import docutils
 from docutils import nodes, writers, frontend
 from genshi.builder import tag, Fragment
@@ -79,7 +80,7 @@ class ElemStack(object):
         self.commit_elem(name, attributes)
         return
 
-    def commit_elem(self, name, attributes=None):
+    def commit_elem(self, name, attributes=None, indent_elem=True):
         '''
         A new element is create by removing its stack to make a tag.
         This tag is pushed back into its parent's stack.
@@ -101,11 +102,11 @@ class ElemStack(object):
                  ^
              ends here
         '''
-        if self.indent_output:
+        if self.indent_output and indent_elem:
             indent = '\n' + self.indent_width * self.indent_level * ' '
             parent_stack.append(indent)
         parent_stack.append(elem)
-        if self.indent_output:
+        if self.indent_output and indent_elem:
             indent = '\n' + self.indent_width * (self.indent_level - 1) * ' '
             parent_stack.append(indent)
         return
@@ -137,12 +138,13 @@ class ElemStack(object):
     def _adjust_attributes(self, attributes):
         attrs = {}
         replacements = {'refuri': 'href', 'uri': 'src', 'refid': 'href',
-            'morerows': 'rowspan', 'morecols': 'colspan'}
+            'morerows': 'rowspan', 'morecols': 'colspan', 'classes': 'class',
+        }
         for k, v in attributes.items():
             if not v:
                 continue
             elif isinstance(v, list):
-                v = ''.join(v)
+                v = ' '.join(v)
 
             if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth',
                     'stub'):
@@ -255,7 +257,9 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             self.default_visit(node)
 
     def depart_Text(self, node):
-        text = node.astext().replace('\n', ' ')
+        text = node.astext()
+        if not getattr(self, 'preserve_space', None):
+            text = re.sub(r'\s+', ' ', text)
         self.context.append(text)
 
     def visit_section(self, node):
@@ -401,6 +405,21 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             if num_anchors > 0:
                 self.context.pop_fragments(num_anchors)
         return
+
+    def visit_literal_block(self, node):
+        self.preserve_space = True
+        self.default_visit(node)
+        return
+
+    def depart_literal_block(self, node):
+        del self.preserve_space
+        self.default_departure(node)
+        return
+
+    def depart_inline(self, node):
+        self.context.commit_elem('span', node.attributes, indent_elem=False)
+
+
 
 
 '''
