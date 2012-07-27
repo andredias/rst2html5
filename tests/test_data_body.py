@@ -150,6 +150,22 @@ image = {
 }
 
 
+figure = {
+    'rst': '''.. figure:: picture.png
+   :scale: 50%
+   :alt: map to buried treasure
+
+   This is the caption of the figure (a simple paragraph).''',
+    'out': '''
+    <figure>
+        <img src="picture.png" alt="map to buried treasure" scale="50" />
+        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
+    </figure>
+''',
+    'indent_output': True
+}
+
+
 inline_markup_1 = {
         'rst': '''*emphasis*
 **strong emphasis**
