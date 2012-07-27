@@ -359,3 +359,84 @@ grid_table_span = {
 ''',
     'indent_output': True
 }
+
+
+external_link = {
+    'rst': '''This is a paragraph that contains `a link`_.
+
+.. _a link: http://example.com/''',
+    'out': '<p>This is a paragraph that contains <a href="http://example.com/">a link</a>.</p>'
+}
+
+# see: http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#hyperlink-targets
+
+internal_link = {
+    'rst': '''Clicking on this internal hyperlink will take us to the target_
+below.
+
+.. _target:
+
+The hyperlink target above points to this paragraph.''',
+    'out': '''
+    <p>Clicking on this internal hyperlink will take us to the
+        <a href="#target">target</a>
+     below.</p>
+    <a id="target"></a>
+    <p>The hyperlink target above points to this paragraph.</p>
+''',
+    'indent_output': True
+}
+
+chained_internal_links = {
+    'rst': '''Links to target1_ and target2_.
+
+.. _target1:
+.. _target2:
+
+The targets "target1" and "target2" are synonyms; they both
+point to this paragraph.''',
+    'out': '''
+    <p>Links to
+        <a href="#target1">target1</a>
+     and
+        <a href="#target2">target2</a>
+    .</p>
+    <a id="target1"></a>
+    <a id="target2"></a>
+    <p>The targets "target1" and "target2" are synonyms; they both point to this paragraph.</p>
+''',
+    'indent_output': True
+}
+
+propagated_target = {
+    'rst': '''Link to archive_.
+
+.. _Python DOC-SIG mailing list archive:
+.. _archive:
+.. _Doc-SIG: http://mail.python.org/pipermail/doc-sig/''',
+    'out': '''
+    <p>Link to
+        <a href="http://mail.python.org/pipermail/doc-sig/">archive</a>
+    .</p>
+''',
+    'indent_output': True
+}
+
+indirect_target_links = {
+    'rst': '''Link to one_.
+
+.. _one: two_
+.. _two: three_
+.. _three:
+
+Target paragraph.''',
+    'out': '''
+    <p>Link to
+        <a href="#three">one</a>
+    .</p>
+    <a id="three"></a>
+    <p>Target paragraph.</p>
+''',
+    'indent_output': True
+}
+

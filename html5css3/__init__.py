@@ -64,12 +64,20 @@ class ElemStack(object):
         return
 
     def append(self, *fragments):
+        '''
+        Append fragment to previous element
+        '''
         self.stack[-1].append(*fragments)
         return
 
     def pop(self):
         self.indent_level -= 1
         return self.stack.pop()
+
+    def insert_elem(self, name, attributes=None):
+        self.begin_elem()
+        self.commit_elem(name, attributes)
+        return
 
     def commit_elem(self, name, attributes=None):
         '''
@@ -102,14 +110,17 @@ class ElemStack(object):
             parent_stack.append(indent)
         return
 
-    def group_fragments(self, num_fragments, group_name, group_attributes=None):
-        assert num_fragments > 0
+    def pop_fragments(self, num_fragments):
         num_fragments *= -3 if self.indent_output else -1
         parent_stack = self.stack[-1]
         fragments = parent_stack[num_fragments:]
         self.stack[-1] = parent_stack[:num_fragments]
-        self.stack.append(fragments)
+        return fragments
+
+    def group_fragments(self, num_fragments, group_name, group_attributes=None):
+        self.stack.append(self.pop_fragments(num_fragments))
         self.commit_elem(group_name, group_attributes)
+        return
 
     def append_to_previous_element(self, *args):
         distance = -2 if self.indent_output else -1
@@ -117,9 +128,15 @@ class ElemStack(object):
         elem = parent_stack[distance]
         elem(*args)
 
+    def set_next_elem_attr(self, name, value):
+        '''
+        The given attribute will be inserted into the attributes of the next element.
+        '''
+        self.next_elem_attr = {name: value}
+
     def _adjust_attributes(self, attributes):
         attrs = {}
-        replacements = {'refuri': 'href', 'uri': 'src',
+        replacements = {'refuri': 'href', 'uri': 'src', 'refid': 'href',
             'morerows': 'rowspan', 'morecols': 'colspan'}
         for k, v in attributes.items():
             if not v:
@@ -136,12 +153,12 @@ class ElemStack(object):
                 if not self.show_ids:
                     continue
                 k = 'id'
-            elif k == 'refi':
-                k = 'href'
-                v = '#' + v
 
             attrs[k] = v
 
+        if getattr(self, 'next_elem_attr', None):
+            attrs.update(self.next_elem_attr)
+            del self.next_elem_attr
         return attrs
 
 
@@ -292,7 +309,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             del node['suffix']
         self.context.commit_elem('ol', node.attributes)
 
-    def visit_substitution_definition(self, node):
+    def _skip_node(self, node):
         """Internal only"""
         raise nodes.SkipNode
 
@@ -359,16 +376,44 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
         self.context.commit_elem(name, node.attributes)
 
+    def depart_reference(self, node):
+        if 'name' in node:
+            del node['name']
+        if 'refid' in node:
+            node['refid'] = '#' + node['refid']
+        self.default_departure(node)
+        return
+
+    def depart_target(self, node):
+        if 'refid' in node and len(node['ids']):
+            '''
+            see test_case: indirect_target_links
+            '''
+            return
+        if 'refid' in node:
+            self.context.insert_elem('a', {'id': node['refid']})
+        elif 'ids' in node:
+            '''
+            Previous anchor elements should be removed.
+            See test case: propagated_target
+            '''
+            num_anchors = len(node['ids']) - 1
+            if num_anchors > 0:
+                self.context.pop_fragments(num_anchors)
+        return
 
 
 '''
 Some elements don't need any visit_ or depart_ processing in HTML5Translator.
 'Text', for example, is a leaf node.
 '''
-pass_visit = ('tgroup', 'definition_list_item', 'Text')
-pass_depart = ('document', 'tgroup', 'definition_list_item')
+pass_visit = ('tgroup', 'definition_list_item', 'Text', 'target', )
+pass_depart = ('document', 'tgroup', 'definition_list_item', )
+skip_node = ('substitution_definition', )
 
 for name in pass_visit:
     setattr(HTML5Translator, 'visit_' + name, nodes._nop)
 for name in pass_depart:
     setattr(HTML5Translator, 'depart_' + name, nodes._nop)
+for name in skip_node:
+    setattr(HTML5Translator, 'visit_' + name, HTML5Translator._skip_node)
