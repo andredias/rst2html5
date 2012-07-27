@@ -524,3 +524,16 @@ more text''',
     'out': '\n    <p>some text</p>\n<hr width=50 size=10 />\n<br />\n    <p>more text</p>\n',
     'indent_output': True
 }
+
+class_directive = {
+    'rst': '''.. class:: nav special
+
+paragraph with some text
+
+.. class:: heading top
+
+Section Title
+=============''',
+    'out': '<p class="nav special">paragraph with some text</p><section class="heading top">'\
+           '<h1>Section Title</h1></section>'
+}
