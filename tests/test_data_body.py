@@ -537,3 +537,11 @@ Section Title
     'out': '<p class="nav special">paragraph with some text</p><section class="heading top">'\
            '<h1>Section Title</h1></section>'
 }
+
+role = {
+    'rst': '''.. role:: custom
+   :class: special
+
+this is an :custom:`interpreted text`.''',
+    'out': '<p>this is an <span class="special">interpreted text</span>.</p>'
+}
