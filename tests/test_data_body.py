@@ -511,3 +511,16 @@ math_role = {
     'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
     'out': '<p><span class="math">\(\sqrt{3x-1}+(1+x)^2\)</span></p>'
 }
+
+raw = {
+    'rst': '''some text
+
+.. raw:: html
+
+    <hr width=50 size=10 />
+    <br />
+
+more text''',
+    'out': '\n    <p>some text</p>\n<hr width=50 size=10 />\n<br />\n    <p>more text</p>\n',
+    'indent_output': True
+}

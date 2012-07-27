@@ -12,6 +12,7 @@ from docutils import nodes, writers, frontend
 from docutils.math import pick_math_environment
 from genshi.builder import tag, Fragment
 from genshi.output import XHTMLSerializer
+from genshi.core import Markup
 
 class HTML5Writer(writers.Writer):
 
@@ -454,6 +455,12 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         if 'title' in node:
             self.head.append(tag.title(node['title']))
         self.default_visit(node)
+
+    def visit_raw(self, node):
+        if 'html' in node.get('format', '').split():
+            self.context.append(Markup(node.astext()))
+        raise nodes.SkipNode
+
 
 '''
 Some elements don't need any visit_ or depart_ processing in HTML5Translator.
