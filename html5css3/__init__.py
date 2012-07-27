@@ -9,6 +9,7 @@ import os
 import re
 import docutils
 from docutils import nodes, writers, frontend
+from docutils.math import pick_math_environment
 from genshi.builder import tag, Fragment
 from genshi.output import XHTMLSerializer
 
@@ -204,14 +205,23 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         nodes.GenericNodeVisitor.__init__(self, document)
         self.heading_level = 0
         self.context = ElemStack(document.settings)
+        self.head = []
+        self.head.append(tag.meta(charset=self.document.settings.output_encoding))
         return
 
     @property
     def output(self):
         output = '<!DOCTYPE html>\n<html>\n<head>{head}</head>\n' \
                  '<body>{body}</body>\n</html>'
-        self.head = tag.meta(charset=self.document.settings.output_encoding)
-        self.head = ''.join(XHTMLSerializer()(self.head))
+        if self.document.settings.indent_output:
+            indent = '\n' + ' ' * self.document.settings.tab_width
+            result = []
+            for f in self.head:
+                result.append(Fragment()(indent, f))
+            result.append('\n')
+            self.head = result
+
+        self.head = ''.join(XHTMLSerializer()(Fragment()(*self.head)))
         self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context.pop())))
         return output.format(head=self.head, body=self.body)
 
@@ -419,8 +429,26 @@ class HTML5Translator(nodes.GenericNodeVisitor):
     def depart_inline(self, node):
         self.context.commit_elem('span', node.attributes, indent_elem=False)
 
+    def visit_math_block(self, node):
+        '''
+        Only MathJax support
+        '''
+        math_code = node.astext()
+        math_env = pick_math_environment(node.astext())
+        if 'align' in math_env:
+            template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code, math_env)
+            elem = tag.div(template)
+        else: # equation
+            template = '\(%s\)' % math_code
+            elem = tag.span(template)
+        elem(class_='math')
+        self.context.append(elem)
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+        self.head.append(tag.script(src=src))
+        raise nodes.SkipNode
 
-
+    def visit_math(self, node):
+        self.visit_math_block(node)
 
 '''
 Some elements don't need any visit_ or depart_ processing in HTML5Translator.

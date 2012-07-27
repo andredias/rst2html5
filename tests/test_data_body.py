@@ -492,3 +492,22 @@ module</span><span class="p">,</span> <span class="n">v</span><span class="p">),
 """,
     'indent_output': True
 }
+
+math = {
+    'rst': r'''.. math::
+
+    \dot{x} &amp; = \sigma(y-x) \\
+    \dot{y} &amp; = \rho x - y - xz \\
+    \dot{z} &amp; = -\beta z + xy''',
+    'out': r'''<div class="math">\begin{align*}
+\dot{x} &amp;amp; = \sigma(y-x) \\
+\dot{y} &amp;amp; = \rho x - y - xz \\
+\dot{z} &amp;amp; = -\beta z + xy
+\end{align*}</div>''',
+    'indent_output': True
+}
+
+math_role = {
+    'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
+    'out': '<p><span class="math">\(\sqrt{3x-1}+(1+x)^2\)</span></p>'
+}
