@@ -395,9 +395,7 @@ below.
 
 The hyperlink target above points to this paragraph.''',
     'out': '''
-    <p>Clicking on this internal hyperlink will take us to the
-        <a href="#target">target</a>
-     below.</p>
+    <p>Clicking on this internal hyperlink will take us to the <a href="#target">target</a> below.</p>
     <a id="target"></a>
     <p>The hyperlink target above points to this paragraph.</p>
 ''',
@@ -413,11 +411,7 @@ chained_internal_links = {
 The targets "target1" and "target2" are synonyms; they both
 point to this paragraph.''',
     'out': '''
-    <p>Links to
-        <a href="#target1">target1</a>
-     and
-        <a href="#target2">target2</a>
-    .</p>
+    <p>Links to <a href="#target1">target1</a> and <a href="#target2">target2</a>.</p>
     <a id="target1"></a>
     <a id="target2"></a>
     <p>The targets "target1" and "target2" are synonyms; they both point to this paragraph.</p>
@@ -432,9 +426,7 @@ propagated_target = {
 .. _archive:
 .. _Doc-SIG: http://mail.python.org/pipermail/doc-sig/''',
     'out': '''
-    <p>Link to
-        <a href="http://mail.python.org/pipermail/doc-sig/">archive</a>
-    .</p>
+    <p>Link to <a href="http://mail.python.org/pipermail/doc-sig/">archive</a>.</p>
 ''',
     'indent_output': True
 }
@@ -448,9 +440,7 @@ indirect_target_links = {
 
 Target paragraph.''',
     'out': '''
-    <p>Link to
-        <a href="#three">one</a>
-    .</p>
+    <p>Link to <a href="#three">one</a>.</p>
     <a id="three"></a>
     <p>Target paragraph.</p>
 ''',
@@ -659,6 +649,8 @@ Subtitle
 
 more text
 
+.. class:: special
+
 .. admonition:: This is a note admonition.
 
    This is the second line of the first paragraph.
@@ -675,7 +667,7 @@ Another Subtitle
     <section>
         <h2>Subtitle</h2>
         <p>more text</p>
-        <aside class="admonition">
+        <aside class="admonition special">
             <h1>This is a note admonition.</h1>
             <p>This is the second line of the first paragraph.</p>
             <ul>
@@ -742,7 +734,7 @@ Another Subtitle
 
 rubric = {
     'rst': 'some text\n\n.. rubric:: RuBriC\n    :class: special heading\n\nmore text',
-    'out': '<p>some text</p><p class="rubric special heading">RuBriC</p><p>more text</p>',
+    'out': '<p>some text</p><p class="rubric">RuBriC</p><p>more text</p>',
 }
 
 epigraph = {

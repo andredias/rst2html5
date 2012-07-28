@@ -54,7 +54,7 @@ def test_body():
 def _test_part(part_name, test_name, params, out):
     try:
         assert_equals(rst_to_html5(**params)[part_name], out)
-    except AssertionError as error:
+    except Exception as error:
         '''
         write temp files to help manual testing
         '''
@@ -62,5 +62,6 @@ def _test_part(part_name, test_name, params, out):
         with codecs.open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(params['rst'])
 
-        error.args = ('%s: %s' % (test_name, error.message), )
+        if isinstance(error, AssertionError):
+            error.args = ('%s: %s' % (test_name, error.message), )
         raise error
