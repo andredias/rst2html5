@@ -179,7 +179,6 @@ HTMLEquivalency = {
     "option_list": "table",
     "option_list_item": "tr",
     "option_string": "span",
-    "paragraph": "p",
     "reference": "a",
     "row": "tr",
     "subscript": "sub",
@@ -235,9 +234,8 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         Determine if the <p> tags around paragraph ``node`` can be omitted.
         Based on from docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph
         """
-        if (isinstance(node.parent, nodes.document) or
-            isinstance(node.parent, nodes.compound)):
-            # Never compact paragraphs in document or compound.
+        if (isinstance(node.parent, (nodes.document, nodes.compound, nodes.block_quote)) or
+           node['classes']):
             return False
         first = isinstance(node.parent[0], nodes.label) # skip label
         for child in node.parent.children[first:]:
@@ -252,10 +250,14 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         return parent_length == 1
 
     def visit_paragraph(self, node):
-        if self._compacted_paragraph(node):
+        if 'paragraph' != node.__class__.__name__:
+            node['classes'].insert(0, node.__class__.__name__)
+        elif self._compacted_paragraph(node):
             raise nodes.SkipDeparture
-        else:
-            self.default_visit(node)
+        self.default_visit(node)
+
+    def depart_paragraph(self, node):
+        self.context.commit_elem('p', node.attributes)
 
     def visit_Text(self, node):
         text = node.astext()
@@ -465,10 +467,6 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         node['classes'] = node.__class__.__name__
         self.context.commit_elem('aside', node.attributes)
 
-    def depart_rubric(self, node):
-        node['classes'].insert(0, 'rubric')
-        self.context.commit_elem('p', node.attributes)
-
 
 
 '''
@@ -482,6 +480,8 @@ redirects = {
     'topic': ("attention", "caution", "danger", "error", "hint", "important", "note", "tip",
               "warning", "admonition", "sidebar"),
     'math_block': ('math', ),
+    'block_quote': ('epigraph', 'highlights', 'pull-quote', ),
+    'paragraph': ('rubric', )
 }
 
 for name in pass_visit:

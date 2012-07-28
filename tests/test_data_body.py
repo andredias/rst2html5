@@ -133,9 +133,9 @@ short.
 
 This is another one.''',
         'out': "<p>This is a paragraph. It's quite short.</p>" \
-               "<blockquote>This paragraph will result in an indented " \
+               "<blockquote><p>This paragraph will result in an indented " \
                "block of text, typically used for quoting other text." \
-               "</blockquote><p>This is another one.</p>"
+               "</p></blockquote><p>This is another one.</p>"
 }
 
 
@@ -745,3 +745,9 @@ rubric = {
     'out': '<p>some text</p><p class="rubric special heading">RuBriC</p><p>more text</p>',
 }
 
+epigraph = {
+    'rst': '''.. epigraph::
+
+   No matter where you go, there you are.''',
+    'out': '<blockquote class="epigraph"><p>No matter where you go, there you are.</p></blockquote>',
+}
