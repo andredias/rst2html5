@@ -94,14 +94,14 @@ Section Title
 
 ...''',
         'out':   '''
-<hgroup>
-    <h1>Document Title</h1>
-    <h2>Subtitle</h2>
-</hgroup>
-<section>
-    <h1>Section Title</h1>
-    <p>...</p>
-</section>
+    <hgroup>
+        <h1>Document Title</h1>
+        <h2>Subtitle</h2>
+    </hgroup>
+    <section>
+        <h1>Section Title</h1>
+        <p>...</p>
+    </section>
 ''',
         'indent_output': True
 }
@@ -515,11 +515,13 @@ math = {
     \dot{x} &amp; = \sigma(y-x) \\
     \dot{y} &amp; = \rho x - y - xz \\
     \dot{z} &amp; = -\beta z + xy''',
-    'out': r'''<div class="math">\begin{align*}
+    'out': r'''
+    <div class="math">\begin{align*}
 \dot{x} &amp;amp; = \sigma(y-x) \\
 \dot{y} &amp;amp; = \rho x - y - xz \\
 \dot{z} &amp;amp; = -\beta z + xy
-\end{align*}</div>''',
+\end{align*}</div>
+''',
     'indent_output': True
 }
 
@@ -561,3 +563,180 @@ role = {
 this is an :custom:`interpreted text`.''',
     'out': '<p>this is an <span class="special">interpreted text</span>.</p>'
 }
+
+topic = {
+    'rst': '''
+Title 1
+=======
+
+text
+
+Subtitle
+--------
+
+more text
+
+.. topic:: Topic Title
+
+    Subsequent indented lines comprise
+    the body of the topic, and are
+    interpreted as body elements.
+
+Another Subtitle
+----------------''',
+    'out': '''
+    <h1>Title 1</h1>
+    <p>text</p>
+    <section>
+        <h2>Subtitle</h2>
+        <p>more text</p>
+        <aside class="topic">
+            <h1>Topic Title</h1>
+            <p>Subsequent indented lines comprise the body of the topic, and are interpreted as \
+body elements.</p>
+        </aside>
+    </section>
+    <section>
+        <h2>Another Subtitle</h2>
+    </section>
+''',
+    'indent_output': True
+}
+
+specific_admonition = {
+    'rst': '''
+Title
+=====
+
+text
+
+Subtitle
+--------
+
+more text
+
+.. note:: This is a note admonition.
+
+   This is the second line of the first paragraph.
+
+   - The note contains all indented body elements
+     following.
+   - It includes this bullet list.
+
+Another Subtitle
+----------------''',
+    'out': '''
+    <h1>Title</h1>
+    <p>text</p>
+    <section>
+        <h2>Subtitle</h2>
+        <p>more text</p>
+        <aside class="note">
+            <p>This is a note admonition.</p>
+            <p>This is the second line of the first paragraph.</p>
+            <ul>
+                <li>The note contains all indented body elements following.</li>
+                <li>It includes this bullet list.</li>
+            </ul>
+        </aside>
+    </section>
+    <section>
+        <h2>Another Subtitle</h2>
+    </section>
+''',
+    'indent_output': True
+}
+
+generic_admonition = {
+    'rst': '''
+Title
+=====
+
+text
+
+Subtitle
+--------
+
+more text
+
+.. admonition:: This is a note admonition.
+
+   This is the second line of the first paragraph.
+
+   - The note contains all indented body elements
+     following.
+   - It includes this bullet list.
+
+Another Subtitle
+----------------''',
+    'out': '''
+    <h1>Title</h1>
+    <p>text</p>
+    <section>
+        <h2>Subtitle</h2>
+        <p>more text</p>
+        <aside class="admonition">
+            <h1>This is a note admonition.</h1>
+            <p>This is the second line of the first paragraph.</p>
+            <ul>
+                <li>The note contains all indented body elements following.</li>
+                <li>It includes this bullet list.</li>
+            </ul>
+        </aside>
+    </section>
+    <section>
+        <h2>Another Subtitle</h2>
+    </section>
+''',
+    'indent_output': True
+}
+
+sidebar = {
+    'rst': '''
+Title
+=====
+
+text
+
+Subtitle
+--------
+
+more text
+
+.. sidebar:: This is a sidebar
+   :subtitle: Sidebar Subtitle
+
+   This is the second line of the first paragraph.
+
+   - The note contains all indented body elements
+     following.
+   - It includes this bullet list.
+
+Another Subtitle
+----------------
+''',
+    'out': '''
+    <h1>Title</h1>
+    <p>text</p>
+    <section>
+        <h2>Subtitle</h2>
+        <p>more text</p>
+        <aside class="sidebar">
+            <hgroup>
+                <h1>This is a sidebar</h1>
+                <h2>Sidebar Subtitle</h2>
+            </hgroup>
+            <p>This is the second line of the first paragraph.</p>
+            <ul>
+                <li>The note contains all indented body elements following.</li>
+                <li>It includes this bullet list.</li>
+            </ul>
+        </aside>
+    </section>
+    <section>
+        <h2>Another Subtitle</h2>
+    </section>
+''',
+    'indent_output': True
+}
+

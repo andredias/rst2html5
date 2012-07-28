@@ -61,37 +61,8 @@ class ElemStack(object):
         self.show_ids = settings.show_ids
         self.indent_width = settings.tab_width
 
-    def begin_elem(self):
-        self.stack.append([])
-        self.indent_level += 1
-        return
-
-    def append(self, *fragments):
-        '''
-        Append fragment to previous element
-        '''
-        self.stack[-1].append(*fragments)
-        return
-
-    def pop(self):
-        self.indent_level -= 1
-        return self.stack.pop()
-
-    def insert_elem(self, name, attributes=None):
-        self.begin_elem()
-        self.commit_elem(name, attributes)
-        return
-
-    def commit_elem(self, name, attributes=None, indent_elem=True):
-        '''
-        A new element is create by removing its stack to make a tag.
-        This tag is pushed back into its parent's stack.
-        '''
-        attr = self._adjust_attributes(attributes) if attributes else dict()
-        pop = self.stack.pop()
-        elem = getattr(tag, name)(*pop, **attr)
-        parent_stack = self.stack[-1]
-        self.indent_level -= 1
+    def _indent_elem(self, element, indent):
+        result = []
         '''
         Indentation schema:
 
@@ -104,38 +75,14 @@ class ElemStack(object):
                  ^
              ends here
         '''
-        if self.indent_output and indent_elem:
-            indent = '\n' + self.indent_width * self.indent_level * ' '
-            parent_stack.append(indent)
-        parent_stack.append(elem)
-        if self.indent_output and indent_elem:
-            indent = '\n' + self.indent_width * (self.indent_level - 1) * ' '
-            parent_stack.append(indent)
-        return
-
-    def pop_fragments(self, num_fragments):
-        num_fragments *= -3 if self.indent_output else -1
-        parent_stack = self.stack[-1]
-        fragments = parent_stack[num_fragments:]
-        self.stack[-1] = parent_stack[:num_fragments]
-        return fragments
-
-    def group_fragments(self, num_fragments, group_name, group_attributes=None):
-        self.stack.append(self.pop_fragments(num_fragments))
-        self.commit_elem(group_name, group_attributes)
-        return
-
-    def append_to_previous_element(self, *args):
-        distance = -2 if self.indent_output else -1
-        parent_stack = self.stack[-1]
-        elem = parent_stack[distance]
-        elem(*args)
-
-    def set_next_elem_attr(self, name, value):
-        '''
-        The given attribute will be inserted into the attributes of the next element.
-        '''
-        self.next_elem_attr = {name: value}
+        if self.indent_output and indent:
+            indentation = '\n' + self.indent_width * self.indent_level * ' '
+            result.append(indentation)
+        result.append(element)
+        if self.indent_output and indent:
+            indentation = '\n' + self.indent_width * (self.indent_level - 1) * ' '
+            result.append(indentation)
+        return result
 
     def _adjust_attributes(self, attributes):
         attrs = {}
@@ -165,6 +112,50 @@ class ElemStack(object):
             del self.next_elem_attr
         return attrs
 
+    def append(self, element, indent=True):
+        '''
+        Append to current element
+        '''
+        self.stack[-1].append(self._indent_elem(element, indent))
+        return
+
+    def begin_elem(self):
+        self.stack.append([])
+        self.indent_level += 1
+        return
+
+    def commit_elem(self, name, attributes=None, indent=True):
+        '''
+        A new element is create by removing its stack to make a tag.
+        This tag is pushed back into its parent's stack.
+        '''
+        attr = self._adjust_attributes(attributes) if attributes else dict()
+        pop = self.stack.pop()
+        elem = getattr(tag, name)(*pop, **attr)
+        self.indent_level -= 1
+        self.append(elem, indent)
+        return
+
+    def pop(self):
+        return self.pop_elements(1)[0]
+
+    def pop_elements(self, num_elements):
+        assert num_elements > 0
+        parent_stack = self.stack[-1]
+        result = []
+        for x in range(num_elements):
+            pop = parent_stack.pop()
+            elem = pop[0 if len(pop) == 1 else self.indent_output]
+            result.append(elem)
+        result.reverse()
+        return result
+
+    def set_next_elem_attr(self, name, value):
+        '''
+        The given attribute will be inserted into the attributes of the next element.
+        '''
+        self.next_elem_attr = {name: value}
+
 
 
 HTMLEquivalency = {
@@ -191,7 +182,6 @@ HTMLEquivalency = {
     "paragraph": "p",
     "reference": "a",
     "row": "tr",
-    "sidebar": "aside",
     "subscript": "sub",
     "superscript": "sup",
     "term": "dt",
@@ -223,7 +213,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             self.head = result
 
         self.head = ''.join(XHTMLSerializer()(Fragment()(*self.head)))
-        self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context.pop())))
+        self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context.stack)))
         return output.format(head=self.head, body=self.body)
 
     def default_visit(self, node):
@@ -267,11 +257,12 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         else:
             self.default_visit(node)
 
-    def depart_Text(self, node):
+    def visit_Text(self, node):
         text = node.astext()
         if not getattr(self, 'preserve_space', None):
             text = re.sub(r'\s+', ' ', text)
-        self.context.append(text)
+        self.context.append(text, indent=False)
+        raise nodes.SkipDeparture
 
     def visit_section(self, node):
         self.default_visit(node)
@@ -296,8 +287,11 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         subheading_level = 'h' + unicode(self.heading_level + 1)
         self.context.commit_elem(subheading_level)
         # create hgroup
-        num_fragments = 2
-        self.context.group_fragments(num_fragments, 'hgroup')
+        pop = self.context.pop_elements(2)
+        self.context.begin_elem()
+        self.context.append(pop[0])
+        self.context.append(pop[1])
+        self.context.commit_elem('hgroup')
         self.heading_level -= 1
 
     def depart_enumerated_list(self, node):
@@ -328,14 +322,15 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         """Internal only"""
         raise nodes.SkipNode
 
-    def depart_classifier(self, node):
-        self.context.pop() # pop text element internal to classifier
-        self.context.append_to_previous_element(
-            ' ',
-            tag.span(':', class_='classifier-delimiter'),
-            ' ',
-            tag.span(node.astext(), class_='classifier')
-        )
+    def visit_classifier(self, node):
+        '''
+        Classifier should remain beside the previous element
+        '''
+        term = self.context.pop()
+        term(' ', tag.span(':', class_='classifier-delimiter'), ' ',
+                           tag.span(node.astext(), class_='classifier'))
+        self.context.append(term)
+        raise nodes.SkipNode
 
     #
     # table
@@ -406,7 +401,8 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             '''
             return
         if 'refid' in node:
-            self.context.insert_elem('a', {'id': node['refid']})
+            self.context.begin_elem()
+            self.context.commit_elem('a', {'id': node['refid']})
         elif 'ids' in node:
             '''
             Previous anchor elements should be removed.
@@ -414,7 +410,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
             '''
             num_anchors = len(node['ids']) - 1
             if num_anchors > 0:
-                self.context.pop_fragments(num_anchors)
+                self.context.pop_elements(num_anchors)
         return
 
     def visit_literal_block(self, node):
@@ -428,7 +424,7 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         return
 
     def depart_inline(self, node):
-        self.context.commit_elem('span', node.attributes, indent_elem=False)
+        self.context.commit_elem('span', node.attributes, indent=False)
 
     def visit_math_block(self, node):
         '''
@@ -448,9 +444,6 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         self.head.append(tag.script(src=src))
         raise nodes.SkipNode
 
-    def visit_math(self, node):
-        self.visit_math_block(node)
-
     def visit_document(self, node):
         if 'title' in node:
             self.head.append(tag.title(node['title']))
@@ -458,17 +451,34 @@ class HTML5Translator(nodes.GenericNodeVisitor):
 
     def visit_raw(self, node):
         if 'html' in node.get('format', '').split():
-            self.context.append(Markup(node.astext()))
+            self.context.append(Markup(node.astext()), indent=False)
         raise nodes.SkipNode
+
+    def visit_topic(self, node):
+        self.save_heading_level = self.heading_level
+        self.heading_level = 1
+        self.default_visit(node)
+
+    def depart_topic(self, node):
+        self.heading_level = self.save_heading_level
+        del self.save_heading_level
+        node['classes'] = node.__class__.__name__
+        self.context.commit_elem('aside', node.attributes)
+
 
 
 '''
 Some elements don't need any visit_ or depart_ processing in HTML5Translator.
 'Text', for example, is a leaf node.
 '''
-pass_visit = ('tgroup', 'definition_list_item', 'Text', 'target', )
+pass_visit = ('tgroup', 'definition_list_item', 'target', )
 pass_depart = ('document', 'tgroup', 'definition_list_item', )
 skip_node = ('substitution_definition', )
+redirects = {
+    'topic': ("attention", "caution", "danger", "error", "hint", "important", "note", "tip",
+              "warning", "admonition", "sidebar"),
+    'math_block': ('math', ),
+}
 
 for name in pass_visit:
     setattr(HTML5Translator, 'visit_' + name, nodes._nop)
@@ -476,3 +486,9 @@ for name in pass_depart:
     setattr(HTML5Translator, 'depart_' + name, nodes._nop)
 for name in skip_node:
     setattr(HTML5Translator, 'visit_' + name, HTML5Translator._skip_node)
+for target, names in redirects.items():
+    for name in names:
+        setattr(HTML5Translator, 'visit_' + name,
+                getattr(HTML5Translator, 'visit_' + target, HTML5Translator.default_visit))
+        setattr(HTML5Translator, 'depart_' + name,
+                getattr(HTML5Translator, 'depart_' + target, HTML5Translator.default_departure))
