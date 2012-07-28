@@ -93,7 +93,7 @@ Section Title
 =============
 
 ...''',
-        'out':   '''
+        'out': '''
     <hgroup>
         <h1>Document Title</h1>
         <h2>Subtitle</h2>
@@ -738,5 +738,10 @@ Another Subtitle
     </section>
 ''',
     'indent_output': True
+}
+
+rubric = {
+    'rst': 'some text\n\n.. rubric:: RuBriC\n    :class: special heading\n\nmore text',
+    'out': '<p>some text</p><p class="rubric special heading">RuBriC</p><p>more text</p>',
 }
 

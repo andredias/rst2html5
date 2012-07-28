@@ -465,6 +465,10 @@ class HTML5Translator(nodes.GenericNodeVisitor):
         node['classes'] = node.__class__.__name__
         self.context.commit_elem('aside', node.attributes)
 
+    def depart_rubric(self, node):
+        node['classes'].insert(0, 'rubric')
+        self.context.commit_elem('p', node.attributes)
+
 
 
 '''
