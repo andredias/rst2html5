@@ -806,3 +806,12 @@ footer = {
     'rst': '.. footer:: This space for rent.',
     'out': '<footer>This space for rent.</footer>',
 }
+
+replace = {
+    'rst': '''.. |reST| replace:: reStructuredText
+
+Yes, |reST| is a long word, so I can't blame anyone for wanting to
+abbreviate it.''',
+    'out': "<p>Yes, reStructuredText is a long word, so I can't blame anyone for wanting to " \
+           "abbreviate it.</p>",
+}
