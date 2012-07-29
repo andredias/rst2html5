@@ -796,3 +796,13 @@ To start using subrepositories, you need two repositories, a main repo and a nes
     'indent_output': True,
     'show_ids': True
 }
+
+header = {
+    'rst': '.. header:: This space for rent.',
+    'out': '<header>This space for rent.</header>',
+}
+
+footer = {
+    'rst': '.. footer:: This space for rent.',
+    'out': '<footer>This space for rent.</footer>',
+}

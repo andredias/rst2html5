@@ -153,7 +153,7 @@ rst_terms = {
     'copyright': (None, None, None),
     'danger': (None, 'visit_aside', 'depart_aside'),
     'date': (None, None, None),
-    'decoration': (None, None, None),
+    'decoration': (None, 'skip_departure', None),
     'definition': ('dd', dv, dp),
     'definition_list': ('dl', dv, dp),
     'definition_list_item': (None, pass_, pass_),
@@ -170,11 +170,11 @@ rst_terms = {
     'field_list': (None, None, None),
     'field_name': (None, None, None),
     'figure': (None, dv, dp),
-    'footer': (None, None, None),
+    'footer': (None, dv, dp),
     'footnote': (None, None, None),
     'footnote_reference': (None, None, None),
     'generated': (None, None, None),
-    'header': (None, None, None),
+    'header': (None, dv, dp),
     'hint': (None, 'visit_aside', 'depart_aside'),
     'image': ('img', dv, dp),
     'important': (None, 'visit_aside', 'depart_aside'),
@@ -243,7 +243,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     @property
     def output(self):
-        output = '<!DOCTYPE html>\n<html>\n<head>{head}</head>\n' \
+        output = '<!DOCTYPE html>\n<html{language}>\n<head>{head}</head>\n' \
                  '<body>{body}</body>\n</html>'
         if self.document.settings.indent_output:
             indent = '\n' + ' ' * self.document.settings.tab_width
@@ -253,9 +253,10 @@ class HTML5Translator(nodes.NodeVisitor):
             result.append('\n')
             self.head = result
 
+        language = ' lang="%s"' % self.document.settings.language_code
         self.head = ''.join(XHTMLSerializer()(Fragment()(*self.head)))
         self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context.stack)))
-        return output.format(head=self.head, body=self.body)
+        return output.format(language=language, head=self.head, body=self.body)
 
     def set_next_elem_attr(self, name, value):
         '''
@@ -356,6 +357,9 @@ class HTML5Translator(nodes.NodeVisitor):
             self.heading_level = 1
         spec, indent, attr = self.parse(node)
         if 'href' in attr:
+            '''
+            backref to toc entry
+            '''
             anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
             self.context.commit_elem(anchor)
             anchor = self.context.pop()
@@ -405,9 +409,12 @@ class HTML5Translator(nodes.NodeVisitor):
             del node['suffix']
         self.default_departure(node)
 
-    def _skip_node(self, node):
+    def skip_node(self, node):
         """Internal only"""
         raise nodes.SkipNode
+
+    def skip_departure(self, node):
+        raise nodes.SkipDeparture
 
     def visit_classifier(self, node):
         '''
