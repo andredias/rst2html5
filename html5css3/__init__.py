@@ -26,8 +26,8 @@ class HTML5Writer(writers.Writer):
         None, (
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
-        ("Don't show id in sections", ['--show-ids'],
-            {'default': 0, 'action': 'store_false', 'dest': 'show_ids'})
+        ("Show sections ids", ['--show-ids'],
+            {'default': 0, 'action': 'store_true', 'dest': 'show_ids'})
     ))
 
     settings_defaults = {'tab_width': 4}
@@ -147,9 +147,9 @@ rst_terms = {
     'classifier': (None, 'visit_classifier', None),
     'colspec': ('col', dv, 'depart_colspec'),
     'comment': (None, None, None),
-    'compound': ('div', dv, 'depart_div'),
+    'compound': ('div', dv, dp, True),
     'contact': (None, None, None),
-    'container': (None, None, None),
+    'container': ('div', dv, dp, True),
     'copyright': (None, None, None),
     'danger': (None, 'visit_aside', 'depart_aside'),
     'date': (None, None, None),
@@ -207,12 +207,12 @@ rst_terms = {
     'section': ('section', 'visit_section', 'depart_section'),
     'sidebar': ('aside', 'visit_aside', 'depart_aside', True),
     'status': (None, None, None),
-    'strong': (None, dv, dp),
-    'subscript': ('sub', None, None),
+    'strong': (None, dv, dp, False, False),
+    'subscript': ('sub', dv, dp, False, False),
     'substitution_definition': (None, '_skip_node', None),
     'substitution_reference': (None, None, None),
     'subtitle': (None, dv, 'depart_subtitle'),
-    'superscript': ('sup', None, None),
+    'superscript': ('sup', dv, dv, False, False),
     'system_message': (None, dv, dp),
     'table': (None, 'visit_table', 'depart_table'),
     'target': (None, pass_, 'depart_target'),
@@ -220,13 +220,13 @@ rst_terms = {
     'term': ('dt', dv, dp),
     'tgroup': (None, pass_, pass_),
     'thead': (None, 'visit_thead', 'depart_thead'),
-    'tip': (None, 'visit_aside', 'depart_aside'),
+    'tip': ('aside', 'visit_aside', 'depart_aside'),
     'title': (None, dv, 'depart_title'),
     'title_reference': ('cite', dv, dp),
     'topic': ('aside', 'visit_aside', 'depart_aside', True),
     'transition': ('hr', dv, dp),
     'version': (None, None, None),
-    'warning': (None, 'visit_aside', 'depart_aside'),
+    'warning': ('aside', 'visit_aside', 'depart_aside'),
 }
 
 
@@ -355,6 +355,13 @@ class HTML5Translator(nodes.NodeVisitor):
         if self.heading_level == 0:
             self.heading_level = 1
         spec, indent, attr = self.parse(node)
+        if 'href' in attr:
+            anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
+            self.context.commit_elem(anchor)
+            anchor = self.context.pop()
+            self.context.begin_elem()
+            self.context.append(anchor, indent=False)
+            del attr['href']
         elem = getattr(tag, 'h' + unicode(self.heading_level))(**attr)
         self.context.commit_elem(elem, indent)
 

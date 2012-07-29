@@ -33,8 +33,9 @@ some text
 
 Level 1 Again
 =============''',
-        'out': '<section><h1>Level 1</h1><p>some text</p></section>' \
-               '<section><h1>Level 1 Again</h1></section>'
+        'out': '<section id="level-1"><h1>Level 1</h1><p>some text</p></section>' \
+               '<section id="level-1-again"><h1>Level 1 Again</h1></section>',
+        'show_ids': True
 }
 
 
@@ -742,4 +743,56 @@ epigraph = {
 
    No matter where you go, there you are.''',
     'out': '<blockquote class="epigraph"><p>No matter where you go, there you are.</p></blockquote>',
+}
+
+compound = {
+    'rst': '''.. compound::
+
+   The 'rm' command is very dangerous.  If you are logged
+   in as root and enter ::
+
+       cd /
+       rm -rf *
+
+   you will erase the entire contents of your file system.''',
+    'out': '''
+    <div class="compound">
+        <p>The 'rm' command is very dangerous. If you are logged in as root and enter</p>
+        <pre>cd /
+rm -rf *</pre>
+        <p>you will erase the entire contents of your file system.</p>
+    </div>
+''',
+    'indent_output': True
+}
+
+container = {
+    'rst': '''.. container:: custom
+
+   This paragraph might be rendered in a custom way.''',
+    'out': '<div class="container custom">This paragraph might be rendered in a custom way.</div>',
+}
+
+contents = {
+    'rst': '''.. contents:: Table of Contents
+   :depth: 2
+
+Basic Usage
+===========
+
+To start using subrepositories, you need two repositories, a main repo and a nested repo''',
+    'out': '''
+    <aside class="topic contents" id="table-of-contents">
+        <h1>Table of Contents</h1>
+        <ul>
+            <li><a href="#basic-usage" id="id1">Basic Usage</a></li>
+        </ul>
+    </aside>
+    <section id="basic-usage">
+        <h1><a class="toc-backref" href="#id1">Basic Usage</a></h1>
+        <p>To start using subrepositories, you need two repositories, a main repo and a nested repo</p>
+    </section>
+''',
+    'indent_output': True,
+    'show_ids': True
 }
