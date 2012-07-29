@@ -171,12 +171,16 @@ inline_markup_1 = {
         'rst': '''*emphasis*
 **strong emphasis**
 `interpreted text`
+`superscript`:sup:
 `interpreted text with role`:emphasis:
+`subscript`:sub:
 ``inline literal text``
 ''',
-        'out': '<p><em>emphasis</em> <strong>strong emphasis</strong> ' \
-               '<cite>interpreted text</cite> <em>interpreted text with ' \
-               'role</em> <tt>inline literal text</tt></p>'
+        'out': '''
+    <p><em>emphasis</em> <strong>strong emphasis</strong> <cite>interpreted text</cite> \
+<sup>superscript</sup> <em>interpreted text with role</em> <sub>subscript</sub> <tt>inline literal text</tt></p>
+''',
+        'indent_output': True
 }
 
 
