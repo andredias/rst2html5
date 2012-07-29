@@ -189,6 +189,15 @@ bullet_list = {
         'out': '<ul><li>item 1</li><li>item 2 more text</li></ul>'
 }
 
+transition = {
+    'rst': '''Paragraph
+
+----------
+
+Paragraph''',
+    'out': '<p>Paragraph</p><hr /><p>Paragraph</p>',
+}
+
 ordered_list_decimal = {
     'rst': '#. item 1\n#. item 2',
     'out': '<ol type="1"><li>item 1</li><li>item 2</li></ol>'
