@@ -862,7 +862,7 @@ docinfo = {
    field name marker, and they must line up with each other.
 :Parameter i: integer''',
     'out': '''
-    <table>
+    <table class="docinfo">
         <col />
         <col />
         <tbody>
@@ -944,7 +944,7 @@ docinfo2 = {
 :Revision: 38
 :Description: This is a "docinfo block", or bibliographic field list''',
     'out': '''
-    <table>
+    <table class="docinfo">
         <col />
         <col />
         <tbody>
@@ -1074,7 +1074,7 @@ option_list = {
 
 /V         A VMS/DOS-style option.''',
     'out': '''
-    <table>
+    <table class="option_list">
         <col />
         <col />
         <tbody>

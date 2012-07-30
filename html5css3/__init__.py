@@ -163,9 +163,9 @@ rst_terms = {
     'decoration': (None, 'do_nothing', None),
     'definition': ('dd', dv, dp),
     'definition_list': ('dl', dv, dp),
-    'definition_list_item': (None, pass_, pass_),
+    'definition_list_item': (None, 'do_nothing', None),
     'description': ('td', dv, dp),
-    'docinfo': (None, 'visit_docinfo', 'depart_docinfo'),
+    'docinfo': (None, 'visit_docinfo', 'depart_docinfo', True),
     'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
     'document': (None, 'visit_document', pass_),
     'emphasis': ('em', dv, dp, False, False),
@@ -199,7 +199,7 @@ rst_terms = {
     'option': ('kbd', 'visit_option', dp, False, False),
     'option_argument': ('var', 'visit_option_argument', dp, False, False),
     'option_group': ('td', 'visit_option_group', 'depart_option_group'),
-    'option_list': (None, 'visit_docinfo', 'depart_docinfo'),
+    'option_list': (None, 'visit_docinfo', 'depart_docinfo', True),
     'option_list_item': ('tr', dv, dp),
     'option_string': (None, 'do_nothing', None),
     'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
@@ -225,7 +225,7 @@ rst_terms = {
     'target': (None, pass_, 'depart_target'),
     'tbody': (None, dv, dp),
     'term': ('dt', dv, dp),
-    'tgroup': (None, pass_, pass_),
+    'tgroup': (None, 'do_nothing', None),
     'thead': (None, 'visit_thead', 'depart_thead'),
     'tip': ('aside', 'visit_aside', 'depart_aside'),
     'title': (None, dv, 'depart_title'),
@@ -422,6 +422,9 @@ class HTML5Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def do_nothing(self, node):
+        '''
+        equivalent to visit: pass and depart: pass
+        '''
         raise nodes.SkipDeparture
 
     def visit_classifier(self, node):
