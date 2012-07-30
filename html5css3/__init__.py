@@ -135,7 +135,7 @@ rst_terms = {
     'address': (None, 'visit_address', 'depart_address'),
     'admonition': ('aside', 'visit_aside', 'depart_aside', True),
     'attention': ('aside', 'visit_aside', 'depart_aside', True),
-    'attribution': ('cite', None, None),
+    'attribution': ('p', dv, dp, True),
     'author': ('li', dv, dp),
     'authors': (None, 'visit_authors', 'depart_authors'),
     'block_quote': ('blockquote', dv, dp),

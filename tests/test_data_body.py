@@ -973,3 +973,19 @@ Another [TEST2]_.
 ''',
     'indent_output': True
 }
+
+attribution = {
+    'rst': '''Quote:
+
+    "Choose a job you love, and you will never have to work a day in your life."
+
+    -- Confucius''',
+    'out': '''
+    <p>Quote:</p>
+    <blockquote>
+        <p>"Choose a job you love, and you will never have to work a day in your life."</p>
+        <p class="attribution">Confucius</p>
+    </blockquote>
+''',
+    'indent_output': True
+}
