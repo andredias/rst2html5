@@ -136,7 +136,7 @@ rst_terms = {
     'admonition': ('aside', 'visit_aside', 'depart_aside', True),
     'attention': ('aside', 'visit_aside', 'depart_aside', True),
     'attribution': ('p', dv, dp, True),
-    'author': ('li', dv, dp),
+    'author': (None, 'visit_author', 'depart_author'),
     'authors': (None, 'visit_authors', 'depart_authors'),
     'block_quote': ('blockquote', dv, dp),
     'bullet_list': ('ul', dv, dp, False),
@@ -201,7 +201,7 @@ rst_terms = {
     'problematic': (None, None, None),
     'raw': (None, 'visit_raw', None),
     'reference': ('a', dv, 'depart_reference', False, False),
-    'revision': (None, None, None),
+    'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'row': ('tr', 'visit_row', 'depart_row'),
     'rubric': ('p', dv, 'depart_rubric', True),
     'section': ('section', 'visit_section', 'depart_section'),
@@ -572,6 +572,19 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_field_list_item(self, node):
         self.context.commit_elem(tag.td)
         self.context.commit_elem(tag.tr)
+
+    def visit_author(self, node):
+        if isinstance(node.parent, nodes.authors):
+            self.default_visit(node)
+        else:
+            self.visit_field_list_item(node)
+
+    def depart_author(self, node):
+        if isinstance(node.parent, nodes.authors):
+            elem = tag.li
+            self.context.commit_elem(elem)
+        else:
+            self.depart_field_list_item(node)
 
     def visit_authors(self, node):
         self.visit_field_list_item(node)

@@ -931,6 +931,43 @@ Sumaré - São Paulo - Brasil
     'indent_output': True,
 }
 
+docinfo2 = {
+    'rst': ''':Info: See https://bitbucket.org/andre_felipe_dias/rst2html5
+:Author: André Felipe Dias <andref.dias@gmail.com>
+:Date: 2012-07-30
+:Revision: 38
+:Description: This is a "docinfo block", or bibliographic field list''',
+    'out': '''
+    <table>
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>Info</th>
+                <td>See <a href="https://bitbucket.org/andre_felipe_dias/rst2html5">https://bitbucket.org/andre_felipe_dias/rst2html5</a></td>
+            </tr>
+            <tr>
+                <th>author</th>
+                <td>André Felipe Dias &lt;<a href="mailto:andref.dias@gmail.com">andref.dias@gmail.com</a>&gt;</td>
+            </tr>
+            <tr>
+                <th>date</th>
+                <td>2012-07-30</td>
+            </tr>
+            <tr>
+                <th>revision</th>
+                <td>38</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>This is a "docinfo block", or bibliographic field list</td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'indent_output': True
+}
+
 comment = {
     'rst': '''..
     comment <comment> comment
