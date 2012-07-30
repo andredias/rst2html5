@@ -19,7 +19,7 @@ title = {
 
 
 title_accented_chars = {
-    'rst': 'Título com Acentuação\n' \
+    'rst': 'Título com Acentuação\n'
            '=====================',
     'out': '<h1>Título com Acentuação</h1>'
 }
@@ -33,7 +33,7 @@ some text
 
 Level 1 Again
 =============''',
-    'out': '<section id="level-1"><h1>Level 1</h1><p>some text</p></section>' \
+    'out': '<section id="level-1"><h1>Level 1</h1><p>some text</p></section>'
             '<section id="level-1-again"><h1>Level 1 Again</h1></section>',
     'show_ids': True
 }
@@ -54,8 +54,8 @@ more text
 
 Level 3
 --------''',
-    'out': '<h1>Level 1</h1><p>some text</p>' \
-            '<section><h2>Level 2</h2><p>more text</p>' \
+    'out': '<h1>Level 1</h1><p>some text</p>'
+            '<section><h2>Level 2</h2><p>more text</p>'
             '<section><h3>Level 3</h3></section></section>',
     'show_ids': False
 }
@@ -74,7 +74,7 @@ Section Title
 =============
 
 ...''',
-        'out': '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>' \
+        'out': '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>'
                '<section><h1>Section Title</h1><p>...</p></section>',
         'show_ids': False
 }
@@ -112,8 +112,8 @@ Section Title
 
 
 paragraph = {
-        'rst': 'Lorem    ipsum dolor sit amet,        consectetur ' \
-               'adipiscing          elit.\n' \
+        'rst': 'Lorem    ipsum dolor sit amet,        consectetur '
+               'adipiscing          elit.\n'
                 'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.',
         'out': '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
                'Vestibulum dignissim lacinia blandit. Suspendisse potenti.</p>'
@@ -121,9 +121,9 @@ paragraph = {
 
 
 accented_paragraph = {
-        'rst': 'Não há ninguém que ame a dor por si só, que a busque e ' \
+        'rst': 'Não há ninguém que ame a dor por si só, que a busque e '
               'queira tê-la, simplesmente por ser dor...',
-        'out': '<p>Não há ninguém que ame a dor por si só, que a busque e ' \
+        'out': '<p>Não há ninguém que ame a dor por si só, que a busque e '
                'queira tê-la, simplesmente por ser dor...</p>'
 }
 
@@ -136,9 +136,9 @@ short.
    text, typically used for quoting other text.
 
 This is another one.''',
-        'out': "<p>This is a paragraph. It's quite short.</p>" \
-               "<blockquote><p>This paragraph will result in an indented " \
-               "block of text, typically used for quoting other text." \
+        'out': "<p>This is a paragraph. It's quite short.</p>"
+               "<blockquote><p>This paragraph will result in an indented "
+               "block of text, typically used for quoting other text."
                "</p></blockquote><p>This is another one.</p>"
 }
 
@@ -149,7 +149,7 @@ image = {
    :height: 100
    :scale: 50
    :alt: alternate text''',
-        'out': '<img src="images/biohazard.png" alt="alternate text" ' \
+        'out': '<img src="images/biohazard.png" alt="alternate text" '
                'scale="50" width="200" height="100" />'
 }
 
@@ -181,7 +181,8 @@ inline_markup_1 = {
 ''',
         'out': '''
     <p><em>emphasis</em> <strong>strong emphasis</strong> <cite>interpreted text</cite> \
-<sup>superscript</sup> <em>interpreted text with role</em> <sub>subscript</sub> <tt>inline literal text</tt></p>
+<sup>superscript</sup> <em>interpreted text with role</em> <sub>subscript</sub> \
+<code>inline literal text</code></p>
 ''',
         'indent_output': True
 }
@@ -213,13 +214,13 @@ ordered_list_decimal_autonumerated = {
 
 ordered_list_lower_alpha = {
     'rst': '(a) item 1\n(#) item 2\n(#) item 3',
-    'out': '<ol prefix="(" type="a" suffix=")"><li>item 1</li><li>item 2</li>' \
+    'out': '<ol prefix="(" type="a" suffix=")"><li>item 1</li><li>item 2</li>'
            '<li>item 3</li></ol>'
 }
 
 ordered_list_upper_alpha = {
     'rst': 'A) item 1\n#) item 2\n#) item 3',
-    'out': '<ol type="A" suffix=")"><li>item 1</li><li>item 2</li><li>item 3'\
+    'out': '<ol type="A" suffix=")"><li>item 1</li><li>item 2</li><li>item 3'
            '</li></ol>'
 }
 
@@ -412,7 +413,8 @@ below.
 
 The hyperlink target above points to this paragraph.''',
     'out': '''
-    <p>Clicking on this internal hyperlink will take us to the <a href="#target">target</a> below.</p>
+    <p>Clicking on this internal hyperlink will take us to the \
+<a href="#target">target</a> below.</p>
     <a id="target"></a>
     <p>The hyperlink target above points to this paragraph.</p>
 ''',
@@ -559,7 +561,7 @@ paragraph with some text
 
 Section Title
 =============''',
-    'out': '<p class="nav special">paragraph with some text</p><section class="heading top">'\
+    'out': '<p class="nav special">paragraph with some text</p><section class="heading top">'
            '<h1>Section Title</h1></section>',
     'show_ids': False
 }
@@ -763,7 +765,8 @@ epigraph = {
     'rst': '''.. epigraph::
 
    No matter where you go, there you are.''',
-    'out': '<blockquote class="epigraph"><p>No matter where you go, there you are.</p></blockquote>',
+    'out': '<blockquote class="epigraph"><p>No matter where you go, there you are.</p>'
+           '</blockquote>',
 }
 
 compound = {
@@ -833,7 +836,7 @@ replace = {
 
 Yes, |reST| is a long word, so I can't blame anyone for wanting to
 abbreviate it.''',
-    'out': "<p>Yes, reStructuredText is a long word, so I can't blame anyone for wanting to " \
+    'out': "<p>Yes, reStructuredText is a long word, so I can't blame anyone for wanting to "
            "abbreviate it.</p>",
 }
 
@@ -911,7 +914,10 @@ Sumaré - São Paulo - Brasil
             </tr>
             <tr>
                 <th>Indentation</th>
-                <td>Since the field marker may be quite long, the second and subsequent lines of the field body do not have to line up with the first line, but they must be indented relative to the field name marker, and they must line up with each other.</td>
+                <td>Since the field marker may be quite long, the second and \
+subsequent lines of the field body do not have to line up with the first line, \
+but they must be indented relative to the field name marker, and they must line \
+up with each other.</td>
             </tr>
             <tr>
                 <th>Parameter i</th>
@@ -944,11 +950,13 @@ docinfo2 = {
         <tbody>
             <tr>
                 <th>Info</th>
-                <td>See <a href="https://bitbucket.org/andre_felipe_dias/rst2html5">https://bitbucket.org/andre_felipe_dias/rst2html5</a></td>
+                <td>See <a href="https://bitbucket.org/andre_felipe_dias/rst2html5">\
+https://bitbucket.org/andre_felipe_dias/rst2html5</a></td>
             </tr>
             <tr>
                 <th>author</th>
-                <td>André Felipe Dias &lt;<a href="mailto:andref.dias@gmail.com">andref.dias@gmail.com</a>&gt;</td>
+                <td>André Felipe Dias &lt;<a href="mailto:andref.dias@gmail.com">\
+andref.dias@gmail.com</a>&gt;</td>
             </tr>
             <tr>
                 <th>date</th>
@@ -1038,4 +1046,93 @@ this is a Doctest block''',
 this is a Doctest block</pre>
 ''',
     'indent_output': True
+}
+
+option_list = {
+    'rst': '''-a         Output all.
+-b         Output both (this description is
+           quite long).
+-c arg     Output just arg.
+--long     Output all day long.
+
+-p         This option has two paragraphs in the description.
+           This is the first.
+
+           This is the second.  Blank lines may be omitted between
+           options (as above) or left in (as here and below).
+
+--very-long-option  A VMS-style option.  Note the adjustment for
+                    the required two spaces.
+
+--an-even-longer-option
+           The description can also start on the next line.
+
+-2, --two  This option has two variants.
+
+-f FILE, --file=FILE  These two options are synonyms; both have
+                      arguments.
+
+/V         A VMS/DOS-style option.''',
+    'out': '''
+    <table>
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <td><kbd>-a</kbd></td>
+                <td>Output all.</td>
+            </tr>
+            <tr>
+                <td><kbd>-b</kbd></td>
+                <td>Output both (this description is quite long).</td>
+            </tr>
+            <tr>
+                <td><kbd>-c <var>arg</var></kbd></td>
+                <td>Output just arg.</td>
+            </tr>
+            <tr>
+                <td><kbd>--long</kbd></td>
+                <td>Output all day long.</td>
+            </tr>
+            <tr>
+                <td><kbd>-p</kbd></td>
+                <td>
+                    <p>This option has two paragraphs in the description. This is the first.</p>
+                    <p>This is the second. Blank lines may be omitted between options (as above) or left in (as here and below).</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><kbd>--very-long-option</kbd></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>A VMS-style option. Note the adjustment for the required two spaces.</td>
+            </tr>
+            <tr>
+                <td colspan="2"><kbd>--an-even-longer-option</kbd></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>The description can also start on the next line.</td>
+            </tr>
+            <tr>
+                <td><kbd>-2</kbd>, <kbd>--two</kbd></td>
+                <td>This option has two variants.</td>
+            </tr>
+            <tr>
+                <td colspan="2"><kbd>-f <var>FILE</var></kbd>, <kbd>--file=<var>FILE</var></kbd></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>These two options are synonyms; both have arguments.</td>
+            </tr>
+            <tr>
+                <td><kbd>/V</kbd></td>
+                <td>A VMS/DOS-style option.</td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'indent_output': True,
+    'option_limit': 15,
 }

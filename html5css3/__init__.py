@@ -27,7 +27,14 @@ class HTML5Writer(writers.Writer):
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
         ("Don't produce sections ids", ['--no-ids'],
-            {'default': 1, 'action': 'store_false', 'dest': 'show_ids'})
+            {'default': 1, 'action': 'store_false', 'dest': 'show_ids'}),
+        ('Specify the maximum width (in characters) for options in option '
+         'lists.  Longer options will span an entire row of the table used '
+         'to render the option list.  Default is 14 characters.  '
+         'Use 0 for "no limit".',
+            ['--option-limit'],
+            {'default': 15, 'metavar': '<level>',
+             'validator': frontend.validate_nonnegative_int}),
     ))
 
     settings_defaults = {'tab_width': 4}
@@ -153,11 +160,11 @@ rst_terms = {
     'copyright': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'danger': (None, 'visit_aside', 'depart_aside'),
     'date': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'decoration': (None, 'skip_departure', None),
+    'decoration': (None, 'do_nothing', None),
     'definition': ('dd', dv, dp),
     'definition_list': ('dl', dv, dp),
     'definition_list_item': (None, pass_, pass_),
-    'description': (None, None, None),
+    'description': ('td', dv, dp),
     'docinfo': (None, 'visit_docinfo', 'depart_docinfo'),
     'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
     'document': (None, 'visit_document', pass_),
@@ -184,17 +191,17 @@ rst_terms = {
     'line': (None, None, None),
     'line_block': (None, None, None),
     'list_item': ('li', dv, dp),
-    'literal': ('tt', dv, dp, False, False),
+    'literal': ('code', dv, dp, False, False),
     'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
     'math': (None, 'visit_math_block', None),
     'math_block': (None, 'visit_math_block', None),
     'note': ('aside', 'visit_aside', 'depart_aside', True),
-    'option': (None, None, None),
-    'option_argument': (None, None, None),
-    'option_group': (None, None, None),
-    'option_list': (None, None, None),
-    'option_list_item': (None, None, None),
-    'option_string': (None, None, None),
+    'option': ('kbd', 'visit_option', dp, False, False),
+    'option_argument': ('var', 'visit_option_argument', dp, False, False),
+    'option_group': ('td', 'visit_option_group', 'depart_option_group'),
+    'option_list': (None, 'visit_docinfo', 'depart_docinfo'),
+    'option_list_item': ('tr', dv, dp),
+    'option_string': (None, 'do_nothing', None),
     'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'paragraph': ('p', 'visit_paragraph', dp),
     'pending': (None, None, None),
@@ -414,7 +421,7 @@ class HTML5Translator(nodes.NodeVisitor):
         """Internal only"""
         raise nodes.SkipNode
 
-    def skip_departure(self, node):
+    def do_nothing(self, node):
         raise nodes.SkipDeparture
 
     def visit_classifier(self, node):
@@ -628,6 +635,32 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.commit_elem(tag.tr)
         self.depart_docinfo(node)
 
+    def visit_option_group(self, node):
+        self.option_level = 0
+        self.default_visit(node)
+
+    def depart_option_group(self, node):
+        if self.document.settings.option_limit and \
+           len(node.astext()) > self.document.settings.option_limit:
+            node['morecols'] = 2
+            self.default_departure(node)
+            self.context.commit_elem(tag.tr) # closes this tr
+            self.context.begin_elem() # begins another tr
+            self.context.append(tag.td) # empty td due to colspan
+        else:
+            self.default_departure(node)
+
+    def visit_option(self, node):
+        if self.option_level:
+            self.context.append(', ', indent=False)
+        self.option_level += 1
+        self.default_visit(node)
+
+    def visit_option_argument(self, node):
+        if 'delimiter' in node:
+            self.context.append(node['delimiter'], indent=False)
+            del node.attributes['delimiter']
+        self.default_visit(node)
 
 
 '''
