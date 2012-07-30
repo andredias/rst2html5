@@ -16,5 +16,4 @@ License
 
 `MIT License`__
 
-.. __: http://www.arnebrodowski.de/blog/write-your-own-restructuredtext-writer.html
 .. __: http://opensource.org/licenses/MIT
