@@ -1026,3 +1026,16 @@ attribution = {
 ''',
     'indent_output': True
 }
+
+doctest_block = {
+    'rst': '''This is an ordinary paragraph.
+
+>>> print 'this is a Doctest block'
+this is a Doctest block''',
+    'out': '''
+    <p>This is an ordinary paragraph.</p>
+    <pre class="doctest_block">&gt;&gt;&gt; print 'this is a Doctest block'
+this is a Doctest block</pre>
+''',
+    'indent_output': True
+}

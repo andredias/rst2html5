@@ -159,7 +159,7 @@ rst_terms = {
     'definition_list_item': (None, pass_, pass_),
     'description': (None, None, None),
     'docinfo': (None, 'visit_docinfo', 'depart_docinfo'),
-    'doctest_block': (None, None, None),
+    'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
     'document': (None, 'visit_document', pass_),
     'emphasis': ('em', dv, dp, False, False),
     'entry': (None, dv, 'depart_entry'),
