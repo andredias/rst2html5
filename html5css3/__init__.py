@@ -33,7 +33,7 @@ class HTML5Writer(writers.Writer):
          'to render the option list.  Default is 14 characters.  '
          'Use 0 for "no limit".',
             ['--option-limit'],
-            {'default': 15, 'metavar': '<level>',
+            {'default': 0, 'metavar': '<level>',
              'validator': frontend.validate_nonnegative_int}),
     ))
 
@@ -174,19 +174,19 @@ rst_terms = {
     'error': (None, 'visit_aside', 'depart_aside'),
     'field': ('tr', dv, dp),
     'field_body': ('td', dv, dp),
-    'field_list': (None, None, None),
+    'field_list': (None, 'visit_docinfo', 'depart_docinfo', True),
     'field_name': ('th', dv, dp),
     'figure': (None, dv, dp),
     'footer': (None, dv, dp),
-    'footnote': (None, None, None),
-    'footnote_reference': (None, None, None),
+    'footnote': (None, 'visit_citation', 'depart_citation', True),
+    'footnote_reference': ('a', dv, 'depart_reference', True, False),
     'generated': (None, None, None),
     'header': (None, dv, dp),
     'hint': (None, 'visit_aside', 'depart_aside'),
     'image': ('img', dv, dp),
     'important': (None, 'visit_aside', 'depart_aside'),
     'inline': ('span', dv, dp, False, False),
-    'label': ('th', dv, dp),
+    'label': ('th', 'visit_label', 'depart_label'),
     'legend': (None, None, None),
     'line': (None, None, None),
     'line_block': (None, None, None),
@@ -289,7 +289,8 @@ class HTML5Translator(nodes.NodeVisitor):
             elif isinstance(v, list):
                 v = ' '.join(v)
 
-            if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub', 'backrefs'):
+            if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub', 'backrefs',
+                     'auto', ):
                 continue
             elif k in replacements:
                 k = replacements[k]
@@ -664,6 +665,14 @@ class HTML5Translator(nodes.NodeVisitor):
             self.context.append(node['delimiter'], indent=False)
             del node.attributes['delimiter']
         self.default_visit(node)
+
+    def visit_label(self, node):
+        self.default_visit(node)
+        self.context.append('[', indent=False)
+
+    def depart_label(self, node):
+        self.context.append(']', indent=False)
+        self.default_departure(node)
 
 
 '''

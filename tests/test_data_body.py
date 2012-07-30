@@ -1000,7 +1000,7 @@ Another [TEST2]_.
         <col />
         <tbody>
             <tr>
-                <th>CIT2012</th>
+                <th>[CIT2012]</th>
                 <td>A citation</td>
             </tr>
         </tbody>
@@ -1010,7 +1010,7 @@ Another [TEST2]_.
         <col />
         <tbody>
             <tr>
-                <th>TEST2</th>
+                <th>[TEST2]</th>
                 <td>Test text</td>
             </tr>
         </tbody>
@@ -1135,4 +1135,59 @@ option_list = {
 ''',
     'indent_output': True,
     'option_limit': 15,
+}
+
+footnote = {
+    'rst': '''[#]_ will be "2" (manually numbered),
+[#]_ will be "3" (anonymous auto-numbered), and
+[#label]_ will be "1" (labeled auto-numbered).
+
+.. [#label] This autonumber-labeled footnote will be labeled "1".
+   It is the first auto-numbered footnote and no other footnote
+   with label "1" exists.  The order of the footnotes is used to
+   determine numbering, not the order of the footnote references.
+
+.. [#] This footnote is labeled manually, so its number is fixed.
+
+.. [#] This footnote will be labeled "3".  It is the second
+   auto-numbered footnote, but footnote label "2" is already used.''',
+   'out': '''
+    <p><a href="#id4" id="id1" class="footnote_reference">2</a> will be "2" (manually numbered), \
+<a href="#id5" id="id2" class="footnote_reference">3</a> will be "3" (anonymous auto-numbered), \
+and <a href="#label" id="id3" class="footnote_reference">1</a> will be "1" (labeled auto-numbered).</p>
+    <table id="label" class="footnote">
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>[1]</th>
+                <td>This autonumber-labeled footnote will be labeled "1". It is the first \
+auto-numbered footnote and no other footnote with label "1" exists. The order of the footnotes is \
+used to determine numbering, not the order of the footnote references.</td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="id4" class="footnote">
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>[2]</th>
+                <td>This footnote is labeled manually, so its number is fixed.</td>
+            </tr>
+        </tbody>
+    </table>
+    <table id="id5" class="footnote">
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>[3]</th>
+                <td>This footnote will be labeled "3". It is the second auto-numbered footnote, \
+but footnote label "2" is already used.</td>
+            </tr>
+        </tbody>
+    </table>
+''',
+   'indent_output': True,
 }
