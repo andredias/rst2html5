@@ -33,14 +33,14 @@ some text
 
 Level 1 Again
 =============''',
-        'out': '<section id="level-1"><h1>Level 1</h1><p>some text</p></section>' \
-               '<section id="level-1-again"><h1>Level 1 Again</h1></section>',
-        'show_ids': True
+    'out': '<section id="level-1"><h1>Level 1</h1><p>some text</p></section>' \
+            '<section id="level-1-again"><h1>Level 1 Again</h1></section>',
+    'show_ids': True
 }
 
 
 title_3 = {
-        'rst': '''
+    'rst': '''
 =======
 Level 1
 =======
@@ -54,9 +54,10 @@ more text
 
 Level 3
 --------''',
-        'out': '<h1>Level 1</h1><p>some text</p>' \
-               '<section><h2>Level 2</h2><p>more text</p>' \
-               '<section><h3>Level 3</h3></section></section>'
+    'out': '<h1>Level 1</h1><p>some text</p>' \
+            '<section><h2>Level 2</h2><p>more text</p>' \
+            '<section><h3>Level 3</h3></section></section>',
+    'show_ids': False
 }
 
 
@@ -74,7 +75,8 @@ Section Title
 
 ...''',
         'out': '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>' \
-               '<section><h1>Section Title</h1><p>...</p></section>'
+               '<section><h1>Section Title</h1><p>...</p></section>',
+        'show_ids': False
 }
 
 
@@ -104,7 +106,8 @@ Section Title
         <p>...</p>
     </section>
 ''',
-        'indent_output': True
+        'indent_output': True,
+        'show_ids': False
 }
 
 
@@ -557,7 +560,8 @@ paragraph with some text
 Section Title
 =============''',
     'out': '<p class="nav special">paragraph with some text</p><section class="heading top">'\
-           '<h1>Section Title</h1></section>'
+           '<h1>Section Title</h1></section>',
+    'show_ids': False
 }
 
 role = {
@@ -604,7 +608,8 @@ body elements.</p>
         <h2>Another Subtitle</h2>
     </section>
 ''',
-    'indent_output': True
+    'indent_output': True,
+    'show_ids': False
 }
 
 specific_admonition = {
@@ -648,7 +653,8 @@ Another Subtitle
         <h2>Another Subtitle</h2>
     </section>
 ''',
-    'indent_output': True
+    'indent_output': True,
+    'show_ids': False
 }
 
 generic_admonition = {
@@ -694,7 +700,8 @@ Another Subtitle
         <h2>Another Subtitle</h2>
     </section>
 ''',
-    'indent_output': True
+    'indent_output': True,
+    'show_ids': False
 }
 
 sidebar = {
@@ -743,7 +750,8 @@ Another Subtitle
         <h2>Another Subtitle</h2>
     </section>
 ''',
-    'indent_output': True
+    'indent_output': True,
+    'show_ids': False
 }
 
 rubric = {
@@ -930,4 +938,38 @@ comment = {
 
     more text''',
     'out': ''
+}
+
+citation = {
+    'rst': '''this is a citation [CIT2012]_
+
+Another [TEST2]_.
+
+.. [CIT2012] A citation
+.. [TEST2] Test text''',
+    'out': '''
+    <p>this is a citation <a href="#cit2012" id="id1" class="citation_reference">CIT2012</a></p>
+    <p>Another <a href="#test2" id="id2" class="citation_reference">TEST2</a>.</p>
+    <table class="citation" id="cit2012">
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>CIT2012</th>
+                <td>A citation</td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="citation" id="test2">
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>TEST2</th>
+                <td>Test text</td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'indent_output': True
 }

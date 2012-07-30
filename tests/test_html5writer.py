@@ -13,6 +13,7 @@ from nose.tools import assert_equals
 from tempfile import gettempdir
 
 tmpdir = gettempdir()
+unittest.TestCase.maxDiff = None
 
 def rst_to_html5(case):
     overrides = case.copy()
@@ -21,7 +22,7 @@ def rst_to_html5(case):
     if 'indent_output' not in overrides:
         overrides['indent_output'] = False
     if 'show_ids' not in overrides:
-        overrides['show_ids'] = False
+        overrides['show_ids'] = True
     parts = publish_parts(writer=HTML5Writer(), source=rst,
                           settings_overrides=overrides)
     return parts

@@ -26,8 +26,8 @@ class HTML5Writer(writers.Writer):
         None, (
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
-        ("Show sections ids", ['--show-ids'],
-            {'default': 0, 'action': 'store_true', 'dest': 'show_ids'})
+        ("Don't produce sections ids", ['--no-ids'],
+            {'default': 1, 'action': 'store_false', 'dest': 'show_ids'})
     ))
 
     settings_defaults = {'tab_width': 4}
@@ -142,8 +142,8 @@ rst_terms = {
     'bullet_list': ('ul', dv, dp, False),
     'caption': ('figcaption', dv, dp, False),
     'caution': (None, 'visit_aside', 'depart_aside'),
-    'citation': (None, None, None),
-    'citation_reference': (None, None, None),
+    'citation': (None, 'visit_citation', 'depart_citation', True),
+    'citation_reference': ('a', dv, 'depart_reference', True, False),
     'classifier': (None, 'visit_classifier', None),
     'colspec': ('col', dv, 'depart_colspec'),
     'comment': (None, 'skip_node', None),
@@ -179,7 +179,7 @@ rst_terms = {
     'image': ('img', dv, dp),
     'important': (None, 'visit_aside', 'depart_aside'),
     'inline': ('span', dv, dp, False, False),
-    'label': (None, None, None),
+    'label': ('th', dv, dp),
     'legend': (None, None, None),
     'line': (None, None, None),
     'line_block': (None, None, None),
@@ -282,7 +282,7 @@ class HTML5Translator(nodes.NodeVisitor):
             elif isinstance(v, list):
                 v = ' '.join(v)
 
-            if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub'):
+            if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub', 'backrefs'):
                 continue
             elif k in replacements:
                 k = replacements[k]
@@ -332,6 +332,7 @@ class HTML5Translator(nodes.NodeVisitor):
         return parent_length == 1
 
     def visit_paragraph(self, node):
+        node['ids'] = []
         if self._compacted_paragraph(node):
             raise nodes.SkipDeparture
         self.default_visit(node)
@@ -601,6 +602,19 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.commit_elem(tag.tbody)
         waste, waste_, attr = self.parse(node)
         self.context.commit_elem(tag.table(**attr))
+
+    def visit_citation(self, node):
+        self.visit_docinfo(node)
+        self.context.begin_elem() # tr
+
+    def depart_citation(self, node):
+        paragraph = self.context.pop()
+        self.context.begin_elem()
+        self.context.append(paragraph, indent=False)
+        self.context.commit_elem(tag.td)
+        self.context.commit_elem(tag.tr)
+        self.depart_docinfo(node)
+
 
 
 '''
