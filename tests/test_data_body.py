@@ -922,3 +922,12 @@ Sumaré - São Paulo - Brasil
 ''',
     'indent_output': True,
 }
+
+comment = {
+    'rst': '''..
+    comment <comment> comment
+    comment
+
+    more text''',
+    'out': ''
+}

@@ -146,7 +146,7 @@ rst_terms = {
     'citation_reference': (None, None, None),
     'classifier': (None, 'visit_classifier', None),
     'colspec': ('col', dv, 'depart_colspec'),
-    'comment': (None, None, None),
+    'comment': (None, 'skip_node', None),
     'compound': ('div', dv, dp, True),
     'contact': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'container': ('div', dv, dp, True),
@@ -601,7 +601,6 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.commit_elem(tag.tbody)
         waste, waste_, attr = self.parse(node)
         self.context.commit_elem(tag.table(**attr))
-
 
 
 '''
