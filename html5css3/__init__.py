@@ -132,12 +132,12 @@ rst_terms = {
     'Text': (None, 'visit_Text', None),
     'abbreviation': ('abbr', dv, dp),
     'acronym': (None, dv, dp),
-    'address': (None, None, None),
+    'address': (None, 'visit_address', 'depart_address'),
     'admonition': ('aside', 'visit_aside', 'depart_aside', True),
     'attention': ('aside', 'visit_aside', 'depart_aside', True),
     'attribution': ('cite', None, None),
-    'author': (None, None, None),
-    'authors': (None, None, None),
+    'author': ('li', dv, dp),
+    'authors': (None, 'visit_authors', 'depart_authors'),
     'block_quote': ('blockquote', dv, dp),
     'bullet_list': ('ul', dv, dp, False),
     'caption': ('figcaption', dv, dp, False),
@@ -148,27 +148,27 @@ rst_terms = {
     'colspec': ('col', dv, 'depart_colspec'),
     'comment': (None, None, None),
     'compound': ('div', dv, dp, True),
-    'contact': (None, None, None),
+    'contact': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'container': ('div', dv, dp, True),
-    'copyright': (None, None, None),
+    'copyright': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'danger': (None, 'visit_aside', 'depart_aside'),
-    'date': (None, None, None),
+    'date': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'decoration': (None, 'skip_departure', None),
     'definition': ('dd', dv, dp),
     'definition_list': ('dl', dv, dp),
     'definition_list_item': (None, pass_, pass_),
     'description': (None, None, None),
-    'docinfo': (None, None, None),
+    'docinfo': (None, 'visit_docinfo', 'depart_docinfo'),
     'doctest_block': (None, None, None),
     'document': (None, 'visit_document', pass_),
     'emphasis': ('em', dv, dp, False, False),
     'entry': (None, dv, 'depart_entry'),
     'enumerated_list': ('ol', dv, 'depart_enumerated_list'),
     'error': (None, 'visit_aside', 'depart_aside'),
-    'field': (None, None, None),
-    'field_body': (None, None, None),
+    'field': ('tr', dv, dp),
+    'field_body': ('td', dv, dp),
     'field_list': (None, None, None),
-    'field_name': (None, None, None),
+    'field_name': ('th', dv, dp),
     'figure': (None, dv, dp),
     'footer': (None, dv, dp),
     'footnote': (None, None, None),
@@ -183,7 +183,7 @@ rst_terms = {
     'legend': (None, None, None),
     'line': (None, None, None),
     'line_block': (None, None, None),
-    'list_item': ('li', dv, dp, False),
+    'list_item': ('li', dv, dp),
     'literal': ('tt', dv, dp, False, False),
     'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
     'math': (None, 'visit_math_block', None),
@@ -195,7 +195,7 @@ rst_terms = {
     'option_list': (None, None, None),
     'option_list_item': (None, None, None),
     'option_string': (None, None, None),
-    'organization': (None, None, None),
+    'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'paragraph': ('p', 'visit_paragraph', dp),
     'pending': (None, None, None),
     'problematic': (None, None, None),
@@ -206,7 +206,7 @@ rst_terms = {
     'rubric': ('p', dv, 'depart_rubric', True),
     'section': ('section', 'visit_section', 'depart_section'),
     'sidebar': ('aside', 'visit_aside', 'depart_aside', True),
-    'status': (None, None, None),
+    'status': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'strong': (None, dv, dp, False, False),
     'subscript': ('sub', dv, dp, False, False),
     'substitution_definition': (None, 'skip_node', None),
@@ -225,7 +225,7 @@ rst_terms = {
     'title_reference': ('cite', dv, dp, False, False),
     'topic': ('aside', 'visit_aside', 'depart_aside', True),
     'transition': ('hr', dv, dp),
-    'version': (None, None, None),
+    'version': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'warning': ('aside', 'visit_aside', 'depart_aside'),
 }
 
@@ -562,6 +562,47 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_rubric(self, node):
         node['classes'] = []
         self.default_departure(node)
+
+    def visit_field_list_item(self, node):
+        self.context.begin_elem() # tr
+        self.context.append(tag.th(node.__class__.__name__))
+        self.context.begin_elem() # td
+
+    def depart_field_list_item(self, node):
+        self.context.commit_elem(tag.td)
+        self.context.commit_elem(tag.tr)
+
+    def visit_authors(self, node):
+        self.visit_field_list_item(node)
+        self.context.begin_elem()
+
+    def depart_authors(self, node):
+        self.context.commit_elem(tag.ul)
+        self.depart_field_list_item(node)
+
+    def visit_address(self, node):
+        self.visit_field_list_item(node)
+        self.context.begin_elem()
+        self.preserve_space = True
+
+    def depart_address(self, node):
+        del self.preserve_space
+        self.context.commit_elem(tag.pre(class_='docinfo-' + node.__class__.__name__))
+        self.depart_field_list_item(node)
+
+    def visit_docinfo(self, node):
+        self.context.begin_elem() # table
+        col = tag.col
+        self.context.append(col)
+        self.context.append(col)
+        self.context.begin_elem() # tbody
+
+    def depart_docinfo(self, node):
+        self.context.commit_elem(tag.tbody)
+        waste, waste_, attr = self.parse(node)
+        self.context.commit_elem(tag.table(**attr))
+
+
 
 '''
 Map terms to visit and departure functions

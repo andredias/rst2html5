@@ -828,3 +828,97 @@ abbreviate it.''',
     'out': "<p>Yes, reStructuredText is a long word, so I can't blame anyone for wanting to " \
            "abbreviate it.</p>",
 }
+
+docinfo = {
+    'rst': ''':Version: 1
+:Authors: - André
+          - Felipe
+          - Dias
+:Organization: Pronus Engenharia de Software
+:Contact: andref.dias@pronus.eng.br
+:Address: Av. Ipê Amarelo
+   Sumaré - São Paulo - Brasil
+   13175-667
+:Version: 1
+:Status: Alpha
+:Date: 2012-07-29
+:Copyright: André Felipe Dias
+:Dedication: To Andréa, Dexter e DeeDee
+:Abstract: Generates (X)HTML5 documents from standalone reStructuredText sources.
+:Indentation: Since the field marker may be quite long, the second
+   and subsequent lines of the field body do not have to line up
+   with the first line, but they must be indented relative to the
+   field name marker, and they must line up with each other.
+:Parameter i: integer''',
+    'out': '''
+    <table>
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>version</th>
+                <td>1</td>
+            </tr>
+            <tr>
+                <th>authors</th>
+                <td>
+                    <ul>
+                        <li>André</li>
+                        <li>Felipe</li>
+                        <li>Dias</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>organization</th>
+                <td>Pronus Engenharia de Software</td>
+            </tr>
+            <tr>
+                <th>contact</th>
+                <td><a href="mailto:andref.dias@pronus.eng.br">andref.dias@pronus.eng.br</a></td>
+            </tr>
+            <tr>
+                <th>address</th>
+                <td>
+                    <pre class="docinfo-address">Av. Ipê Amarelo
+Sumaré - São Paulo - Brasil
+13175-667</pre>
+                </td>
+            </tr>
+            <tr>
+                <th>version</th>
+                <td>1</td>
+            </tr>
+            <tr>
+                <th>status</th>
+                <td>Alpha</td>
+            </tr>
+            <tr>
+                <th>date</th>
+                <td>2012-07-29</td>
+            </tr>
+            <tr>
+                <th>copyright</th>
+                <td>André Felipe Dias</td>
+            </tr>
+            <tr>
+                <th>Indentation</th>
+                <td>Since the field marker may be quite long, the second and subsequent lines of the field body do not have to line up with the first line, but they must be indented relative to the field name marker, and they must line up with each other.</td>
+            </tr>
+            <tr>
+                <th>Parameter i</th>
+                <td>integer</td>
+            </tr>
+        </tbody>
+    </table>
+    <aside class="topic dedication">
+        <h1>Dedication</h1>
+        <p>To Andréa, Dexter e DeeDee</p>
+    </aside>
+    <aside class="topic abstract">
+        <h1>Abstract</h1>
+        <p>Generates (X)HTML5 documents from standalone reStructuredText sources.</p>
+    </aside>
+''',
+    'indent_output': True,
+}
