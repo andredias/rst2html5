@@ -22,3 +22,25 @@ metadata = {
     'rst': '.. title:: Foo Bar',
     'out': '<meta charset="utf-8" /><title>Foo Bar</title>'
 }
+
+stylesheet = {
+    'rst': 'ordinary paragraph',
+    'out': '''
+    <meta charset="utf-8" />
+    <link href="http://test.com/css/default.css" rel="stylesheet" />
+    <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
+''',
+    'indent_output': True,
+    'stylesheet': 'http://test.com/css/default.css, http://www.pronus.eng.br/css/standard.css'
+}
+
+
+javascript = {
+    'rst': 'ordinary paragraph',
+    'out': '''
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+''',
+    'indent_output': True,
+    'script': 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+}

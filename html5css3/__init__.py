@@ -30,11 +30,16 @@ class HTML5Writer(writers.Writer):
             {'default': 1, 'action': 'store_false', 'dest': 'show_ids'}),
         ('Specify the maximum width (in characters) for options in option '
          'lists.  Longer options will span an entire row of the table used '
-         'to render the option list.  Default is 14 characters.  '
-         'Use 0 for "no limit".',
+         'to render the option list. Use 0 for "no limit". Default is 0 characters. ',
             ['--option-limit'],
             {'default': 0, 'metavar': '<level>',
              'validator': frontend.validate_nonnegative_int}),
+        ('Specify comma separated list of stylesheet URLs.',
+          ['--stylesheet'],
+          {'metavar': '<URL>', 'default': None, }),
+        ('Specify comma separated list of script URLs.',
+          ['--script'],
+          {'metavar': '<URL>', 'default': None, }),
     ))
 
     settings_defaults = {'tab_width': 4}
@@ -246,6 +251,23 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context = ElemStack(document.settings)
         self.head = []
         self.head.append(tag.meta(charset=self.document.settings.output_encoding))
+
+        stylesheets = document.settings.stylesheet
+        stylesheets = stylesheets and re.sub(r'\s+', '', stylesheets).split(',') or []
+        for s in stylesheets:
+            self.add_stylesheet(s)
+        javascripts = document.settings.script
+        javascripts = javascripts and re.sub(r'\s+', '', javascripts).split(',') or []
+        for j in javascripts:
+            self.add_javascript(j)
+        return
+
+    def add_stylesheet(self, href):
+        self.head.append(tag.link(rel='stylesheet', href=href))
+        return
+
+    def add_javascript(self, src):
+        self.head.append(tag.script(src=src))
         return
 
     @property
