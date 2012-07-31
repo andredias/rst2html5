@@ -1143,8 +1143,11 @@ footnote = {
 [#label]_ will be "1" (labeled auto-numbered).
 
 .. [#label] This autonumber-labeled footnote will be labeled "1".
+
    It is the first auto-numbered footnote and no other footnote
-   with label "1" exists.  The order of the footnotes is used to
+   with label "1" exists.
+
+   The order of the footnotes is used to
    determine numbering, not the order of the footnote references.
 
 .. [#] This footnote is labeled manually, so its number is fixed.
@@ -1152,18 +1155,18 @@ footnote = {
 .. [#] This footnote will be labeled "3".  It is the second
    auto-numbered footnote, but footnote label "2" is already used.''',
    'out': '''
-    <p><a href="#id4" id="id1" class="footnote_reference">2</a> will be "2" (manually numbered), \
-<a href="#id5" id="id2" class="footnote_reference">3</a> will be "3" (anonymous auto-numbered), \
-and <a href="#label" id="id3" class="footnote_reference">1</a> will be "1" (labeled auto-numbered).</p>
+    <p><a href="#id4" id="id1" class="footnote_reference">2</a> will be "2" (manually numbered), <a href="#id5" id="id2" class="footnote_reference">3</a> will be "3" (anonymous auto-numbered), and <a href="#label" id="id3" class="footnote_reference">1</a> will be "1" (labeled auto-numbered).</p>
     <table id="label" class="footnote">
         <col />
         <col />
         <tbody>
             <tr>
                 <th>[1]</th>
-                <td>This autonumber-labeled footnote will be labeled "1". It is the first \
-auto-numbered footnote and no other footnote with label "1" exists. The order of the footnotes is \
-used to determine numbering, not the order of the footnote references.</td>
+                <td>
+                    <p>This autonumber-labeled footnote will be labeled "1".</p>
+                    <p>It is the first auto-numbered footnote and no other footnote with label "1" exists.</p>
+                    <p>The order of the footnotes is used to determine numbering, not the order of the footnote references.</p>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -1183,8 +1186,7 @@ used to determine numbering, not the order of the footnote references.</td>
         <tbody>
             <tr>
                 <th>[3]</th>
-                <td>This footnote will be labeled "3". It is the second auto-numbered footnote, \
-but footnote label "2" is already used.</td>
+                <td>This footnote will be labeled "3". It is the second auto-numbered footnote, but footnote label "2" is already used.</td>
             </tr>
         </tbody>
     </table>

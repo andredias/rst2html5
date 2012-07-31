@@ -200,6 +200,7 @@ rst_terms = {
     'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
     'math': (None, 'visit_math_block', None),
     'math_block': (None, 'visit_math_block', None),
+    'meta': (None, 'visit_meta', None),
     'note': ('aside', 'visit_aside', 'depart_aside', True),
     'option': ('kbd', 'visit_option', dp, False, False),
     'option_argument': ('var', 'visit_option_argument', dp, False, False),
@@ -210,7 +211,7 @@ rst_terms = {
     'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'paragraph': ('p', 'visit_paragraph', dp),
     'pending': (None, dv, dp),
-    'problematic': (None, dv, dp),
+    'problematic': ('span', dv, dp, True, False),
     'raw': (None, 'visit_raw', None),
     'reference': ('a', dv, 'depart_reference', False, False),
     'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
@@ -654,9 +655,7 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.begin_elem() # tr
 
     def depart_citation(self, node):
-        paragraph = self.context.pop()
-        self.context.begin_elem()
-        self.context.append(paragraph, indent=False)
+        # td initiated at depart_label
         self.context.commit_elem(tag.td)
         self.context.commit_elem(tag.tr)
         self.depart_docinfo(node)
@@ -695,6 +694,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_label(self, node):
         self.context.append(']', indent=False)
         self.default_departure(node)
+        self.context.begin_elem() # next td
 
     '''
     Line blocks use <pre>. lines breaks and spacing are reconstructured
@@ -720,6 +720,12 @@ class HTML5Translator(nodes.NodeVisitor):
         if self.line_block_level == 0:
             del self.line_block_level
             self.default_departure(node)
+
+    def visit_meta(self, node):
+        waste, waste_, attr = self.parse(node)
+        self.head.append(tag.meta(**attr))
+        raise nodes.SkipNode
+
 
 
 '''

@@ -44,3 +44,18 @@ javascript = {
     'indent_output': True,
     'script': 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
 }
+
+meta = {
+    'rst': '''.. meta::
+    :author: André Felipe Dias
+
+.. meta::
+    :http-equiv=X-UA-Compatible: chrome=1
+''',
+    'out': '''
+    <meta charset="utf-8" />
+    <meta content="André Felipe Dias" name="author" />
+    <meta content="chrome=1" http-equiv="X-UA-Compatible" />
+''',
+    'indent_output': True,
+}
