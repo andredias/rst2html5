@@ -1225,3 +1225,23 @@ def <strong>test_body</strong>():
 """,
     'indent_output': True
 }
+
+legend = {
+    'rst': '''.. figure:: picture.png
+   :scale: 50%
+   :alt: map to buried treasure
+
+   This is the caption of the figure (a simple paragraph).
+
+   The legend consists of all elements after the caption.  In this
+   case, the legend consists of this paragraph.
+''',
+    'out': '''
+    <figure>
+        <img src="picture.png" alt="map to buried treasure" scale="50" />
+        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
+        <div class="legend">The legend consists of all elements after the caption. In this case, the legend consists of this paragraph.</div>
+    </figure>
+''',
+    'indent_output': True
+}
