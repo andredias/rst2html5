@@ -180,7 +180,7 @@ rst_terms = {
     'footer': (None, dv, dp),
     'footnote': (None, 'visit_citation', 'depart_citation', True),
     'footnote_reference': ('a', dv, 'depart_reference', True, False),
-    'generated': (None, None, None),
+    'generated': (None, 'do_nothing', None),
     'header': (None, dv, dp),
     'hint': (None, 'visit_aside', 'depart_aside'),
     'image': ('img', dv, dp),
@@ -188,8 +188,8 @@ rst_terms = {
     'inline': ('span', dv, dp, False, False),
     'label': ('th', 'visit_label', 'depart_label'),
     'legend': (None, None, None),
-    'line': (None, None, None),
-    'line_block': (None, None, None),
+    'line': (None, 'visit_line', None),
+    'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
     'list_item': ('li', dv, dp),
     'literal': ('code', dv, dp, False, False),
     'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
@@ -673,6 +673,31 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_label(self, node):
         self.context.append(']', indent=False)
         self.default_departure(node)
+
+    '''
+    Line blocks use <pre>. lines breaks and spacing are reconstructured
+    '''
+
+    def visit_line(self, node):
+        if self.line_block_number:
+            tab_width = self.document.settings.tab_width
+            separator = '\n' + ' ' * tab_width * (self.line_block_level - 1)
+        else:
+            separator = ''
+        self.context.append(separator, indent=False)
+        raise nodes.SkipDeparture
+
+    def visit_line_block(self, node):
+        self.line_block_number = getattr(self, 'line_block_number', -1) + 1
+        self.line_block_level = getattr(self, 'line_block_level', 0) + 1
+        if self.line_block_level == 1:
+            self.default_visit(node)
+
+    def depart_line_block(self, node):
+        self.line_block_level -= 1
+        if self.line_block_level == 0:
+            del self.line_block_level
+            self.default_departure(node)
 
 
 '''

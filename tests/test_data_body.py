@@ -1191,3 +1191,37 @@ but footnote label "2" is already used.</td>
 ''',
    'indent_output': True,
 }
+
+
+line_block = {
+    'rst': r"""
+| paragraph = {
+|     'rst': 'Paragraph',
+|     'out': '<meta charset="utf-8" />',
+|     'indent_output': **True**
+| }
+|
+| def **test_body**\ ():
+|     '''
+|     test the *body* part of a rst2html5 conversion
+|     '''
+|     import test_data_body
+|     for test_name, case in extract_variables(test_data_body):
+|         yield _test_part, 'body', test_name, case""",
+    'out': """
+    <pre class="line_block">paragraph = {
+    'rst': 'Paragraph',
+    'out': '&lt;meta charset="utf-8" /&gt;',
+    'indent_output': <strong>True</strong>
+}
+
+def <strong>test_body</strong>():
+    '''
+    test the <em>body</em> part of a rst2html5 conversion
+    '''
+    import test_data_body
+    for test_name, case in extract_variables(test_data_body):
+        yield _test_part, 'body', test_name, case</pre>
+""",
+    'indent_output': True
+}
