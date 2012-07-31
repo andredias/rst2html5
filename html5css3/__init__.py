@@ -155,7 +155,7 @@ rst_terms = {
     'caption': ('figcaption', dv, dp, False),
     'caution': (None, 'visit_aside', 'depart_aside'),
     'citation': (None, 'visit_citation', 'depart_citation', True),
-    'citation_reference': ('a', dv, 'depart_reference', True, False),
+    'citation_reference': ('a', 'visit_label', 'depart_citation_reference', True, False),
     'classifier': (None, 'visit_classifier', None),
     'colspec': ('col', dv, 'depart_colspec'),
     'comment': (None, 'skip_node', None),
@@ -184,7 +184,7 @@ rst_terms = {
     'figure': (None, dv, dp),
     'footer': (None, dv, dp),
     'footnote': (None, 'visit_citation', 'depart_citation', True),
-    'footnote_reference': ('a', dv, 'depart_reference', True, False),
+    'footnote_reference': ('a', 'visit_label', 'depart_citation_reference', True, False),
     'generated': (None, 'do_nothing', None),
     'header': (None, dv, dp),
     'hint': (None, 'visit_aside', 'depart_aside'),
@@ -686,6 +686,10 @@ class HTML5Translator(nodes.NodeVisitor):
             self.context.append(node['delimiter'], indent=False)
             del node.attributes['delimiter']
         self.default_visit(node)
+
+    def depart_citation_reference(self, node):
+        self.context.append(']', indent=False)
+        self.depart_reference(node)
 
     def visit_label(self, node):
         self.default_visit(node)

@@ -993,8 +993,8 @@ Another [TEST2]_.
 .. [CIT2012] A citation
 .. [TEST2] Test text''',
     'out': '''
-    <p>this is a citation <a href="#cit2012" id="id1" class="citation_reference">CIT2012</a></p>
-    <p>Another <a href="#test2" id="id2" class="citation_reference">TEST2</a>.</p>
+    <p>this is a citation <a href="#cit2012" id="id1" class="citation_reference">[CIT2012]</a></p>
+    <p>Another <a href="#test2" id="id2" class="citation_reference">[TEST2]</a>.</p>
     <table class="citation" id="cit2012">
         <col />
         <col />
@@ -1155,7 +1155,10 @@ footnote = {
 .. [#] This footnote will be labeled "3".  It is the second
    auto-numbered footnote, but footnote label "2" is already used.''',
    'out': '''
-    <p><a href="#id4" id="id1" class="footnote_reference">2</a> will be "2" (manually numbered), <a href="#id5" id="id2" class="footnote_reference">3</a> will be "3" (anonymous auto-numbered), and <a href="#label" id="id3" class="footnote_reference">1</a> will be "1" (labeled auto-numbered).</p>
+    <p><a href="#id4" id="id1" class="footnote_reference">[2]</a> will be "2" (manually numbered), \
+<a href="#id5" id="id2" class="footnote_reference">[3]</a> will be "3" (anonymous auto-numbered), \
+and <a href="#label" id="id3" class="footnote_reference">[1]</a> will be "1" \
+(labeled auto-numbered).</p>
     <table id="label" class="footnote">
         <col />
         <col />
@@ -1164,8 +1167,10 @@ footnote = {
                 <th>[1]</th>
                 <td>
                     <p>This autonumber-labeled footnote will be labeled "1".</p>
-                    <p>It is the first auto-numbered footnote and no other footnote with label "1" exists.</p>
-                    <p>The order of the footnotes is used to determine numbering, not the order of the footnote references.</p>
+                    <p>It is the first auto-numbered footnote and no other footnote with label \
+"1" exists.</p>
+                    <p>The order of the footnotes is used to determine numbering, not the order \
+of the footnote references.</p>
                 </td>
             </tr>
         </tbody>
