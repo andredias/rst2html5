@@ -574,6 +574,55 @@ Lookie here, I've dropped an indentation level
     'indent_output': True
 }
 
+parsed_literal_block = {
+    'rst': '''.. parsed-literal::
+
+   This is a parsed literal block.
+       This line is indented.  The next line is blank.
+
+   Inline markup is supported, e.g. *emphasis*, **strong**, ``literal
+   text``, _`hyperlink targets`, and `references <http://www.python.org/>`_.
+''',
+   'out': '''
+    <pre>This is a parsed literal block.
+    This line is indented.  The next line is blank.
+
+Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <code>literal
+text</code>, <a id="hyperlink-targets">hyperlink targets</a>, and <a href="http://www.python.org/">\
+references</a>.</pre>
+''',
+   'indent_output': True,
+}
+
+
+parsed_literal_as_code_block = {
+    'rst': """.. class:: code python
+
+.. parsed-literal::
+
+    def extract_variables(module):
+        '''
+        Extract variables of a test data module.
+        Variables should be a dict().
+        For example, {'rst': rst, 'out':out, ...}
+        '''
+        return ((v, getattr(module, v)) for v in dir(module)
+            if not v.startswith('__') and isinstance(getattr(module, v), dict))
+
+""",
+    'out': """
+    <pre><code class="highlight language-python">def extract_variables(module):
+    '''
+    Extract variables of a test data module.
+    Variables should be a dict().
+    For example, {'rst': rst, 'out':out, ...}
+    '''
+    return ((v, getattr(module, v)) for v in dir(module)
+        if not v.startswith('__') and isinstance(getattr(module, v), dict))</code></pre>
+""",
+    'indent_output': True,
+}
+
 code_block = {
     'rst': """.. code-block:: python
 
