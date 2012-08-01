@@ -159,13 +159,21 @@ This is another one.''',
 
 
 image = {
-        'rst': '''.. image:: images/biohazard.png
-   :width: 200
-   :height: 100
-   :scale: 50
-   :alt: alternate text''',
-        'out': '<img src="images/biohazard.png" alt="alternate text" '
-               'scale="50" width="200" height="100" />'
+    'rst': '''.. _target:
+
+target paragraph
+
+.. image:: images/biohazard.png
+   :width: 50px
+   :height: 100px
+   :alt: alternate text
+   :target: target_
+   :class: top
+
+''',
+    'out': '<a id="target"></a><p>target paragraph</p><a href="#target">'
+           '<img src="images/biohazard.png" alt="alternate text" width="50px" '
+           'class="top" height="100px" /></a>',
 }
 
 
