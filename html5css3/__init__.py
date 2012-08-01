@@ -405,11 +405,11 @@ class HTML5Translator(nodes.NodeVisitor):
             '''
             backref to toc entry
             '''
-            anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
-            self.context.commit_elem(anchor)
-            anchor = self.context.pop()
-            self.context.begin_elem()
-            self.context.append(anchor, indent=False)
+            # anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
+            # self.context.commit_elem(anchor)
+            # anchor = self.context.pop()
+            # self.context.begin_elem()
+            # self.context.append(anchor, indent=False)
             del attr['href']
         elem = getattr(tag, 'h' + unicode(self.heading_level))(**attr)
         self.context.commit_elem(elem, indent)

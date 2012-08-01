@@ -902,7 +902,7 @@ To start using subrepositories, you need two repositories, a main repo and a nes
     </aside>
     <a id="basic-usage"></a>
     <section>
-        <h1><a class="toc-backref" href="#id1">Basic Usage</a></h1>
+        <h1>Basic Usage</h1>
         <p>To start using subrepositories, you need two repositories, a main repo and a nested repo</p>
     </section>
 ''',
