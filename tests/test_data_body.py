@@ -450,20 +450,44 @@ propagated_target = {
     'indent_output': True
 }
 
-indirect_target_links = {
-    'rst': '''Link to one_.
+inline_and_indirect_target = {
+    'rst': '''This is a _`inline hyperlink target` that corresponds to a <target> in doctree.
+
+Link to one_.
 
 .. _one: two_
 .. _two: three_
 .. _three:
 
-Target paragraph.''',
+Target paragraph.
+
+Referencing the  `inline hyperlink target`_.
+''',
+
     'out': '''
+    <p>This is a <a id="inline-hyperlink-target">inline hyperlink target</a> that corresponds \
+to a &lt;target&gt; in doctree.</p>
     <p>Link to <a href="#three">one</a>.</p>
+    <a href="#three" id="one"></a>
+    <a href="#three" id="two"></a>
     <a id="three"></a>
     <p>Target paragraph.</p>
+    <p>Referencing the <a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
 ''',
     'indent_output': True
+}
+
+anonymous_links = {
+    'rst': '''Paragraphs contain text and may contain `anonymous hyperlink
+references`__ (`a second reference`__).
+
+__ http://www.python.org/
+__ http://docutils.sourceforge.net/''',
+    'out': '''
+    <p>Paragraphs contain text and may contain <a href="http://www.python.org/">anonymous \
+hyperlink references</a> (<a href="http://docutils.sourceforge.net/">a second reference</a>).</p>
+''',
+    'indent_output': True,
 }
 
 preformatted_text = {

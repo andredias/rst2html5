@@ -228,7 +228,7 @@ rst_terms = {
     'superscript': ('sup', dv, dp, False, False),
     'system_message': (None, dv, dp),
     'table': (None, 'visit_table', 'depart_table'),
-    'target': (None, pass_, 'depart_target'),
+    'target': ('a', dv, 'depart_target', False, False),
     'tbody': (None, dv, dp),
     'term': ('dt', dv, dp),
     'tgroup': (None, 'do_nothing', None),
@@ -313,7 +313,7 @@ class HTML5Translator(nodes.NodeVisitor):
                 v = ' '.join(v)
 
             if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub', 'backrefs',
-                     'auto', ):
+                     'auto', 'anonymous', ):
                 continue
             elif k in replacements:
                 k = replacements[k]
@@ -521,28 +521,35 @@ class HTML5Translator(nodes.NodeVisitor):
             del node['name']
         if 'refid' in node:
             node['refid'] = '#' + node['refid']
-        self.default_departure(node)
+        name, _waste_, attr = self.parse(node)
+        indent = not node.astext()
+        elem = getattr(tag, name)(**attr)
+        self.context.commit_elem(elem, indent)
         return
 
     def depart_target(self, node):
-        if 'refid' in node and len(node['ids']):
+        if 'refuri' in node or 'anonymous' in node:
             '''
-            see test_case: indirect_target_links
-            '''
-            return
-        if 'refid' in node:
-            self.context.begin_elem()
-            anchor = tag.a(id = node['refid'])
-            self.context.commit_elem(anchor)
-        elif 'ids' in node:
-            '''
+            See test case: propagated_target and external_link
             Previous anchor elements should be removed.
-            See test case: propagated_target
             '''
-            num_anchors = len(node['ids']) - 1
-            if num_anchors > 0:
-                self.context.pop_elements(num_anchors)
+            self.context.commit_elem(tag.a)
+            num_anchors = len(node.attributes.get('names', [])) or 1
+            self.context.pop_elements(num_anchors)
+            return
+        elif not node['ids'] and 'refid' in node and node['refid']:
+            '''
+            see case: chained_internal_links
+            produce <a id=refid></a>
+            '''
+            node['ids'] = node.attributes.pop('refid')
+        '''
+        case: target_links
+        <a id=id href=#refid></a>
+        '''
+        self.depart_reference(node)
         return
+
 
     def visit_literal_block(self, node):
         self.preserve_space = True
