@@ -136,7 +136,7 @@ class ElemStack(object):
 
 dv = 'default_visit'
 dp = 'default_departure'
-pass_ = 'pass'
+pass_ = 'no_op'
 
 rst_terms = {
     # 'term': ('tag', 'visit_func', 'depart_func', use_term_in_class, indent_elem)
@@ -445,6 +445,9 @@ class HTML5Translator(nodes.NodeVisitor):
         """Internal only"""
         raise nodes.SkipNode
 
+    def no_op(self, node):
+        pass
+
     def do_nothing(self, node):
         '''
         equivalent to visit: pass and depart: pass
@@ -737,14 +740,12 @@ class HTML5Translator(nodes.NodeVisitor):
         self.head.append(tag.meta(**attr))
         raise nodes.SkipNode
 
-
-
 '''
 Map terms to visit and departure functions
 '''
 for term, spec in rst_terms.items():
-    visit_func = spec[1] and getattr(HTML5Translator, spec[1], nodes._nop)
-    depart_func = spec[2] and getattr(HTML5Translator, spec[2], nodes._nop)
+    visit_func = spec[1] and getattr(HTML5Translator, spec[1], HTML5Translator.unknown_visit)
+    depart_func = spec[2] and getattr(HTML5Translator, spec[2], HTML5Translator.unknown_departure)
     if visit_func:
         setattr(HTML5Translator, 'visit_' + term, visit_func)
     if depart_func:
