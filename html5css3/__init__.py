@@ -194,7 +194,7 @@ rst_terms = {
     'line': (None, 'visit_line', None),
     'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
     'list_item': ('li', dv, dp),
-    'literal': ('code', dv, dp, False, False),
+    'literal': ('code', 'visit_literal', None),
     'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
     'math': (None, 'visit_math_block', None),
     'math_block': (None, 'visit_math_block', None),
@@ -552,13 +552,27 @@ class HTML5Translator(nodes.NodeVisitor):
         self.expand_id_to_anchor = False
         self.default_visit(node)
 
+    def visit_literal(self, node):
+        text = Markup(re.sub(' ', '&nbsp;', node.astext()))
+        self.context.append(tag.code(text), indent=False)
+        raise nodes.SkipNode
+
     def visit_literal_block(self, node):
+        if 'code' in node['classes']:
+            self.context.begin_elem() # <pre>. The next will be for <code>
         self.preserve_space = True
         self.default_visit(node)
         return
 
     def depart_literal_block(self, node):
         del self.preserve_space
+        if 'code' in node['classes']:
+            code = node['classes'].index('code')
+            node['classes'].pop(code)
+            highlight = 'highlight' + ''.join(' language-' + l for l in node['classes'])
+            code = tag.code(class_=highlight)
+            self.context.commit_elem(code, indent=False)
+            del node['classes']
         self.default_departure(node)
         return
 

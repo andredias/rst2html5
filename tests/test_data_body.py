@@ -192,12 +192,12 @@ inline_markup_1 = {
 `superscript`:sup:
 `interpreted text with role`:emphasis:
 `subscript`:sub:
-``inline literal text``
+``inline   literal   text``
 ''',
         'out': '''
     <p><em>emphasis</em> <strong>strong emphasis</strong> <cite>interpreted text</cite> \
 <sup>superscript</sup> <em>interpreted text with role</em> <sub>subscript</sub> \
-<code>inline literal text</code></p>
+<code>inline&nbsp;&nbsp;&nbsp;literal&nbsp;&nbsp;&nbsp;text</code></p>
 ''',
         'indent_output': True
 }
@@ -544,6 +544,11 @@ This paragraph belongs to Example section.''',
     'indent_output': True,
 }
 
+literal_text = {
+    'rst': '``preserve   spacing    ok``',
+    'out': '<p><code>preserve&nbsp;&nbsp;&nbsp;spacing&nbsp;&nbsp;&nbsp;&nbsp;ok</code></p>',
+}
+
 preformatted_text = {
     'rst': r'''An example::
 
@@ -574,7 +579,7 @@ code_block = {
             if not v.startswith('__') and isinstance(getattr(module, v), dict))
 """,
     'out': """
-    <pre class="code python"><span class="k">def</span> <span class="nf">extract_variables</span>\
+    <pre><code class="highlight language-python"><span class="k">def</span> <span class="nf">extract_variables</span>\
 <span class="p">(</span><span class="n">module</span><span class="p">):</span>
     <span class="sd">'''
     Extract variables of a test data module.
@@ -591,7 +596,7 @@ dir</span><span class="p">(</span><span class="n">module</span><span class="p">)
 '__'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span>\
 <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">\
 module</span><span class="p">,</span> <span class="n">v</span><span class="p">),\
-</span> <span class="nb">dict</span><span class="p">))</span></pre>
+</span> <span class="nb">dict</span><span class="p">))</span></code></pre>
 """,
     'indent_output': True
 }
