@@ -706,48 +706,62 @@ body elements.</p>
     'indent_output': True,
 }
 
-specific_admonition = {
-    'rst': '''
-Title
-=====
+admonitions = {
+    'rst': '''Admonitions
+```````````
 
-text
+.. Attention:: Directives at large.
 
-Subtitle
---------
+.. Caution::
 
-more text
+   Don't take any wooden nickels.
 
-.. note:: This is a note admonition.
+.. DANGER:: Mad scientist at work!
 
-   This is the second line of the first paragraph.
+.. Error:: Does not compute.
 
-   - The note contains all indented body elements
-     following.
-   - It includes this bullet list.
+.. Hint:: It's bigger than a bread box.
 
-Another Subtitle
-----------------''',
+.. Important::
+   - Wash behind your ears.
+   - Clean up your room.
+   - Call your mother.
+   - Back up your data.
+
+.. Note:: This is a note.
+
+.. Tip:: 15% if the service is good.
+
+.. WARNING:: Strong prose may provoke extreme mental exertion.
+   Reader discretion is strongly advised.
+
+.. admonition:: And, by the way...
+
+   You can make up your own admonition too.
+
+   .. _Docutils: http://docutils.sourceforge.net/''',
     'out': '''
-    <h1>Title</h1>
-    <p>text</p>
-    <a id="subtitle"></a>
-    <section>
-        <h2>Subtitle</h2>
-        <p>more text</p>
-        <aside class="note">
-            <p>This is a note admonition.</p>
-            <p>This is the second line of the first paragraph.</p>
-            <ul>
-                <li>The note contains all indented body elements following.</li>
-                <li>It includes this bullet list.</li>
-            </ul>
-        </aside>
-    </section>
-    <a id="another-subtitle"></a>
-    <section>
-        <h2>Another Subtitle</h2>
-    </section>
+    <h1>Admonitions</h1>
+    <aside class="attention">Directives at large.</aside>
+    <aside class="caution">Don't take any wooden nickels.</aside>
+    <aside class="danger">Mad scientist at work!</aside>
+    <aside class="error">Does not compute.</aside>
+    <aside class="hint">It's bigger than a bread box.</aside>
+    <aside class="important">
+        <ul>
+            <li>Wash behind your ears.</li>
+            <li>Clean up your room.</li>
+            <li>Call your mother.</li>
+            <li>Back up your data.</li>
+        </ul>
+    </aside>
+    <aside class="note">This is a note.</aside>
+    <aside class="tip">15% if the service is good.</aside>
+    <aside class="warning">Strong prose may provoke extreme mental exertion. Reader discretion is strongly advised.</aside>
+    <aside class="admonition">
+        <h1>And, by the way...</h1>
+        <p>You can make up your own admonition too.</p>
+    </aside>
 ''',
     'indent_output': True,
 }
