@@ -26,8 +26,6 @@ class HTML5Writer(writers.Writer):
         None, (
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
-        ("Don't produce sections ids", ['--no-ids'],
-            {'default': 1, 'action': 'store_false', 'dest': 'show_ids'}),
         ('Specify the maximum width (in characters) for options in option '
          'lists.  Longer options will span an entire row of the table used '
          'to render the option list. Use 0 for "no limit". Default is 0 characters. ',
@@ -155,7 +153,7 @@ rst_terms = {
     'caption': ('figcaption', dv, dp, False),
     'caution': (None, 'visit_aside', 'depart_aside'),
     'citation': (None, 'visit_citation', 'depart_citation', True),
-    'citation_reference': ('a', 'visit_label', 'depart_citation_reference', True, False),
+    'citation_reference': ('a', 'visit_citation_reference', 'depart_citation_reference', True, False),
     'classifier': (None, 'visit_classifier', None),
     'colspec': ('col', dv, 'depart_colspec'),
     'comment': (None, 'skip_node', None),
@@ -191,7 +189,7 @@ rst_terms = {
     'image': ('img', dv, dp),
     'important': (None, 'visit_aside', 'depart_aside'),
     'inline': ('span', dv, dp, False, False),
-    'label': ('th', 'visit_label', 'depart_label'),
+    'label': ('th', 'visit_citation_reference', 'depart_label'),
     'legend': ('div', dv, dp, True),
     'line': (None, 'visit_line', None),
     'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
@@ -213,7 +211,7 @@ rst_terms = {
     'pending': (None, dv, dp),
     'problematic': ('span', dv, dp, True, False),
     'raw': (None, 'visit_raw', None),
-    'reference': ('a', dv, 'depart_reference', False, False),
+    'reference': ('a', 'visit_reference', 'depart_reference', False, False),
     'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'row': ('tr', 'visit_row', 'depart_row'),
     'rubric': ('p', dv, 'depart_rubric', True),
@@ -224,11 +222,11 @@ rst_terms = {
     'subscript': ('sub', dv, dp, False, False),
     'substitution_definition': (None, 'skip_node', None),
     'substitution_reference': (None, 'skip_node', None),
-    'subtitle': (None, dv, 'depart_subtitle'),
+    'subtitle': (None, 'visit_target', 'depart_subtitle'),
     'superscript': ('sup', dv, dp, False, False),
     'system_message': (None, dv, dp),
     'table': (None, 'visit_table', 'depart_table'),
-    'target': ('a', dv, 'depart_target', False, False),
+    'target': ('a', 'visit_target', 'depart_reference', False, False),
     'tbody': (None, dv, dp),
     'term': ('dt', dv, dp),
     'tgroup': (None, 'do_nothing', None),
@@ -248,7 +246,6 @@ class HTML5Translator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = 0
-        self.show_ids = document.settings.show_ids
         self.context = ElemStack(document.settings)
         self.head = []
         self.head.append(tag.meta(charset=self.document.settings.output_encoding))
@@ -305,22 +302,19 @@ class HTML5Translator(nodes.NodeVisitor):
 
         attrs = {}
         replacements = {'refuri': 'href', 'uri': 'src', 'refid': 'href',
-            'morerows': 'rowspan', 'morecols': 'colspan', 'classes': 'class', }
+            'morerows': 'rowspan', 'morecols': 'colspan', 'classes': 'class', 'ids': 'id', }
+        ignores = ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub', 'backrefs',
+                   'auto', 'anonymous', )
         for k, v in node.attributes.items():
             if not v:
                 continue
             elif isinstance(v, list):
                 v = ' '.join(v)
 
-            if k in ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub', 'backrefs',
-                     'auto', 'anonymous', ):
+            if k in ignores:
                 continue
             elif k in replacements:
                 k = replacements[k]
-            elif k == 'ids':
-                if not self.show_ids:
-                    continue
-                k = 'id'
 
             attrs[k] = v
 
@@ -329,10 +323,30 @@ class HTML5Translator(nodes.NodeVisitor):
             del self.next_elem_attr
         return name, indent, attrs
 
+    def once_attr(self, name, default=None):
+        '''
+        The attribute is used once and then it is deleted
+        '''
+        if hasattr(self, name):
+            result = getattr(self, name)
+            delattr(self, name)
+            return result
+        else:
+            return default
+
+
     def default_visit(self, node):
         '''
         Each level creates its own stack
         '''
+        if 'ids' in node and self.once_attr('expand_id_to_anchor', default=True):
+            '''
+            create an anchor <a id=id></a> before for each id
+            '''
+            for id in node['ids']:
+                self.context.begin_elem()
+                self.context.commit_elem(tag.a(id=id))
+            del node.attributes['ids']
         self.context.begin_elem()
         return
 
@@ -363,7 +377,6 @@ class HTML5Translator(nodes.NodeVisitor):
         return parent_length == 1
 
     def visit_paragraph(self, node):
-        node['ids'] = []
         if self._compacted_paragraph(node):
             raise nodes.SkipDeparture
         self.default_visit(node)
@@ -519,40 +532,25 @@ class HTML5Translator(nodes.NodeVisitor):
         waste, indent, attr = self.parse(node)
         self.context.commit_elem(getattr(tag, name)(**attr))
 
+    def visit_reference(self, node):
+        if 'ids' in node:
+            del node.attributes['ids']
+        self.default_visit(node)
+        return
+
     def depart_reference(self, node):
         if 'name' in node:
             del node['name']
         if 'refid' in node:
             node['refid'] = '#' + node['refid']
-        name, _waste_, attr = self.parse(node)
-        indent = not node.astext()
-        elem = getattr(tag, name)(**attr)
-        self.context.commit_elem(elem, indent)
+        self.default_departure(node)
         return
 
-    def depart_target(self, node):
-        if 'refuri' in node or 'anonymous' in node:
-            '''
-            See test case: propagated_target and external_link
-            Previous anchor elements should be removed.
-            '''
-            self.context.commit_elem(tag.a)
-            num_anchors = len(node.attributes.get('names', [])) or 1
-            self.context.pop_elements(num_anchors)
-            return
-        elif not node['ids'] and 'refid' in node and node['refid']:
-            '''
-            see case: chained_internal_links
-            produce <a id=refid></a>
-            '''
-            node['ids'] = node.attributes.pop('refid')
-        '''
-        case: target_links
-        <a id=id href=#refid></a>
-        '''
-        self.depart_reference(node)
-        return
-
+    def visit_target(self, node):
+        if not node.astext():
+            raise nodes.SkipNode
+        self.expand_id_to_anchor = False
+        self.default_visit(node)
 
     def visit_literal_block(self, node):
         self.preserve_space = True
@@ -585,6 +583,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def visit_document(self, node):
         if 'title' in node:
             self.head.append(tag.title(node['title']))
+        self.expand_id_to_anchor = False
         self.default_visit(node)
 
     def visit_raw(self, node):
@@ -701,7 +700,8 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.append(']', indent=False)
         self.depart_reference(node)
 
-    def visit_label(self, node):
+    def visit_citation_reference(self, node):
+        self.expand_id_to_anchor = False
         self.default_visit(node)
         self.context.append('[', indent=False)
 

@@ -33,9 +33,9 @@ some text
 
 Level 1 Again
 =============''',
-    'out': '<section id="level-1"><h1>Level 1</h1><p>some text</p></section>'
-            '<section id="level-1-again"><h1>Level 1 Again</h1></section>',
-    'show_ids': True
+    'out': '<a id="level-1"></a><section><h1>Level 1</h1><p>some text</p></section>'
+           '<a id="level-1-again"></a><section><h1>Level 1 Again</h1></section>',
+
 }
 
 
@@ -45,7 +45,9 @@ title_3 = {
 Level 1
 =======
 
-some text
+some text. Link to `Level 3`_
+
+.. _section 2:
 
 Level 2
 =======
@@ -53,16 +55,30 @@ Level 2
 more text
 
 Level 3
---------''',
-    'out': '<h1>Level 1</h1><p>some text</p>'
-            '<section><h2>Level 2</h2><p>more text</p>'
-            '<section><h3>Level 3</h3></section></section>',
-    'show_ids': False
+--------
+
+link to `section 2`_''',
+    'out': '''
+    <h1>Level 1</h1>
+    <p>some text. Link to <a href="#level-3">Level 3</a></p>
+    <a id="level-2"></a>
+    <a id="section-2"></a>
+    <section>
+        <h2>Level 2</h2>
+        <p>more text</p>
+        <a id="level-3"></a>
+        <section>
+            <h3>Level 3</h3>
+            <p>link to <a href="#section-2">section 2</a></p>
+        </section>
+    </section>
+''',
+    'indent_output': True,
 }
 
 
 subtitle = {
-        'rst': '''
+    'rst': '''
 ================
  Document Title
 ================
@@ -74,9 +90,8 @@ Section Title
 =============
 
 ...''',
-        'out': '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>'
-               '<section><h1>Section Title</h1><p>...</p></section>',
-        'show_ids': False
+    'out': '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>'
+           '<a id="section-title"></a><section><h1>Section Title</h1><p>...</p></section>',
 }
 
 
@@ -101,13 +116,13 @@ Section Title
         <h1>Document Title</h1>
         <h2>Subtitle</h2>
     </hgroup>
+    <a id="section-title"></a>
     <section>
         <h1>Section Title</h1>
         <p>...</p>
     </section>
 ''',
         'indent_output': True,
-        'show_ids': False
 }
 
 
@@ -431,8 +446,8 @@ The targets "target1" and "target2" are synonyms; they both
 point to this paragraph.''',
     'out': '''
     <p>Links to <a href="#target1">target1</a> and <a href="#target2">target2</a>.</p>
-    <a id="target1"></a>
     <a id="target2"></a>
+    <a id="target1"></a>
     <p>The targets "target1" and "target2" are synonyms; they both point to this paragraph.</p>
 ''',
     'indent_output': True
@@ -468,8 +483,6 @@ Referencing the  `inline hyperlink target`_.
     <p>This is a <a id="inline-hyperlink-target">inline hyperlink target</a> that corresponds \
 to a &lt;target&gt; in doctree.</p>
     <p>Link to <a href="#three">one</a>.</p>
-    <a href="#three" id="one"></a>
-    <a href="#three" id="two"></a>
     <a id="three"></a>
     <p>Target paragraph.</p>
     <p>Referencing the <a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
@@ -486,6 +499,47 @@ __ http://docutils.sourceforge.net/''',
     'out': '''
     <p>Paragraphs contain text and may contain <a href="http://www.python.org/">anonymous \
 hyperlink references</a> (<a href="http://docutils.sourceforge.net/">a second reference</a>).</p>
+''',
+    'indent_output': True,
+}
+
+section_with_two_ids = {
+    'rst': '''Citations
+---------
+
+Here's a reference to example_.
+
+.. _Another Target:
+
+Targets
+-------
+
+Text of section target
+
+.. _example:
+
+Example
+-------
+
+This paragraph belongs to Example section.''',
+    'out': '''
+    <a id="citations"></a>
+    <section>
+        <h1>Citations</h1>
+        <p>Here's a reference to <a href="#example">example</a>.</p>
+    </section>
+    <a id="targets"></a>
+    <a id="another-target"></a>
+    <section>
+        <h1>Targets</h1>
+        <p>Text of section target</p>
+    </section>
+    <a id="id1"></a>
+    <a id="example"></a>
+    <section>
+        <h1>Example</h1>
+        <p>This paragraph belongs to Example section.</p>
+    </section>
 ''',
     'indent_output': True,
 }
@@ -585,9 +639,9 @@ paragraph with some text
 
 Section Title
 =============''',
-    'out': '<p class="nav special">paragraph with some text</p><section class="heading top">'
+    'out': '<p class="nav special">paragraph with some text</p><a id="section-title"></a>'
+           '<section class="heading top">'
            '<h1>Section Title</h1></section>',
-    'show_ids': False
 }
 
 role = {
@@ -621,6 +675,7 @@ Another Subtitle
     'out': '''
     <h1>Title 1</h1>
     <p>text</p>
+    <a id="subtitle"></a>
     <section>
         <h2>Subtitle</h2>
         <p>more text</p>
@@ -630,12 +685,12 @@ Another Subtitle
 body elements.</p>
         </aside>
     </section>
+    <a id="another-subtitle"></a>
     <section>
         <h2>Another Subtitle</h2>
     </section>
 ''',
     'indent_output': True,
-    'show_ids': False
 }
 
 specific_admonition = {
@@ -663,6 +718,7 @@ Another Subtitle
     'out': '''
     <h1>Title</h1>
     <p>text</p>
+    <a id="subtitle"></a>
     <section>
         <h2>Subtitle</h2>
         <p>more text</p>
@@ -675,12 +731,12 @@ Another Subtitle
             </ul>
         </aside>
     </section>
+    <a id="another-subtitle"></a>
     <section>
         <h2>Another Subtitle</h2>
     </section>
 ''',
     'indent_output': True,
-    'show_ids': False
 }
 
 generic_admonition = {
@@ -710,6 +766,7 @@ Another Subtitle
     'out': '''
     <h1>Title</h1>
     <p>text</p>
+    <a id="subtitle"></a>
     <section>
         <h2>Subtitle</h2>
         <p>more text</p>
@@ -722,12 +779,12 @@ Another Subtitle
             </ul>
         </aside>
     </section>
+    <a id="another-subtitle"></a>
     <section>
         <h2>Another Subtitle</h2>
     </section>
 ''',
     'indent_output': True,
-    'show_ids': False
 }
 
 sidebar = {
@@ -757,6 +814,7 @@ Another Subtitle
     'out': '''
     <h1>Title</h1>
     <p>text</p>
+    <a id="subtitle"></a>
     <section>
         <h2>Subtitle</h2>
         <p>more text</p>
@@ -772,12 +830,12 @@ Another Subtitle
             </ul>
         </aside>
     </section>
+    <a id="another-subtitle"></a>
     <section>
         <h2>Another Subtitle</h2>
     </section>
 ''',
     'indent_output': True,
-    'show_ids': False
 }
 
 rubric = {
@@ -830,19 +888,20 @@ Basic Usage
 
 To start using subrepositories, you need two repositories, a main repo and a nested repo''',
     'out': '''
-    <aside class="topic contents" id="table-of-contents">
+    <a id="table-of-contents"></a>
+    <aside class="topic contents">
         <h1>Table of Contents</h1>
         <ul>
-            <li><a href="#basic-usage" id="id1">Basic Usage</a></li>
+            <li><a href="#basic-usage">Basic Usage</a></li>
         </ul>
     </aside>
-    <section id="basic-usage">
+    <a id="basic-usage"></a>
+    <section>
         <h1><a class="toc-backref" href="#id1">Basic Usage</a></h1>
         <p>To start using subrepositories, you need two repositories, a main repo and a nested repo</p>
     </section>
 ''',
     'indent_output': True,
-    'show_ids': True
 }
 
 header = {
