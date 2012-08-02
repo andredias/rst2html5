@@ -1412,3 +1412,21 @@ legend = {
 ''',
     'indent_output': True
 }
+
+# stderr should present: <string>:1: (ERROR/3) Unknown target name: "target"
+system_message = {
+    'rst': 'target_',
+    'out': '''
+    <p><a href="#id1" id="id2" class="problematic">target_</a></p>
+    <section class="system-messages">
+        <h1>Docutils System Messages</h1>
+        <a id="id1"></a>
+        <div>
+            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id2">Backref</a></h1>
+            <p>Unknown target name: "target".</p>
+        </div>
+    </section>
+''',
+    'indent_output': True,
+}
+

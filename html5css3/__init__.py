@@ -209,7 +209,7 @@ rst_terms = {
     'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
     'paragraph': ('p', 'visit_paragraph', dp),
     'pending': (None, dv, dp),
-    'problematic': ('span', dv, dp, True, False),
+    'problematic': ('a', 'visit_problematic', 'depart_reference', True, False),
     'raw': (None, 'visit_raw', None),
     'reference': ('a', 'visit_reference', 'depart_reference', False, False),
     'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
@@ -224,7 +224,7 @@ rst_terms = {
     'substitution_reference': (None, 'skip_node', None),
     'subtitle': (None, 'visit_target', 'depart_subtitle'),
     'superscript': ('sup', dv, dp, False, False),
-    'system_message': (None, dv, dp),
+    'system_message': ('div', 'visit_system_message', dp),
     'table': (None, 'visit_table', 'depart_table'),
     'target': ('a', 'visit_target', 'depart_reference', False, False),
     'tbody': (None, dv, dp),
@@ -361,8 +361,8 @@ class HTML5Translator(nodes.NodeVisitor):
         Determine if the <p> tags around paragraph ``node`` can be omitted.
         Based on from docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph
         """
-        if (isinstance(node.parent, (nodes.document, nodes.compound, nodes.block_quote)) or
-           node['classes'] or 'paragraph' != node.__class__.__name__):
+        if (isinstance(node.parent, (nodes.document, nodes.compound, nodes.block_quote,
+           nodes.system_message, )) or node['classes'] or 'paragraph' != node.__class__.__name__):
             return False
         first = isinstance(node.parent[0], nodes.label) # skip label
         for child in node.parent.children[first:]:
@@ -753,6 +753,20 @@ class HTML5Translator(nodes.NodeVisitor):
         waste, waste_, attr = self.parse(node)
         self.head.append(tag.meta(**attr))
         raise nodes.SkipNode
+
+    def visit_problematic(self, node):
+        self.expand_id_to_anchor = False
+        self.default_visit(node)
+        return
+
+    def visit_system_message(self, node):
+        self.default_visit(node)
+        self.context.begin_elem() # h1
+        text = 'System Message: {type}/{level} ({source} line {line}) '.format(**node.attributes)
+        h1 = tag.h1(text, tag.a('Backref', href="#" + ''.join(node['backrefs'])))
+        self.context.commit_elem(h1)
+        node.attributes = {'classes': []}
+        return
 
 '''
 Map terms to visit and departure functions
