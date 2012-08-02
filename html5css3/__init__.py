@@ -553,7 +553,7 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_visit(node)
 
     def visit_literal(self, node):
-        text = Markup(re.sub(' ', '&nbsp;', node.astext()))
+        text = Markup(Markup.escape(node.astext()).replace(' ', '&nbsp;'))
         self.context.append(tag.code(text), indent=False)
         raise nodes.SkipNode
 

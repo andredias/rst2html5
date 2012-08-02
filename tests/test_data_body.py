@@ -193,19 +193,19 @@ figure = {
 }
 
 
-inline_markup_1 = {
+inline_markup = {
         'rst': '''*emphasis*
 **strong emphasis**
 `interpreted text`
 `superscript`:sup:
 `interpreted text with role`:emphasis:
 `subscript`:sub:
-``inline   literal   text``
+``inline  <pre>   text``
 ''',
         'out': '''
     <p><em>emphasis</em> <strong>strong emphasis</strong> <cite>interpreted text</cite> \
 <sup>superscript</sup> <em>interpreted text with role</em> <sub>subscript</sub> \
-<code>inline&nbsp;&nbsp;&nbsp;literal&nbsp;&nbsp;&nbsp;text</code></p>
+<code>inline&nbsp;&nbsp;&lt;pre&gt;&nbsp;&nbsp;&nbsp;text</code></p>
 ''',
         'indent_output': True
 }
@@ -552,9 +552,10 @@ This paragraph belongs to Example section.''',
     'indent_output': True,
 }
 
+
 literal_text = {
-    'rst': '``preserve   spacing    ok``',
-    'out': '<p><code>preserve&nbsp;&nbsp;&nbsp;spacing&nbsp;&nbsp;&nbsp;&nbsp;ok</code></p>',
+    'rst': '``<style>``',
+    'out': '<p><code>&lt;style&gt;</code></p>',
 }
 
 preformatted_text = {
