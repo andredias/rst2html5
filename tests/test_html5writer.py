@@ -8,22 +8,24 @@ import codecs
 import unittest
 
 from html5css3 import HTML5Writer
-from docutils.core import publish_parts
+from docutils.core import publish_parts, publish_string
 from nose.tools import assert_equals
 from tempfile import gettempdir
 
 tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None
 
-def rst_to_html5(case):
+def rst_to_html5(case, part=None):
     overrides = case.copy()
     rst = overrides.pop('rst')
     overrides.pop('out')
-    if 'indent_output' not in overrides:
-        overrides['indent_output'] = False
-    parts = publish_parts(writer=HTML5Writer(), source=rst,
-                          settings_overrides=overrides)
-    return parts
+    overrides.setdefault('indent_output', False)
+    if part:
+        return publish_parts(writer=HTML5Writer(), source=rst,
+                          settings_overrides=overrides)[part]
+    else:
+        return unicode(publish_string(writer=HTML5Writer(), source=rst,
+                          settings_overrides=overrides), encoding='utf-8')
 
 
 def extract_variables(module):
@@ -40,23 +42,43 @@ def test_head():
     '''
     test the head part of a rst2html5 conversion
     '''
-    import test_data_head
-    for test_name, case in extract_variables(test_data_head):
-        yield _test_part, 'head', test_name, case
+    import head_cases
+    func = lambda x: rst_to_html5(x, 'head')
+    for test_name, case in extract_variables(head_cases):
+        yield _test_part, func, test_name, case
 
 
 def test_body():
     '''
     test the body part of a rst2html5 conversion
     '''
-    import test_data_body
-    for test_name, case in extract_variables(test_data_body):
-        yield _test_part, 'body', test_name, case
+    import body_cases
+    func = lambda x: rst_to_html5(x, 'body')
+    for test_name, case in extract_variables(body_cases):
+        yield _test_part, func, test_name, case
 
+def test_errors():
+    '''
+    test some cases that should raise expected test_errors
+    '''
+    import error_cases
+    import sys
 
-def _test_part(part_name, test_name, case):
+    aux_stderr = sys.stderr
+    f = open(os.path.join(tmpdir, 'stderr.txt'), 'w')
+    sys.stderr = f
+    func = lambda x: rst_to_html5(x)
     try:
-        assert_equals(rst_to_html5(case)[part_name], case['out'])
+        for test_name, case in extract_variables(error_cases):
+            yield _test_part, func, test_name, case
+    finally:
+        sys.stderr = aux_stderr
+        f.close()
+
+
+def _test_part(func, test_name, case):
+    try:
+        assert_equals(func(case), case['out'])
     except Exception as error:
         '''
         write temp files to help manual testing

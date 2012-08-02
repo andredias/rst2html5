@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>reStructuredText Test Document</title>
+    <meta content="reStructuredText, test, parser" name="keywords" />
+    <meta lang="en" content="A test document, containing at least one example of each reStructuredText construct." name="description" />
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+    <hgroup>
+        <h1>reStructuredText Test Document</h1>
+        <h2>Examples of Syntax Constructs</h2>
+    </hgroup>
+    <header>Document header</header>
+    <footer>
+        <p>Document footer</p>
+        <p><a href="http://validator.w3.org/check?uri=referer">
+                <img width="88" alt="Valid XHTML 1.0!" src="http://www.w3.org/Icons/valid-xhtml10" height="31" />
+            </a> <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                <img width="88" alt="Valid CSS 2.1!" src="http://jigsaw.w3.org/css-validator/images/vcss" height="31" />
+            </a></p>
+    </footer>
+    <table class="docinfo">
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>author</th>
+                <td>David Goodger</td>
+            </tr>
+            <tr>
+                <th>address</th>
+                <td>
+                    <pre class="docinfo-address">123 Example Street
+Example, EX  Canada
+A1B 2C3</pre>
+                </td>
+            </tr>
+            <tr>
+                <th>contact</th>
+                <td><a href="mailto:goodger@python.org">goodger@python.org</a></td>
+            </tr>
+            <tr>
+                <th>authors</th>
+                <td>
+                    <ul>
+                        <li>Me</li>
+                        <li>Myself</li>
+                        <li>I</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>organization</th>
+                <td>humankind</td>
+            </tr>
+            <tr>
+                <th>date</th>
+                <td>Now, or yesterday. Or maybe even <em>before</em> yesterday.</td>
+            </tr>
+            <tr>
+                <th>status</th>
+                <td>This is a "work in progress"</td>
+            </tr>
+            <tr>
+                <th>revision</th>
+                <td>is managed by a version control system.</td>
+            </tr>
+            <tr>
+                <th>version</th>
+                <td>1</td>
+            </tr>
+            <tr>
+                <th>copyright</th>
+                <td>This document has been placed in the public domain. You may do with it as you wish. You may copy, modify, redistribute, reattribute, sell, buy, rent, lease, destroy, or improve it, quote it at length, excerpt, incorporate, collate, fold, staple, or mutilate it, or do anything else to it that your or anyone else's heart desires.</td>
+            </tr>
+            <tr>
+                <th>field name</th>
+                <td>This is a "generic bibliographic field".</td>
+            </tr>
+            <tr>
+                <th>field name "2"</th>
+                <td>
+                    <p>Generic bibliographic fields may contain multiple body elements.</p>
+                    <p>Like this.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <aside class="topic dedication">
+        <h1>Dedication</h1>
+        <p>For Docutils users &amp; co-developers.</p>
+    </aside>
+    <aside class="topic abstract">
+        <h1>Abstract</h1>
+        <p>This is a test document, containing at least one example of each reStructuredText construct.</p>
+    </aside>
+    <a id="table-of-contents"></a>
+    <aside class="topic contents">
+        <h1>Table of Contents</h1>
+        <ul class="auto-toc">
+            <li>
+                <p><a href="#structural-elements">1   Structural Elements</a></p>
+                <ul class="auto-toc">
+                    <li>
+                        <p><a href="#section-title">1.1   Section Title</a></p>
+                        <ul class="auto-toc">
+                            <li><a href="#section-subtitle">1.1.1   Section Subtitle</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#empty-section">1.2   Empty Section</a></li>
+                    <li><a href="#transitions">1.3   Transitions</a></li>
+                </ul>
+            </li>
+            <li>
+                <p><a href="#body-elements">2   Body Elements</a></p>
+                <ul class="auto-toc">
+                    <li>
+                        <p><a href="#paragraphs">2.1   Paragraphs</a></p>
+                        <ul class="auto-toc">
+                            <li><a href="#inline-markup">2.1.1   Inline Markup</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#bullet-lists">2.2   Bullet Lists</a></li>
+                    <li><a href="#enumerated-lists">2.3   Enumerated Lists</a></li>
+                    <li><a href="#definition-lists">2.4   Definition Lists</a></li>
+                    <li><a href="#field-lists">2.5   Field Lists</a></li>
+                    <li><a href="#option-lists">2.6   Option Lists</a></li>
+                    <li><a href="#literal-blocks">2.7   Literal Blocks</a></li>
+                    <li><a href="#line-blocks">2.8   Line Blocks</a></li>
+                    <li><a href="#block-quotes">2.9   Block Quotes</a></li>
+                    <li><a href="#doctest-blocks">2.10   Doctest Blocks</a></li>
+                    <li><a href="#footnotes">2.11   Footnotes</a></li>
+                    <li><a href="#citations">2.12   Citations</a></li>
+                    <li>
+                        <p><a href="#targets">2.13   Targets</a></p>
+                        <ul class="auto-toc">
+                            <li><a href="#duplicate-target-names">2.13.1   Duplicate Target Names</a></li>
+                            <li><a href="#id21">2.13.2   Duplicate Target Names</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><a href="#directives">2.14   Directives</a></p>
+                        <ul class="auto-toc">
+                            <li><a href="#document-parts">2.14.1   Document Parts</a></li>
+                            <li><a href="#images-and-figures">2.14.2   Images and Figures</a></li>
+                            <li><a href="#admonitions">2.14.3   Admonitions</a></li>
+                            <li><a href="#topics-sidebars-and-rubrics">2.14.4   Topics, Sidebars, and Rubrics</a></li>
+                            <li><a href="#target-footnotes">2.14.5   Target Footnotes</a></li>
+                            <li><a href="#replacement-text">2.14.6   Replacement Text</a></li>
+                            <li><a href="#compound-paragraph">2.14.7   Compound Paragraph</a></li>
+                            <li><a href="#parsed-literal-blocks">2.14.8   Parsed Literal Blocks</a></li>
+                            <li><a href="#code">2.14.9   Code</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#substitution-definitions">2.15   Substitution Definitions</a></li>
+                    <li><a href="#comments">2.16   Comments</a></li>
+                    <li><a href="#raw-text">2.17   Raw text</a></li>
+                    <li><a href="#container">2.18   Container</a></li>
+                    <li><a href="#colspanning-tables">2.19   Colspanning tables</a></li>
+                    <li><a href="#rowspanning-tables">2.20   Rowspanning tables</a></li>
+                    <li><a href="#complex-tables">2.21   Complex tables</a></li>
+                    <li><a href="#list-tables">2.22   List Tables</a></li>
+                    <li><a href="#custom-roles">2.23   Custom Roles</a></li>
+                    <li><a href="#svg-images">2.24   SVG Images</a></li>
+                    <li><a href="#swf-images">2.25   SWF Images</a></li>
+                </ul>
+            </li>
+            <li><a href="#error-handling">3   Error Handling</a></li>
+        </ul>
+    </aside>
+    <a id="structural-elements"></a>
+    <section>
+        <h1>1   Structural Elements</h1>
+        <a id="section-title"></a>
+        <section>
+            <h2>1.1   Section Title</h2>
+            <a id="section-subtitle"></a>
+            <section>
+                <h3>1.1.1   Section Subtitle</h3>
+                <p>Lone subsections are converted to a section subtitle by a transform activated with the <code>--section-subtitles</code> command line option or the <code>sectsubtitle-xform</code> configuration value.</p>
+            </section>
+        </section>
+        <a id="empty-section"></a>
+        <section>
+            <h2>1.2   Empty Section</h2>
+        </section>
+        <a id="transitions"></a>
+        <section>
+            <h2>1.3   Transitions</h2>
+            <p>Here's a transition:</p>
+            <hr />
+            <p>It divides the section. Transitions may also occur between sections:</p>
+        </section>
+    </section>
+    <hr />
+    <a id="body-elements"></a>
+    <section>
+        <h1>2   Body Elements</h1>
+        <a id="paragraphs"></a>
+        <section>
+            <h2>2.1   Paragraphs</h2>
+            <p>A paragraph.</p>
+            <a id="inline-markup"></a>
+            <section>
+                <h3>2.1.1   Inline Markup</h3>
+                <p>Paragraphs contain text and may contain inline markup: <em>emphasis</em>, <strong>strong emphasis</strong>, <code>inline&nbsp;literals</code>, standalone hyperlinks (<a href="http://www.python.org">http://www.python.org</a>), external hyperlinks (<a href="http://www.python.org/">Python</a> <a href="#id25" id="id26" class="footnote_reference">[5]</a>), internal cross-references (<a href="#example">example</a>), external hyperlinks with embedded URIs (<a href="http://www.python.org">Python web site</a>), <a href="http://www.python.org/">anonymous hyperlink references</a> <a href="#id25" id="id31" class="footnote_reference">[5]</a> (<a href="http://docutils.sourceforge.net/">a second reference</a> <a href="#id32" id="id33" class="footnote_reference">[7]</a>), footnote references (manually numbered <a href="#id8" id="id1" class="footnote_reference">[1]</a>, anonymous auto-numbered <a href="#id12" id="id2" class="footnote_reference">[3]</a>, labeled auto-numbered <a href="#label" id="id3" class="footnote_reference">[2]</a>, or symbolic <a href="#id13" id="id4" class="footnote_reference">[*]</a>), citation references (<a href="#cit2002" id="id5" class="citation_reference">[CIT2002]</a>), substitution references (
+                    <img src="../../../docs/user/rst/images/biohazard.png" alt="EXAMPLE" />
+                ), and <a id="inline-hyperlink-targets">inline hyperlink targets</a> (see <a href="#targets">Targets</a> below for a reference back to here). Character-level inline markup is also possible (although exceedingly ugly!) in <em>re</em><code>Structured</code><em>Text</em>. Problems are indicated by <a href="#id23" id="id24" class="problematic">|problematic|</a> text (generated by processing errors; this one is intentional). Here is a reference to the <a href="#doctitle">doctitle</a> and the <a href="#subtitle">subtitle</a>.</p>
+                <p>The default role for interpreted text is <cite>Title Reference</cite>. Here are some explicit interpreted text roles: a PEP reference (<a href="http://www.python.org/dev/peps/pep-0287">PEP 287</a>); an RFC reference (<a href="http://www.faqs.org/rfcs/rfc2822.html">RFC 2822</a>); an abbreviation (
+                    <abbr>abb.</abbr>
+                ), an acronym (
+                    <acronym>reST</acronym>
+                ), code (<code>print&nbsp;&#34;hello&nbsp;world&#34;</code>); a <sub>subscript</sub>; a <sup>superscript</sup> and explicit roles for <cite>Docutils</cite>' <em>standard</em> <strong>inline</strong> <code>markup</code>.</p>
+                <p>Let's test wrapping and whitespace significance in inline literals: <code>This&nbsp;is&nbsp;an&nbsp;example&nbsp;of&nbsp;--inline-literal&nbsp;--text,&nbsp;--including&nbsp;some--
+strangely--hyphenated-words.&nbsp;&nbsp;Adjust-the-width-of-your-browser-window
+to&nbsp;see&nbsp;how&nbsp;the&nbsp;text&nbsp;is&nbsp;wrapped.&nbsp;&nbsp;--&nbsp;----&nbsp;--------&nbsp;&nbsp;Now&nbsp;note&nbsp;&nbsp;&nbsp;&nbsp;the
+spacing&nbsp;&nbsp;&nbsp;&nbsp;between&nbsp;the&nbsp;&nbsp;&nbsp;&nbsp;words&nbsp;of&nbsp;&nbsp;&nbsp;&nbsp;this&nbsp;sentence&nbsp;&nbsp;&nbsp;&nbsp;(words
+should&nbsp;&nbsp;&nbsp;&nbsp;be&nbsp;grouped&nbsp;&nbsp;&nbsp;&nbsp;in&nbsp;pairs).</code></p>
+                <p>If the <code>--pep-references</code> option was supplied, there should be a live link to PEP 258 here.</p>
+            </section>
+        </section>
+        <a id="bullet-lists"></a>
+        <section>
+            <h2>2.2   Bullet Lists</h2>
+            <ul>
+                <li>
+                    <p>A bullet list</p>
+                    <ul>
+                        <li>Nested bullet list.</li>
+                        <li>Nested item 2.</li>
+                    </ul>
+                </li>
+                <li>
+                    <p>Item 2.</p>
+                    <p>Paragraph 2 of item 2.</p>
+                    <ul>
+                        <li>Nested bullet list.</li>
+                        <li>
+                            <p>Nested item 2.</p>
+                            <ul>
+                                <li>Third level.</li>
+                                <li>Item 2.</li>
+                            </ul>
+                        </li>
+                        <li>Nested item 3.</li>
+                        <li>This nested list should be compacted by the HTML writer.</li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <a id="enumerated-lists"></a>
+        <section>
+            <h2>2.3   Enumerated Lists</h2>
+            <ol type="1">
+                <li>
+                    <p>Arabic numerals.</p>
+                    <ol type="a" suffix=")">
+                        <li>
+                            <p>lower alpha)</p>
+                            <ol prefix="(" type="i" suffix=")">
+                                <li>
+                                    <p>(lower roman)</p>
+                                    <ol type="A">
+                                        <li>
+                                            <p>upper alpha.</p>
+                                            <ol type="I" suffix=")">
+                                                <li>upper roman)</li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <p>Lists that don't start at 1:</p>
+                    <ol start="3" type="1">
+                        <li>Three</li>
+                        <li>Four</li>
+                    </ol>
+                    <ol start="3" type="A">
+                        <li>C</li>
+                        <li>D</li>
+                    </ol>
+                    <ol start="3" type="i">
+                        <li>iii</li>
+                        <li>iv</li>
+                    </ol>
+                </li>
+            </ol>
+        </section>
+        <a id="definition-lists"></a>
+        <section>
+            <h2>2.4   Definition Lists</h2>
+            <dl>
+                <dt>Term</dt>
+                <dd>Definition</dd>
+                <dt>Term <span class="classifier-delimiter">:</span> <span class="classifier">classifier</span></dt>
+                <dd>
+                    <p>Definition paragraph 1.</p>
+                    <p>Definition paragraph 2.</p>
+                </dd>
+                <dt>Term</dt>
+                <dd>Definition</dd>
+                <dt>Term <span class="classifier-delimiter">:</span> <span class="classifier">classifier one</span> <span class="classifier-delimiter">:</span> <span class="classifier">classifier two</span></dt>
+                <dd>Definition</dd>
+            </dl>
+        </section>
+        <a id="field-lists"></a>
+        <section>
+            <h2>2.5   Field Lists</h2>
+            <table class="field_list">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>what</th>
+                        <td>Field lists map field names to field bodies, like database records. They are often part of an extension syntax. They are an unambiguous variant of RFC 2822 fields.</td>
+                    </tr>
+                    <tr>
+                        <th>how arg1 arg2</th>
+                        <td>
+                            <p>The field marker is a colon, the field name, and a colon.</p>
+                            <p>The field body may contain one or more body elements, indented relative to the field marker.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>credits</th>
+                        <td>
+                            <p class="credits">This paragraph has the <cite>credits</cite> class set. (This is actually not about credits but just for ensuring that the class attribute doesn't get stripped away.)</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <a id="option-lists"></a>
+        <section>
+            <h2>2.6   Option Lists</h2>
+            <p>For listing command-line options:</p>
+            <table class="option_list">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <td><kbd>-a</kbd></td>
+                        <td>command-line option "a"</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>-b <var>file</var></kbd></td>
+                        <td>options can have arguments and long descriptions</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>--long</kbd></td>
+                        <td>options can be long also</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>--input=<var>file</var></kbd></td>
+                        <td>long options can also have arguments</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><kbd>--very-long-option</kbd></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <p>The description can also start on the next line.</p>
+                            <p>The description may contain multiple body elements, regardless of where it starts.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><kbd>-x</kbd>, <kbd>-y</kbd>, <kbd>-z</kbd></td>
+                        <td>Multiple options are an "option group".</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>-v</kbd>, <kbd>--verbose</kbd></td>
+                        <td>Commonly-seen: short &amp; long options.</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><kbd>-1 <var>file</var></kbd>, <kbd>--one=<var>file</var></kbd>, <kbd>--two <var>file</var></kbd></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Multiple options with arguments.</td>
+                    </tr>
+                    <tr>
+                        <td><kbd>/V</kbd></td>
+                        <td>DOS/VMS-style options too</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>There must be at least two spaces between the option and the description.</p>
+        </section>
+        <a id="literal-blocks"></a>
+        <section>
+            <h2>2.7   Literal Blocks</h2>
+            <p>Literal blocks are indicated with a double-colon ("::") at the end of the preceding paragraph (over there <code>--&gt;</code>). They can be indented:</p>
+            <pre>if literal_block:
+    text = 'is left as-is'
+    spaces_and_linebreaks = 'are preserved'
+    markup_processing = None</pre>
+            <p>Or they can be quoted without indentation:</p>
+            <pre>&gt;&gt; Great idea!
+&gt;
+&gt; Why didn't I think of that?</pre>
+        </section>
+        <a id="line-blocks"></a>
+        <section>
+            <h2>2.8   Line Blocks</h2>
+            <p>This section tests line blocks. Line blocks are body elements which consist of lines and other line blocks. Nested line blocks cause indentation.</p>
+            <pre class="line_block">This is a line block. It ends with a blank line.
+    New lines begin with a vertical bar ("|").
+    Line breaks and initial indent are significant, and preserved.
+        Continuation lines are also possible. A long line that is intended to wrap should begin with a space in place of the vertical bar.
+    The left edge of a continuation line need not be aligned with the left edge of the text above it.</pre>
+            <pre class="line_block">
+This is a second line block.
+
+Blank lines are permitted internally, but they must begin with a "|".</pre>
+            <p>Another line block, surrounded by paragraphs:</p>
+            <pre class="line_block">
+And it's no good waiting by the window
+It's no good waiting for the sun
+Please believe me, the things you dream of
+They don't fall in the lap of no-one</pre>
+            <p>Take it away, Eric the Orchestra Leader!</p>
+            <blockquote>
+                <pre class="line_block">
+A one, two, a one two three four
+
+Half a bee, philosophically,
+    must, <em>ipso facto</em>, half not be.
+But half the bee has got to be,
+    <em>vis a vis</em> its entity. D'you see?
+    
+But can a bee be said to be
+    or not to be an entire bee,
+        when half the bee is not a bee,
+            due to some ancient injury?
+            
+Singing...</pre>
+            </blockquote>
+            <p>A line block, like the following poem by Christian Morgenstern, can also be centre-aligned:</p>
+            <pre class="line_block language-de align-center">
+<strong>Die Trichter</strong>
+
+Zwei Trichter wandeln durch die Nacht.
+Durch ihres Rumpfs verengten Schacht
+fließt weißes Mondlicht
+still und heiter
+auf   ihren
+Waldweg
+u. s.
+w.
+</pre>
+        </section>
+        <a id="block-quotes"></a>
+        <section>
+            <h2>2.9   Block Quotes</h2>
+            <p>Block quotes consist of indented body elements:</p>
+            <blockquote>
+                <p>My theory by A. Elk. Brackets Miss, brackets. This theory goes as follows and begins now. All brontosauruses are thin at one end, much much thicker in the middle and then thin again at the far end. That is my theory, it is mine, and belongs to me and I own it, and what it is too.</p>
+                <p class="attribution">Anne Elk (Miss)</p>
+            </blockquote>
+            <p>The language of a quote (like any other object) can be specified by a class attribute:</p>
+            <blockquote class="language-fr">
+                <p>ReStructuredText est un langage de balisage léger utilisé notamment dans la documentation du langage Python.</p>
+            </blockquote>
+        </section>
+        <a id="doctest-blocks"></a>
+        <section>
+            <h2>2.10   Doctest Blocks</h2>
+            <pre class="doctest_block">&gt;&gt;&gt; print 'Python-specific usage examples; begun with "&gt;&gt;&gt;"'
+Python-specific usage examples; begun with "&gt;&gt;&gt;"
+&gt;&gt;&gt; print '(cut and pasted from interactive Python sessions)'
+(cut and pasted from interactive Python sessions)</pre>
+        </section>
+        <a id="footnotes"></a>
+        <section>
+            <h2>2.11   Footnotes</h2>
+            <table class="footnote" id="id8">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>[1]</th>
+                        <td>
+                            <p>A footnote contains body elements, consistently indented by at least 3 spaces.</p>
+                            <p>This is the footnote's second paragraph.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="label" class="footnote">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>[2]</th>
+                        <td>Footnotes may be numbered, either manually (as in <a href="#id8" id="id9" class="footnote_reference">[1]</a>) or automatically using a "#"-prefixed label. This footnote has a label so it can be referred to from multiple places, both as a footnote reference (<a href="#label" id="id10" class="footnote_reference">[2]</a>) and as a <a href="#label">hyperlink reference</a>.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="id12" class="footnote">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>[3]</th>
+                        <td>
+                            <p>This footnote is numbered automatically and anonymously using a label of "#" only.</p>
+                            <p>This is the second paragraph.</p>
+                            <p>And this is the third paragraph.</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="id13" class="footnote">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>[*]</th>
+                        <td>Footnotes may also use symbols, specified with a "*" label. Here's a reference to the next footnote: <a href="#id15" id="id14" class="footnote_reference">[†]</a>.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="id15" class="footnote">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>[†]</th>
+                        <td>This footnote shows the next symbol in the sequence.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="footnote" id="id16">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>[4]</th>
+                        <td>Here's an unreferenced footnote, with a reference to a nonexistent footnote: <a href="#id87" id="id88 id17" class="problematic">[5]_</a>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <a id="citations"></a>
+        <section>
+            <h2>2.12   Citations</h2>
+            <table class="citation" id="cit2002">
+                <col />
+                <col />
+                <tbody>
+                    <tr>
+                        <th>[CIT2002]</th>
+                        <td>Citations are text-labeled footnotes. They may be rendered separately and differently from footnotes.</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>Here's a reference to the above, <a href="#cit2002" id="id18" class="citation_reference">[CIT2002]</a>, and a <a href="#id89" id="id90 id19" class="problematic">[nonexistent]_</a> citation.</p>
+        </section>
+        <a id="targets"></a>
+        <a id="another-target"></a>
+        <section>
+            <h2>2.13   Targets</h2>
+            <a id="example"></a>
+            <p>This paragraph is pointed to by the explicit "example" target. A reference can be found under <a href="#inline-markup">Inline Markup</a>, above. <a href="#inline-hyperlink-targets">Inline hyperlink targets</a> are also possible.</p>
+            <p>Section headers are implicit targets, referred to by name. See <a href="#targets">Targets</a>, which is a subsection of <a href="#body-elements">Body Elements</a>.</p>
+            <p>Explicit external targets are interpolated into references such as "<a href="http://www.python.org/">Python</a> <a href="#id25" id="id27" class="footnote_reference">[5]</a>".</p>
+            <p>Targets may be indirect and anonymous. Thus <a href="#targets">this phrase</a> may also refer to the <a href="#targets">Targets</a> section.</p>
+            <p>Here's a <a href="#id91" id="id92" class="problematic">`hyperlink reference without a target`_</a>, which generates an error.</p>
+            <a id="duplicate-target-names"></a>
+            <section>
+                <h3>2.13.1   Duplicate Target Names</h3>
+                <p>Duplicate names in section headers or other implicit targets will generate "info" (level-1) system messages. Duplicate names in explicit targets will generate "warning" (level-2) system messages.</p>
+            </section>
+            <a id="id21"></a>
+            <section>
+                <h3>2.13.2   Duplicate Target Names</h3>
+                <p>Since there are two "Duplicate Target Names" section headers, we cannot uniquely refer to either of them by name. If we try to (like this: <a href="#id93" id="id94" class="problematic">`Duplicate Target Names`_</a>), an error is generated.</p>
+            </section>
+        </section>
+        <a id="directives"></a>
+        <section>
+            <h2>2.14   Directives</h2>
+            <a id="contents"></a>
+            <aside class="topic contents local">
+                <ul class="auto-toc">
+                    <li><a href="#document-parts">2.14.1   Document Parts</a></li>
+                    <li><a href="#images-and-figures">2.14.2   Images and Figures</a></li>
+                    <li><a href="#admonitions">2.14.3   Admonitions</a></li>
+                    <li><a href="#topics-sidebars-and-rubrics">2.14.4   Topics, Sidebars, and Rubrics</a></li>
+                    <li><a href="#target-footnotes">2.14.5   Target Footnotes</a></li>
+                    <li><a href="#replacement-text">2.14.6   Replacement Text</a></li>
+                    <li><a href="#compound-paragraph">2.14.7   Compound Paragraph</a></li>
+                    <li><a href="#parsed-literal-blocks">2.14.8   Parsed Literal Blocks</a></li>
+                    <li><a href="#code">2.14.9   Code</a></li>
+                </ul>
+            </aside>
+            <p>These are just a sample of the many reStructuredText Directives. For others, please see <a href="http://docutils.sourceforge.net/docs/ref/rst/directives.html">http://docutils.sourceforge.net/docs/ref/rst/directives.html</a>.</p>
+            <a id="document-parts"></a>
+            <section>
+                <h3>2.14.1   Document Parts</h3>
+                <p>An example of the "contents" directive can be seen above this section (a local, untitled table of <a href="#contents">contents</a>) and at the beginning of the document (a document-wide <a href="#table-of-contents">table of contents</a>).</p>
+            </section>
+            <a id="images-and-figures"></a>
+            <section>
+                <h3>2.14.2   Images and Figures</h3>
+                <p>An image directive (also clickable -- a hyperlink reference):</p>
+            <a href="#directives">
+                    <img src="../../../docs/user/rst/images/title.png" class="class1 class2" />
+                </a>
+                <p>Image with multiple IDs:</p>
+                <a id="image-target-3"></a>
+                <a id="image-target-2"></a>
+                <a id="image-target-1"></a>
+                <img src="../../../docs/user/rst/images/title.png" />
+                <p>A centered image:</p>
+                <img src="../../../docs/user/rst/images/biohazard.png" align="center" />
+                <p>A left-aligned image:</p>
+                <img src="../../../docs/user/rst/images/biohazard.png" align="left" />
+                <p>This paragraph might flow around the image. The specific behavior depends upon the style sheet and the browser or rendering software used.</p>
+                <p>A right-aligned image:</p>
+                <img src="../../../docs/user/rst/images/biohazard.png" align="right" />
+                <p>This paragraph might flow around the image. The specific behavior depends upon the style sheet and the browser or rendering software used.</p>
+                <p>For inline images see <a href="#substitution-definitions">Substitution Definitions</a>.</p>
+                <p>Image size:</p>
+                <p>An image 2 em wide:</p>
+                <img src="../../../docs/user/rst/images/biohazard.png" width="2em" />
+                <p>An image 2 em wide and 15 pixel high:</p>
+                <img src="../../../docs/user/rst/images/biohazard.png" width="2em" height="15px" />
+                <p>An image occupying 50% of the line width:</p>
+                <img src="../../../docs/user/rst/images/title.png" width="50%" />
+                <p>An image 2 cm high:</p>
+                <img src="../../../docs/user/rst/images/biohazard.png" height="2cm" />
+                <p>A <em>figure</em> is an image with a caption and/or a legend. With page-based output media, figures might float to a different position if this helps the page layout.</p>
+                <figure class="figclass1 figclass2">
+                    <img src="../../../docs/user/rst/images/title.png" alt="reStructuredText, the markup syntax" class="class1 class2" width="258" />
+                    <figcaption>Plaintext markup syntax and parser system.</figcaption>
+                    <div class="legend">
+                        <table>
+                            <col />
+                            <col />
+                            <tbody>
+                                <tr>
+                                    <td>re</td>
+                                    <td>Revised, revisited, based on 're' module.</td>
+                                </tr>
+                                <tr>
+                                    <td>Structured</td>
+                                    <td>Structure-enhanced text, structuredtext.</td>
+                                </tr>
+                                <tr>
+                                    <td>Text</td>
+                                    <td>Well it is, isn't it?</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>This paragraph is also part of the legend.</p>
+                    </div>
+                </figure>
+                <p>A left-aligned figure:</p>
+                <figure width="70%" align="left" class="figclass1 figclass2">
+                    <img src="../../../docs/user/rst/images/biohazard.png" alt="reStructuredText, the markup syntax" class="class1 class2" width="40px" />
+                    <figcaption>This is the caption.</figcaption>
+                    <div class="legend">
+                        <p>This is the legend.</p>
+                        <p>The legend may consist of several paragraphs.</p>
+                    </div>
+                </figure>
+                <p>This paragraph might flow around the figure.</p>
+                <p>The specific behavior depends upon the style sheet and the browser or rendering software used.</p>
+                <p>A centered figure:</p>
+                <figure align="center">
+                    <img src="../../../docs/user/rst/images/biohazard.png" width="40px" />
+                    <figcaption>This is the caption.</figcaption>
+                    <div class="legend">
+                        <p>This is the legend.</p>
+                        <p>The legend may consist of several paragraphs.</p>
+                    </div>
+                </figure>
+                <p>This paragraph might flow around the figure.</p>
+                <p>The specific behavior depends upon the style sheet and the browser or rendering software used.</p>
+                <p>A right-aligned figure:</p>
+                <figure align="right">
+                    <img src="../../../docs/user/rst/images/biohazard.png" width="40px" />
+                    <figcaption>This is the caption.</figcaption>
+                    <div class="legend">
+                        <p>This is the legend.</p>
+                        <p>The legend may consist of several paragraphs.</p>
+                    </div>
+                </figure>
+                <p>This paragraph might flow around the figure. The specific behavior depends upon the style sheet and the browser or rendering software used.</p>
+            </section>
+            <a id="admonitions"></a>
+            <section>
+                <h3>2.14.3   Admonitions</h3>
+                <aside class="attention">Directives at large.</aside>
+                <aside class="caution">Don't take any wooden nickels.</aside>
+                <aside class="danger">Mad scientist at work!</aside>
+                <aside class="error">Does not compute.</aside>
+                <aside class="hint">It's bigger than a bread box.</aside>
+                <aside class="important">
+                    <ul>
+                        <li>Wash behind your ears.</li>
+                        <li>Clean up your room.</li>
+                        <li>Call your mother.</li>
+                        <li>Back up your data.</li>
+                    </ul>
+                </aside>
+                <aside class="note">This is a note.</aside>
+                <aside class="tip">15% if the service is good.</aside>
+                <aside class="warning">Strong prose may provoke extreme mental exertion. Reader discretion is strongly advised.</aside>
+                <aside class="admonition">
+                    <h1>And, by the way...</h1>
+                    <p>You can make up your own admonition too.</p>
+                </aside>
+            </section>
+            <a id="topics-sidebars-and-rubrics"></a>
+            <section>
+                <h3>2.14.4   Topics, Sidebars, and Rubrics</h3>
+                <p><em>Sidebars</em> are like miniature, parallel documents.</p>
+                <aside class="sidebar">
+                    <hgroup>
+                        <h1>Sidebar Title</h1>
+                        <h2>Optional Subtitle</h2>
+                    </hgroup>
+                    <p>This is a sidebar. It is for text outside the flow of the main text.</p>
+                    <p class="rubric">This is a rubric inside a sidebar</p>
+                    <p>Sidebars often appear beside the main text with a border and a different background or font color.</p>
+                </aside>
+                <p>A <em>topic</em> is like a block quote with a title, or a self-contained section with no subsections.</p>
+                <aside class="topic">
+                    <h1>Topic Title</h1>
+                    <p>This is a topic.</p>
+                </aside>
+                <p>A <em>rubric</em> is like an informal heading that doesn't correspond to the document's structure. It is typically highlighted in red (hence the name).</p>
+                <p class="rubric">This is a rubric</p>
+                <p>Topics and rubrics can be used at places where a <a href="#section-title">section title</a> is not allowed (e.g. inside a directive).</p>
+            </section>
+            <a id="target-footnotes"></a>
+            <section>
+                <h3>2.14.5   Target Footnotes</h3>
+                <table id="id25" class="footnote">
+                    <col />
+                    <col />
+                    <tbody>
+                        <tr>
+                            <th>[5]</th>
+                            <td><a href="http://www.python.org/">http://www.python.org/</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="id29" class="footnote">
+                    <col />
+                    <col />
+                    <tbody>
+                        <tr>
+                            <th>[6]</th>
+                            <td><a href="http://pygments.org/">http://pygments.org/</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table id="id32" class="footnote">
+                    <col />
+                    <col />
+                    <tbody>
+                        <tr>
+                            <th>[7]</th>
+                            <td><a href="http://docutils.sourceforge.net/">http://docutils.sourceforge.net/</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+            <a id="replacement-text"></a>
+            <section>
+                <h3>2.14.6   Replacement Text</h3>
+                <p>I recommend you try <a href="http://www.python.org/">Python, <em>the</em> best language around</a> <a href="#id25" id="id28" class="footnote_reference">[5]</a>.</p>
+            </section>
+            <a id="compound-paragraph"></a>
+            <section>
+                <h3>2.14.7   Compound Paragraph</h3>
+                <div class="compound some-class">
+                    <p>Compound 1, paragraph 1.</p>
+                    <p>Compound 1, paragraph 2.</p>
+                    <ul>
+                        <li>Compound 1, list item one.</li>
+                        <li>Compound 1, list item two.</li>
+                    </ul>
+                </div>
+                <p>Another compound statement:</p>
+                <div class="compound">
+                    <p>Compound 2, a literal block:</p>
+                    <pre>Compound 2, literal.</pre>
+                    <p>Compound 2, this is a test.</p>
+                </div>
+                <div class="compound">
+                    <p>Compound 3, only consisting of one paragraph.</p>
+                </div>
+                <div class="compound">
+                    <pre>Compound 4.
+This one starts with a literal block.</pre>
+                    <p>Compound 4, a paragraph.</p>
+                </div>
+                <p>Now something <em>really</em> perverted -- a nested compound block. This is just to test that it works at all; the results don't have to be meaningful.</p>
+                <div class="compound">
+                    <p>Compound 5, block 1 (a paragraph).</p>
+                    <div class="compound">
+                        <p>Compound 6, block 2 in compound 5.</p>
+                        <p>Compound 6, another paragraph.</p>
+                    </div>
+                    <p>Compound 5, block 3 (a paragraph).</p>
+                </div>
+                <div class="compound">
+                    <p>Compound 7, with a table inside:</p>
+                    <table>
+                        <col />
+                        <col />
+                        <col />
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>Left cell, first paragraph.</p>
+                                    <p>Left cell, second paragraph.</p>
+                                </td>
+                                <td>Middle cell, consisting of exactly one paragraph.</td>
+                                <td>
+                                    <p>Right cell.</p>
+                                    <p>Paragraph 2.</p>
+                                    <p>Paragraph 3.</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p>Compound 7, a paragraph after the table.</p>
+                    <p>Compound 7, another paragraph.</p>
+                </div>
+            </section>
+            <a id="parsed-literal-blocks"></a>
+            <section>
+                <h3>2.14.8   Parsed Literal Blocks</h3>
+                <pre>This is a parsed literal block.
+    This line is indented.  The next line is blank.
+
+Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <code>literal
+text</code>, footnotes <a href="#id8" id="id22" class="footnote_reference">[1]</a>, <a id="hyperlink-targets">hyperlink targets</a>, and <a href="http://www.python.org/">references</a>.</pre>
+            </section>
+            <a id="code"></a>
+            <section>
+                <h3>2.14.9   Code</h3>
+                <p>Blocks of source code can be set with the <cite>code</cite> directive. If the code language is specified, the content is parsed and tagged by the <a href="http://pygments.org/">Pygments</a> <a href="#id29" id="id30" class="footnote_reference">[6]</a> syntax highlighter and can be formatted with a style sheet. (Code parsing is turned off using the <code>syntax-highlight</code> config setting in the test conversions in order to get identical results with/without installed Pygments highlighter.)</p>
+                <pre><code class="highlight language-python"><span class="k">print</span> <span class="s">'This is Python code.'</span></code></pre>
+                <p>The <code>:number-lines:</code> option (with optional start value) generates line numbers:</p>
+                <pre><code class="highlight language-python"><span class="ln"> 8 </span><span class="c"># print integers from 0 to 9:</span>
+<span class="ln"> 9 </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+<span class="ln">10 </span>    <span class="k">print</span> <span class="n">i</span></code></pre>
+                <p>For inline code snippets, there is the <cite>code</cite> role, which can be used directly (the code will not be parsed/tagged, as the language is not known) or as base for special code roles, e.g.,</p>
+                <blockquote>
+                    <p>Docutils uses LaTeX syntax for math directives and roles: <code>\alpha&nbsp;=&nbsp;f(x)</code> prints
+                        <span class="math">\(\alpha = f(x)\)</span>
+                    .</p>
+                </blockquote>
+                <p>The <code>:code:</code> option of the <cite>include</cite> directive sets the included content as a code block, here the rst file <code>header_footer.txt</code> with line numbers:</p>
+                <pre source="data/header_footer.txt"><code class="highlight language-rst"><span class="ln">1 </span><span class="p">..</span> <span class="ow">header</span><span class="p">::</span> Document header
+<span class="ln">2 </span><span class="p">..</span> <span class="ow">footer</span><span class="p">::</span> Document footer</code></pre>
+            </section>
+        </section>
+        <a id="substitution-definitions"></a>
+        <section>
+            <h2>2.15   Substitution Definitions</h2>
+            <p>An inline image (
+                <img src="../../../docs/user/rst/images/biohazard.png" alt="EXAMPLE" />
+            ) example:</p>
+            <p>(Substitution definitions are not visible in the HTML source.)</p>
+        </section>
+        <a id="comments"></a>
+        <section>
+            <h2>2.16   Comments</h2>
+            <p>Here's one:</p>
+            <p>(View the HTML source to see the comment.)</p>
+        </section>
+        <a id="raw-text"></a>
+        <section>
+            <h2>2.17   Raw text</h2>
+            <p>This does not necessarily look nice, because there may be missing white space.</p>
+            <p>It's just there to freeze the behavior.</p>
+        A test.Second test.Another test with myclass set.
+            <p>This is the fourth test with myrawroleclass set.</p>
+        Fifth test in HTML.<br />Line two.</section>
+        <a id="container"></a>
+        <section>
+            <h2>2.18   Container</h2>
+            <div class="container custom">
+                <p>paragraph 1</p>
+                <p>paragraph 2</p>
+            </div>
+        </section>
+        <a id="colspanning-tables"></a>
+        <section>
+            <h2>2.19   Colspanning tables</h2>
+            <p>This table has a cell spanning two columns:</p>
+            <table>
+                <col />
+                <col />
+                <col />
+                <thead>
+                    <tr>
+                        <th colspan="2">Inputs</th>
+                        <th>Output</th>
+                    </tr>
+                    <tr>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>A or B</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>False</td>
+                        <td>False</td>
+                        <td>False</td>
+                    </tr>
+                    <tr>
+                        <td>True</td>
+                        <td>False</td>
+                        <td>True</td>
+                    </tr>
+                    <tr>
+                        <td>False</td>
+                        <td>True</td>
+                        <td>True</td>
+                    </tr>
+                    <tr>
+                        <td>True</td>
+                        <td>True</td>
+                        <td>True</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <a id="rowspanning-tables"></a>
+        <section>
+            <h2>2.20   Rowspanning tables</h2>
+            <p>Here's a table with cells spanning several rows:</p>
+            <table>
+                <col />
+                <col />
+                <col />
+                <thead>
+                    <tr>
+                        <th>Header row, column 1 (header rows optional)</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>body row 1, column 1</td>
+                        <td>column 2</td>
+                        <td>column 3</td>
+                    </tr>
+                    <tr>
+                        <td>body row 2</td>
+                        <td rowspan="2">Cells may span rows.</td>
+                        <td rowspan="2">Another rowspanning cell.</td>
+                    </tr>
+                    <tr>
+                        <td>body row 3</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <a id="complex-tables"></a>
+        <section>
+            <h2>2.21   Complex tables</h2>
+            <p>Here's a complex table, which should test all features.</p>
+            <table>
+                <col />
+                <col />
+                <col />
+                <col />
+                <thead>
+                    <tr>
+                        <th>Header row, column 1 (header rows optional)</th>
+                        <th>Header 2</th>
+                        <th>Header 3</th>
+                        <th>Header 4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>body row 1, column 1</td>
+                        <td>column 2</td>
+                        <td>column 3</td>
+                        <td>column 4</td>
+                    </tr>
+                    <tr>
+                        <td>body row 2</td>
+                        <td colspan="3">Cells may span columns.</td>
+                    </tr>
+                    <tr>
+                        <td>body row 3</td>
+                        <td rowspan="2">
+                            <p>Cells may span rows.</p>
+                            <p>Paragraph.</p>
+                        </td>
+                        <td colspan="2" rowspan="2">
+                            <ul>
+                                <li>Table cells</li>
+                                <li>contain</li>
+                                <li>body elements.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>body row 4</td>
+                    </tr>
+                    <tr>
+                        <td>body row 5</td>
+                        <td colspan="2">Cells may also be empty: <code>--&gt;</code></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <a id="list-tables"></a>
+        <section>
+            <h2>2.22   List Tables</h2>
+            <p>Here's a list table exercising all features:</p>
+            <table class="test">
+                <h2>list table with integral header</h2>
+                <col />
+                <col />
+                <col />
+                <thead>
+                    <tr>
+                        <th>Treat</th>
+                        <th>Quantity</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Albatross</th>
+                        <td>2.99</td>
+                        <td>On a stick!</td>
+                    </tr>
+                    <tr>
+                        <th>Crunchy Frog</th>
+                        <td>1.49</td>
+                        <td>If we took the bones out, it wouldn't be crunchy, now would it?</td>
+                    </tr>
+                    <tr>
+                        <th>Gannet Ripple</th>
+                        <td>1.99</td>
+                        <td>On a stick!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <a id="custom-roles"></a>
+        <section>
+            <h2>2.23   Custom Roles</h2>
+            <ul>
+                <li>
+                    <p>A role based on an existing role.</p>
+                    <p><code>one</code> <code>two</code> <code>three</code></p>
+                </li>
+                <li>
+                    <p>A new role.</p>
+                    <p><span class="customnew">one two three</span></p>
+                </li>
+                <li>
+                    <p>A role with class attribute.</p>
+                    <p><span class="special">interpreted text</span></p>
+                </li>
+                <li>
+                    <p>A language-switching role:</p>
+                    <p>Let's count in German <span class="language-de">eins zwei drei</span>.</p>
+                </li>
+                <li>
+                    <p>A role with multiple class attributes, styled with raw directives:</p>
+                    <p>The following works in most browsers but does not validate (<code>&lt;style&gt;</code> is only allowed in the document head):</p>
+                    <pre>.. raw:: html
+
+  &lt;style type="text/css"&gt;&lt;!--
+   .green {color: green;}
+   .sc {font-variant: small-caps;}
+   --&gt;&lt;/style&gt;</pre>
+                    <p><span class="green sc language-en-gb">British colourful text in small-caps</span>.</p>
+                </li>
+            </ul>
+        </section>
+        <a id="svg-images"></a>
+        <section>
+            <h2>2.24   SVG Images</h2>
+            <img src="../../../docs/user/rst/images/biohazard.svg" width="48px" height="48px" />
+            <p>Scalable vector graphics (SVG) images are not supported by all backends. Rendering depends partially on the backend, especially if the size is not explicitely given.</p>
+            <img src="../../../docs/user/rst/images/title-scaling.svg" align="left" width="50%" />
+            <p>A scaling image occupying 50% of the line width (scales with the browser window).</p>
+            <p>Whether an SVG image is scaled or clipped/padded cannot be set in the containing HTML. It depends on the viewport declaration inside its root &lt;svg&gt; element.</p>
+            <p>An inline SVG image
+                <img src="../../../docs/user/rst/images/biohazard-scaling.svg" alt="inline-svg" height="0.8em" />
+             scaled to a height of 0.8 em.</p>
+            <img src="../../../docs/user/rst/images/title-scaling.svg" align="right" width="50%" height="1.2em" />
+            <p>A scaling image occupying 50% of the line width and 1.2 em high, right aligned (this SVG image keeps the aspect ratio):</p>
+            <img src="../../../docs/user/rst/images/biohazard-scaling.svg" align="left" height="1em" />
+            <p>A scaling image 1 em high, left aligned.</p>
+            <p>A scaling image 5 mm x 5 mm, centered, with hyperlink reference:</p>
+        <a href="#directives">
+                <img src="../../../docs/user/rst/images/biohazard-scaling.svg" align="center" width="5mm" height="5mm" />
+            </a>
+            <img src="../../../docs/user/rst/images/biohazard.svg" align="left" width="4cm" height="2em" />
+            <p>A fixed-size image in a 4 cm x 2 em box.</p>
+            <img src="../../../docs/user/rst/images/title.svg" align="left" width="50%" height="15px" />
+            <p>A fixed-size image in a box 50% the line width and 15 pixle high.</p>
+            <figure>
+                <img src="../../../docs/user/rst/images/title.svg" alt="reStructuredText, the markup syntax" width="290px" height="28px" />
+                <figcaption>SVG image in a figure.</figcaption>
+            </figure>
+        </section>
+        <a id="swf-images"></a>
+        <section>
+            <h2>2.25   SWF Images</h2>
+            <p>Shockwave Flash is an image/movie format that most modern web browsers support via a plugin. It is sometimes blocked due to privacy/security concerns.</p>
+            <p>Images with extension <code>.swf</code> are placed inside &lt;object&gt; elements. For complete control over display options use raw HTML.</p>
+            <img src="../../../docs/user/rst/images/biohazard.swf" align="left" width="4cm" alt="[biohazard.swf]" height="2em" />
+            <p>An SWF image in a 4 cm x 2 em box, left aligned.</p>
+            <p>An inline SWF image
+                <img width="0.8em" alt="inline-swf" src="../../../docs/user/rst/images/biohazard.swf" height="0.8em" />
+             scaled to 0.8 em x 0.8 em.</p>
+        </section>
+    </section>
+    <a id="error-handling"></a>
+    <section>
+        <h1>3   Error Handling</h1>
+        <p>Any errors caught during processing will generate system messages.</p>
+        <p>There should be five messages in the following, auto-generated section, "Docutils System Messages":</p>
+    </section>
+    <section class="system-messages">
+        <h1>Docutils System Messages</h1>
+        <a id="id23"></a>
+        <div>
+            <h1>System Message: ERROR/3 (data/standard.txt line 104) <a href="#id24">Backref</a></h1>
+            <p>Undefined substitution referenced: "problematic".</p>
+        </div>
+        <a id="id87"></a>
+        <div>
+            <h1>System Message: ERROR/3 (data/standard.txt line 391) <a href="#id88">Backref</a></h1>
+            <p>Unknown target name: "5".</p>
+        </div>
+        <a id="id89"></a>
+        <div>
+            <h1>System Message: ERROR/3 (data/standard.txt line 400) <a href="#id90">Backref</a></h1>
+            <p>Unknown target name: "nonexistent".</p>
+        </div>
+        <a id="id91"></a>
+        <div>
+            <h1>System Message: ERROR/3 (data/standard.txt line 427) <a href="#id92">Backref</a></h1>
+            <p>Unknown target name: "hyperlink reference without a target".</p>
+        </div>
+        <a id="id93"></a>
+        <div>
+            <h1>System Message: ERROR/3 (data/standard.txt line 440) <a href="#id94">Backref</a></h1>
+            <p>Duplicate target name, cannot be used as a unique reference: "duplicate target names".</p>
+        </div>
+    </section>
+</body>
+</html>
