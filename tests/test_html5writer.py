@@ -7,7 +7,7 @@ import os
 import codecs
 import unittest
 
-from html5css3 import HTML5Writer
+from rst2html5 import HTML5Writer
 from docutils.core import publish_parts, publish_string
 from nose.tools import assert_equals
 from tempfile import gettempdir

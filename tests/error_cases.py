@@ -29,16 +29,36 @@ system_message = {
     'indent_output': True,
 }
 
-def local_file_content(filename):
-    from os.path import split, join
-    from codecs import open
-    local_path = join(split(__file__)[0], filename)
-    with open(local_path, 'r', 'utf-8') as f:
-        return f.read()
+problematic = {
+    'rst': '''[2]_
 
-docutils_test_case = {
-    'rst': local_file_content('docutils.html4css1.rst'),
-    'out': local_file_content('rst2html5_result.html'),
+.. [#] footnote''',
+    'out': '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <p><a href="#id3" id="id4" class="problematic">[2]_</a></p>
+    <table id="id2" class="footnote">
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <th>[1]</th>
+                <td>footnote</td>
+            </tr>
+        </tbody>
+    </table>
+    <section class="system-messages">
+        <h1>Docutils System Messages</h1>
+        <a id="id3"></a>
+        <div>
+            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id4">Backref</a></h1>
+            <p>Unknown target name: "2".</p>
+        </div>
+    </section>
+</body>
+</html>''',
     'indent_output': True,
-    'option_limit': 14,
 }

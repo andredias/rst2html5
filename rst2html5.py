@@ -3,8 +3,6 @@
 
 from __future__ import unicode_literals
 
-__version__ = '0.9'
-
 import os
 import re
 import docutils
@@ -756,6 +754,8 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_problematic(self, node):
         self.expand_id_to_anchor = False
+        if len(node['ids']) > 1:
+            node['ids'] = node['ids'][0]
         self.default_visit(node)
         return
 
@@ -778,3 +778,12 @@ for term, spec in rst_terms.items():
         setattr(HTML5Translator, 'visit_' + term, visit_func)
     if depart_func:
         setattr(HTML5Translator, 'depart_' + term, depart_func)
+
+def main():
+    from docutils.core import publish_cmdline, default_description
+
+    description = 'Generates (X)HTML5 documents from standalone reStructuredText sources.' + default_description
+    publish_cmdline(writer=HTML5Writer(), description=description)
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,4 @@
+recursive-include tests *.rst *.html
+recursive-include doc *.rst *.py Makefile
+prune doc/_build
+graft tests/docutils_functional_test
