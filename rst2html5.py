@@ -3,6 +3,8 @@
 
 from __future__ import unicode_literals
 
+__docformat__ = 'reStructuredText'
+
 import os
 import re
 import docutils
@@ -762,8 +764,10 @@ class HTML5Translator(nodes.NodeVisitor):
     def visit_system_message(self, node):
         self.default_visit(node)
         self.context.begin_elem() # h1
-        text = 'System Message: {type}/{level} ({source} line {line}) '.format(**node.attributes)
-        h1 = tag.h1(text, tag.a('Backref', href="#" + ''.join(node['backrefs'])))
+        backrefs = [Fragment()(' ', tag.a(v, href="#" + v)) for v in node['backrefs']]
+        node.attributes.setdefault('line', '')
+        text = 'System Message: {type}/{level} ({source} line {line})'.format(**node.attributes)
+        h1 = tag.h1(text, *backrefs)
         self.context.commit_elem(h1)
         node.attributes = {'classes': []}
         return
