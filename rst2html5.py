@@ -24,20 +24,20 @@ class HTML5Writer(writers.Writer):
     settings_spec = (
         'HTML5 Specific Options',
         None, (
+        ('Specify comma separated list of stylesheet URLs.',
+          ['--stylesheet'],
+          {'metavar': '<URL or path>', 'default': None, }),
+        ('Specify comma separated list of script URLs.',
+          ['--script'],
+          {'metavar': '<URL or path>', 'default': None, }),
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
         ('Specify the maximum width (in characters) for options in option '
          'lists.  Longer options will span an entire row of the table used '
-         'to render the option list. Use 0 for "no limit". Default is 0 characters. ',
+         'to render the option list. Default is 0 characters which means "no limit". ',
             ['--option-limit'],
             {'default': 0, 'metavar': '<level>',
              'validator': frontend.validate_nonnegative_int}),
-        ('Specify comma separated list of stylesheet URLs.',
-          ['--stylesheet'],
-          {'metavar': '<URL>', 'default': None, }),
-        ('Specify comma separated list of script URLs.',
-          ['--script'],
-          {'metavar': '<URL>', 'default': None, }),
     ))
 
     settings_defaults = {'tab_width': 4}

@@ -2,18 +2,133 @@
 rst2html5
 =========
 
-Generates (X)HTML5 documents from standalone reStructuredText sources.
+rst2html5 generates (X)HTML5 documents from standalone reStructuredText sources.
+It is a complete rewrite of the docutils' rst2html and uses new HTML5 constructs as
+<section> and <aside>.
 
 Usage
 =====
 
 ::
 
-	$ rst2html5 document.rst
+	$ rst2html5 [options] <source>
+
+Options:
+
+--stylesheet=<URL or path>
+                        Specify comma separated list of stylesheet URLs.
+--script=<URL or path>  Specify comma separated list of script URLs.
+--no-indent             Don't indent output
+--option-limit=<level>  Specify the maximum width (in characters) for options
+                        in option lists.  Longer options will span an entire
+                        row of the table used to render the option list.
+                        Default is 0 characters which means "no limit".
+
+Examples
+========
+
+Consider the following rst snippet::
+
+    Title
+    =====
+
+    Some text and a target to `Title 2`_. **strong emphasis**:
+
+    * item 1
+    * item 2
+
+    Title 2
+    =======
+
+    .. parsed-literal::
+
+        Inline markup is supported, e.g. *emphasis*, **strong**, ``literal
+        text``,
+        _`hyperlink targets`, and `references <http://www.python.org/>`_
+
+
+The produced html5 is clean and tidy::
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <a id="title"></a>
+        <section>
+            <h1>Title</h1>
+            <p>Some text and a target to <a href="#title-2">Title 2</a>. <strong>strong emphasis</strong>:</p>
+            <ul>
+                <li>item 1</li>
+                <li>item 2</li>
+            </ul>
+        </section>
+        <a id="title-2"></a>
+        <section>
+            <h1>Title 2</h1>
+            <pre>Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <code>literal
+    text</code>,
+    <a id="hyperlink-targets">hyperlink targets</a>, and <a href="http://www.python.org/">references</a></pre>
+        </section>
+    </body>
+    </html>
+
+No stylesheets or classes are spread over the html5 by default. However:
+
+1. Stylesheets and javascritps URLs or paths can be included through ``stylesheet`` and
+   ``script`` options:
+
+    .. parsed-literal::
+
+        $ rst2html5 example.rst **--stylesheet** "css/default.css, css/special/css" \\
+        **--script** ``https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js``
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8" />
+            **<link href="css/default.css" rel="stylesheet" />**
+            **<link href="css/special/css" rel="stylesheet" />**
+            **<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>**
+        </head>
+        ...
+
+#. Classes can be explicitly associated to rst elements (see ref__)::
+
+        .. class:: special
+
+        This is a "special" paragraph.
+
+        .. class:: exceptional remarkable
+
+        An Exceptional Section
+        ======================
+
+        This is an ordinary paragraph.
+
+   which results in:
+
+   .. parsed-literal::
+
+        <p **class="special"**>This is a "special" paragraph.</p>
+        <a id="an-exceptional-section"></a>
+        <section **class="exceptional remarkable"**>
+            <h1>An Exceptional Section</h1>
+            <p>This is an ordinary paragraph.</p>
+        </section>
+
+Installation
+============
+
+::
+
+    $ pip install rst2html5
 
 License
 =======
 
 `MIT License`__
 
+.. __: http://docutils.sourceforge.net/docs/ref/rst/directives.html#class
 .. __: http://opensource.org/licenses/MIT
