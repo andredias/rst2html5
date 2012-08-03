@@ -9,7 +9,7 @@ It is a complete rewrite of the docutils' rst2html and uses new HTML5 constructs
 Usage
 =====
 
-::
+.. code-block:: bash
 
 	$ rst2html5 [options] <source>
 
@@ -27,7 +27,9 @@ Options:
 Examples
 ========
 
-Consider the following rst snippet::
+Consider the following rst snippet:
+
+.. code-block:: rst
 
     Title
     =====
@@ -47,7 +49,9 @@ Consider the following rst snippet::
         _`hyperlink targets`, and `references <http://www.python.org/>`_
 
 
-The produced html5 is clean and tidy::
+The html5 produced is clean and tidy:
+
+.. code-block:: html
 
     <!DOCTYPE html>
     <html lang="en">
@@ -84,6 +88,8 @@ No stylesheets or classes are spread over the html5 by default. However:
         $ rst2html5 example.rst **--stylesheet** "css/default.css, css/special/css" \\
         **--script** ``https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js``
 
+    .. code-block:: html
+
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -94,7 +100,9 @@ No stylesheets or classes are spread over the html5 by default. However:
         </head>
         ...
 
-#. Classes can be explicitly associated to rst elements (see ref__)::
+#. Classes can be explicitly associated to rst elements (see ref__):
+
+   .. code-block:: rst
 
         .. class:: special
 
@@ -121,7 +129,7 @@ No stylesheets or classes are spread over the html5 by default. However:
 Installation
 ============
 
-::
+.. code-block:: bash
 
     $ pip install rst2html5
 
