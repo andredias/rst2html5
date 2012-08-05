@@ -15,17 +15,13 @@ from tempfile import gettempdir
 tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None
 
-def rst_to_html5(case, part=None):
+def rst_to_html5(case, part='whole'):
     overrides = case.copy()
     rst = overrides.pop('rst')
     overrides.pop('out')
     overrides.setdefault('indent_output', False)
-    if part:
-        return publish_parts(writer=HTML5Writer(), source=rst,
+    return publish_parts(writer=HTML5Writer(), source=rst,
                           settings_overrides=overrides)[part]
-    else:
-        return unicode(publish_string(writer=HTML5Writer(), source=rst,
-                          settings_overrides=overrides), encoding='utf-8')
 
 
 def extract_variables(module):
