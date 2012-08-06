@@ -276,13 +276,13 @@ class HTML5Translator(nodes.NodeVisitor):
             indent = '\n' + ' ' * self.document.settings.tab_width
             result = []
             for f in self.head:
-                result.append(Fragment()(indent, f))
+                result.append(tag(indent, f))
             result.append('\n')
             self.head = result
 
         language = ' lang="%s"' % self.document.settings.language_code
-        self.head = ''.join(XHTMLSerializer()(Fragment()(*self.head)))
-        self.body = ''.join(XHTMLSerializer()(Fragment()(*self.context.stack)))
+        self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
+        self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
         return output.format(language=language, head=self.head, body=self.body)
 
     def set_next_elem_attr(self, name, value):
@@ -341,7 +341,7 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         if 'ids' in node and self.once_attr('expand_id_to_anchor', default=True):
             '''
-            create an anchor <a id=id></a> before for each id
+            create an anchor <a id=id></a> for each id found before the current element.
             '''
             for id in node['ids']:
                 self.context.begin_elem()
@@ -764,7 +764,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def visit_system_message(self, node):
         self.default_visit(node)
         self.context.begin_elem() # h1
-        backrefs = [Fragment()(' ', tag.a(v, href="#" + v)) for v in node['backrefs']]
+        backrefs = [tag(' ', tag.a(v, href="#" + v)) for v in node['backrefs']]
         node.attributes.setdefault('line', '')
         text = 'System Message: {type}/{level} ({source} line {line})'.format(**node.attributes)
         h1 = tag.h1(text, *backrefs)
