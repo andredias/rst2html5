@@ -277,7 +277,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
         language = ' lang="%s"' % self.document.settings.language_code
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
-        self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
+        self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack[0])))
         return output.format(language=language, head=self.head, body=self.body)
 
     def set_next_elem_attr(self, name, value):
