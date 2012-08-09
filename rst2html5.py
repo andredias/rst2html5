@@ -42,13 +42,8 @@ class HTML5Writer(writers.Writer):
 
     settings_defaults = {'tab_width': 4}
 
-    def __init__(self):
-        writers.Writer.__init__(self)
-        self.translator_class = HTML5Translator
-        return
-
     def translate(self):
-        visitor = self.translator_class(self.document)
+        visitor = HTML5Translator(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.output
         self.head = visitor.head
@@ -292,6 +287,9 @@ class HTML5Translator(nodes.NodeVisitor):
         self.next_elem_attr = {name: value}
 
     def parse(self, node):
+        '''
+        Get tag name, indentantion and correct attributes of a node according to its class
+        '''
         node_class_name = node.__class__.__name__
         spec = rst_terms[node_class_name]
         name = spec[0] or node_class_name
@@ -337,7 +335,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def default_visit(self, node):
         '''
-        Each level creates its own stack
+        Initiate a new context to store inner HTML5 elements.
         '''
         if 'ids' in node and self.once_attr('expand_id_to_anchor', default=True):
             '''
@@ -351,6 +349,9 @@ class HTML5Translator(nodes.NodeVisitor):
         return
 
     def default_departure(self, node):
+        '''
+        Create the node's corresponding HTML5 element and combine it with its stored context.
+        '''
         name, indent, attr = self.parse(node)
         elem = getattr(tag, name)(**attr)
         self.context.commit_elem(elem, indent)
@@ -359,7 +360,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def _compacted_paragraph(self, node):
         """
         Determine if the <p> tags around paragraph ``node`` can be omitted.
-        Based on from docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph
+        Based on :func:`docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph`
         """
         if (isinstance(node.parent, (nodes.document, nodes.compound, nodes.block_quote,
            nodes.system_message, )) or node['classes'] or 'paragraph' != node.__class__.__name__):
@@ -437,8 +438,9 @@ class HTML5Translator(nodes.NodeVisitor):
         be presented as intended.
 
         See:
-            http://dev.opera.com/articles/view/automatic-numbering-with-css-counters/
-            http://stackoverflow.com/questions/2558358/how-to-add-brackets-a-to-ordered-list-compatible-in-all-browsers
+
+        * http://dev.opera.com/articles/view/automatic-numbering-with-css-counters/
+        * http://stackoverflow.com/questions/2558358/how-to-add-brackets-a-to-ordered-list-compatible-in-all-browsers
         '''
         if 'enumtype' in node:
             enumtypes = {
@@ -493,7 +495,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def depart_colspec(self, node):
         '''
-        stub attribute indicates that the column should be a th tag.
+        A "stub" attribute indicates that the column should be a th tag.
         It could be resolved by CSS3 instead...
         see http://demosthenes.info/blog/556/The-HTML-col-and-colgroup-elements
         '''
