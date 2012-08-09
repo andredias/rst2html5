@@ -165,7 +165,7 @@ rst_terms = {
     'description': ('td', dv, dp),
     'docinfo': (None, 'visit_docinfo', 'depart_docinfo', True),
     'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
-    'document': (None, 'visit_document', pass_),
+    'document': (None, 'visit_document', 'depart_document'),
     'emphasis': ('em', dv, dp, False, False),
     'entry': (None, dv, 'depart_entry'),
     'enumerated_list': ('ol', dv, 'depart_enumerated_list'),
@@ -277,7 +277,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
         language = ' lang="%s"' % self.document.settings.language_code
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
-        self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack[0])))
+        self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
         return output.format(language=language, head=self.head, body=self.body)
 
     def set_next_elem_attr(self, name, value):
@@ -601,6 +601,10 @@ class HTML5Translator(nodes.NodeVisitor):
             self.head.append(tag.title(node['title']))
         self.expand_id_to_anchor = False
         self.default_visit(node)
+
+    def depart_document(self, node):
+        self.context.stack = self.context.stack[0]
+        return
 
     def visit_raw(self, node):
         if 'html' in node.get('format', '').split():
