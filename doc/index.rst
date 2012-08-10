@@ -10,6 +10,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   implementation
+..   testing
+
 
 
 Indices and tables
