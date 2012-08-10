@@ -42,8 +42,13 @@ class HTML5Writer(writers.Writer):
 
     settings_defaults = {'tab_width': 4}
 
+    def __init__(self):
+        writers.Writer.__init__(self)
+        self.translator_class = HTML5Translator
+        return
+
     def translate(self):
-        visitor = HTML5Translator(self.document)
+        visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.output
         self.head = visitor.head
@@ -131,142 +136,151 @@ dv = 'default_visit'
 dp = 'default_departure'
 pass_ = 'no_op'
 
-rst_terms = {
-    # 'term': ('tag', 'visit_func', 'depart_func', use_term_in_class, indent_elem)
-    # use_term_in_class and indent_elem are optionals. If not given, the default is False, True
-    'Text': (None, 'visit_Text', None),
-    'abbreviation': ('abbr', dv, dp),
-    'acronym': (None, dv, dp),
-    'address': (None, 'visit_address', 'depart_address'),
-    'admonition': ('aside', 'visit_aside', 'depart_aside', True),
-    'attention': ('aside', 'visit_aside', 'depart_aside', True),
-    'attribution': ('p', dv, dp, True),
-    'author': (None, 'visit_author', 'depart_author'),
-    'authors': (None, 'visit_authors', 'depart_authors'),
-    'block_quote': ('blockquote', dv, dp),
-    'bullet_list': ('ul', dv, dp, False),
-    'caption': ('figcaption', dv, dp, False),
-    'caution': ('aside', 'visit_aside', 'depart_aside', True),
-    'citation': (None, 'visit_citation', 'depart_citation', True),
-    'citation_reference': ('a', 'visit_citation_reference', 'depart_citation_reference', True, False),
-    'classifier': (None, 'visit_classifier', None),
-    'colspec': ('col', dv, 'depart_colspec'),
-    'comment': (None, 'skip_node', None),
-    'compound': ('div', dv, dp, True),
-    'contact': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'container': ('div', dv, dp, True),
-    'copyright': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'danger': ('aside', 'visit_aside', 'depart_aside', True),
-    'date': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'decoration': (None, 'do_nothing', None),
-    'definition': ('dd', dv, dp),
-    'definition_list': ('dl', dv, dp),
-    'definition_list_item': (None, 'do_nothing', None),
-    'description': ('td', dv, dp),
-    'docinfo': (None, 'visit_docinfo', 'depart_docinfo', True),
-    'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
-    'document': (None, 'visit_document', 'depart_document'),
-    'emphasis': ('em', dv, dp, False, False),
-    'entry': (None, dv, 'depart_entry'),
-    'enumerated_list': ('ol', dv, 'depart_enumerated_list'),
-    'error': ('aside', 'visit_aside', 'depart_aside', True),
-    'field': ('tr', dv, dp),
-    'field_body': ('td', dv, dp),
-    'field_list': (None, 'visit_docinfo', 'depart_docinfo', True),
-    'field_name': ('th', dv, dp),
-    'figure': (None, dv, dp),
-    'footer': (None, dv, dp),
-    'footnote': (None, 'visit_citation', 'depart_citation', True),
-    'footnote_reference': ('a', 'visit_label', 'depart_citation_reference', True, False),
-    'generated': (None, 'do_nothing', None),
-    'header': (None, dv, dp),
-    'hint': ('aside', 'visit_aside', 'depart_aside', True),
-    'image': ('img', dv, dp),
-    'important': ('aside', 'visit_aside', 'depart_aside', True),
-    'inline': ('span', dv, dp, False, False),
-    'label': ('th', 'visit_citation_reference', 'depart_label'),
-    'legend': ('div', dv, dp, True),
-    'line': (None, 'visit_line', None),
-    'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
-    'list_item': ('li', dv, dp),
-    'literal': ('code', 'visit_literal', None),
-    'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
-    'math': (None, 'visit_math_block', None),
-    'math_block': (None, 'visit_math_block', None),
-    'meta': (None, 'visit_meta', None),
-    'note': ('aside', 'visit_aside', 'depart_aside', True),
-    'option': ('kbd', 'visit_option', dp, False, False),
-    'option_argument': ('var', 'visit_option_argument', dp, False, False),
-    'option_group': ('td', 'visit_option_group', 'depart_option_group'),
-    'option_list': (None, 'visit_docinfo', 'depart_docinfo', True),
-    'option_list_item': ('tr', dv, dp),
-    'option_string': (None, 'do_nothing', None),
-    'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'paragraph': ('p', 'visit_paragraph', dp),
-    'pending': (None, dv, dp),
-    'problematic': ('a', 'visit_problematic', 'depart_reference', True, False),
-    'raw': (None, 'visit_raw', None),
-    'reference': ('a', 'visit_reference', 'depart_reference', False, False),
-    'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'row': ('tr', 'visit_row', 'depart_row'),
-    'rubric': ('p', dv, 'depart_rubric', True),
-    'section': ('section', 'visit_section', 'depart_section'),
-    'sidebar': ('aside', 'visit_aside', 'depart_aside', True),
-    'status': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'strong': (None, dv, dp, False, False),
-    'subscript': ('sub', dv, dp, False, False),
-    'substitution_definition': (None, 'skip_node', None),
-    'substitution_reference': (None, 'skip_node', None),
-    'subtitle': (None, 'visit_target', 'depart_subtitle'),
-    'superscript': ('sup', dv, dp, False, False),
-    'system_message': ('div', 'visit_system_message', dp),
-    'table': (None, 'visit_table', 'depart_table'),
-    'target': ('a', 'visit_target', 'depart_reference', False, False),
-    'tbody': (None, dv, dp),
-    'term': ('dt', dv, dp),
-    'tgroup': (None, 'do_nothing', None),
-    'thead': (None, 'visit_thead', 'depart_thead'),
-    'tip': ('aside', 'visit_aside', 'depart_aside', True),
-    'title': (None, dv, 'depart_title'),
-    'title_reference': ('cite', dv, dp, False, False),
-    'topic': ('aside', 'visit_aside', 'depart_aside', True),
-    'transition': ('hr', dv, dp),
-    'version': (None, 'visit_field_list_item', 'depart_field_list_item'),
-    'warning': ('aside', 'visit_aside', 'depart_aside', True),
-}
-
-
 class HTML5Translator(nodes.NodeVisitor):
+
+    rst_terms = {
+        # 'term': ('tag', 'visit_func', 'depart_func', use_term_in_class, indent_elem)
+        # use_term_in_class and indent_elem are optionals. If not given, the default is False, True
+        'Text': (None, 'visit_Text', None),
+        'abbreviation': ('abbr', dv, dp),
+        'acronym': (None, dv, dp),
+        'address': (None, 'visit_address', 'depart_address'),
+        'admonition': ('aside', 'visit_aside', 'depart_aside', True),
+        'attention': ('aside', 'visit_aside', 'depart_aside', True),
+        'attribution': ('p', dv, dp, True),
+        'author': (None, 'visit_author', 'depart_author'),
+        'authors': (None, 'visit_authors', 'depart_authors'),
+        'block_quote': ('blockquote', dv, dp),
+        'bullet_list': ('ul', dv, dp, False),
+        'caption': ('figcaption', dv, dp, False),
+        'caution': ('aside', 'visit_aside', 'depart_aside', True),
+        'citation': (None, 'visit_citation', 'depart_citation', True),
+        'citation_reference': ('a', 'visit_citation_reference', 'depart_citation_reference', True, False),
+        'classifier': (None, 'visit_classifier', None),
+        'colspec': ('col', dv, 'depart_colspec'),
+        'comment': (None, 'skip_node', None),
+        'compound': ('div', dv, dp, True),
+        'contact': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'container': ('div', dv, dp, True),
+        'copyright': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'danger': ('aside', 'visit_aside', 'depart_aside', True),
+        'date': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'decoration': (None, 'do_nothing', None),
+        'definition': ('dd', dv, dp),
+        'definition_list': ('dl', dv, dp),
+        'definition_list_item': (None, 'do_nothing', None),
+        'description': ('td', dv, dp),
+        'docinfo': (None, 'visit_docinfo', 'depart_docinfo', True),
+        'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
+        'document': (None, 'visit_document', 'depart_document'),
+        'emphasis': ('em', dv, dp, False, False),
+        'entry': (None, dv, 'depart_entry'),
+        'enumerated_list': ('ol', dv, 'depart_enumerated_list'),
+        'error': ('aside', 'visit_aside', 'depart_aside', True),
+        'field': ('tr', dv, dp),
+        'field_body': ('td', dv, dp),
+        'field_list': (None, 'visit_docinfo', 'depart_docinfo', True),
+        'field_name': ('th', dv, dp),
+        'figure': (None, dv, dp),
+        'footer': (None, dv, dp),
+        'footnote': (None, 'visit_citation', 'depart_citation', True),
+        'footnote_reference': ('a', 'visit_label', 'depart_citation_reference', True, False),
+        'generated': (None, 'do_nothing', None),
+        'header': (None, dv, dp),
+        'hint': ('aside', 'visit_aside', 'depart_aside', True),
+        'image': ('img', dv, dp),
+        'important': ('aside', 'visit_aside', 'depart_aside', True),
+        'inline': ('span', dv, dp, False, False),
+        'label': ('th', 'visit_citation_reference', 'depart_label'),
+        'legend': ('div', dv, dp, True),
+        'line': (None, 'visit_line', None),
+        'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
+        'list_item': ('li', dv, dp),
+        'literal': ('code', 'visit_literal', None),
+        'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
+        'math': (None, 'visit_math_block', None),
+        'math_block': (None, 'visit_math_block', None),
+        'meta': (None, 'visit_meta', None),
+        'note': ('aside', 'visit_aside', 'depart_aside', True),
+        'option': ('kbd', 'visit_option', dp, False, False),
+        'option_argument': ('var', 'visit_option_argument', dp, False, False),
+        'option_group': ('td', 'visit_option_group', 'depart_option_group'),
+        'option_list': (None, 'visit_docinfo', 'depart_docinfo', True),
+        'option_list_item': ('tr', dv, dp),
+        'option_string': (None, 'do_nothing', None),
+        'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'paragraph': ('p', 'visit_paragraph', dp),
+        'pending': (None, dv, dp),
+        'problematic': ('a', 'visit_problematic', 'depart_reference', True, False),
+        'raw': (None, 'visit_raw', None),
+        'reference': ('a', 'visit_reference', 'depart_reference', False, False),
+        'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'row': ('tr', 'visit_row', 'depart_row'),
+        'rubric': ('p', dv, 'depart_rubric', True),
+        'section': ('section', 'visit_section', 'depart_section'),
+        'sidebar': ('aside', 'visit_aside', 'depart_aside', True),
+        'status': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'strong': (None, dv, dp, False, False),
+        'subscript': ('sub', dv, dp, False, False),
+        'substitution_definition': (None, 'skip_node', None),
+        'substitution_reference': (None, 'skip_node', None),
+        'subtitle': (None, 'visit_target', 'depart_subtitle'),
+        'superscript': ('sup', dv, dp, False, False),
+        'system_message': ('div', 'visit_system_message', dp),
+        'table': (None, 'visit_table', 'depart_table'),
+        'target': ('a', 'visit_target', 'depart_reference', False, False),
+        'tbody': (None, dv, dp),
+        'term': ('dt', dv, dp),
+        'tgroup': (None, 'do_nothing', None),
+        'thead': (None, 'visit_thead', 'depart_thead'),
+        'tip': ('aside', 'visit_aside', 'depart_aside', True),
+        'title': (None, dv, 'depart_title'),
+        'title_reference': ('cite', dv, dp, False, False),
+        'topic': ('aside', 'visit_aside', 'depart_aside', True),
+        'transition': ('hr', dv, dp),
+        'version': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'warning': ('aside', 'visit_aside', 'depart_aside', True),
+    }
+
+    def _map_terms_to_functions(self):
+        '''
+        Map terms to visit and departure functions
+        '''
+        for term, spec in HTML5Translator.rst_terms.items():
+            visit_func = spec[1] and getattr(HTML5Translator, spec[1], HTML5Translator.unknown_visit)
+            depart_func = spec[2] and getattr(HTML5Translator, spec[2], HTML5Translator.unknown_departure)
+            if visit_func:
+                setattr(HTML5Translator, 'visit_' + term, visit_func)
+            if depart_func:
+                setattr(HTML5Translator, 'depart_' + term, depart_func)
+        return
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = 0
         self.context = ElemStack(document.settings)
+        self.template = '<!DOCTYPE html>\n<html{language}>\n<head>{head}</head>\n' \
+                        '<body>{body}</body>\n</html>'
         self.head = []
         self.head.append(tag.meta(charset=self.document.settings.output_encoding))
+        self.add_stylesheets(document.settings.stylesheet)
+        self.add_scripts(document.settings.script)
+        self._map_terms_to_functions()
+        return
 
-        stylesheets = document.settings.stylesheet
+    def add_stylesheets(self, stylesheets):
         stylesheets = stylesheets and re.sub(r'\s+', '', stylesheets).split(',') or []
-        for s in stylesheets:
-            self.add_stylesheet(s)
-        javascripts = document.settings.script
-        javascripts = javascripts and re.sub(r'\s+', '', javascripts).split(',') or []
-        for j in javascripts:
-            self.add_javascript(j)
+        for href in stylesheets:
+            self.head.append(tag.link(rel='stylesheet', href=href))
         return
 
-    def add_stylesheet(self, href):
-        self.head.append(tag.link(rel='stylesheet', href=href))
+    def add_scripts(self, scripts):
+        scripts = scripts and re.sub(r'\s+', '', scripts).split(',') or []
+        for src in scripts:
+            self.head.append(tag.script(src=src))
         return
 
-    def add_javascript(self, src):
-        self.head.append(tag.script(src=src))
-        return
-
-    @property
-    def output(self):
-        output = '<!DOCTYPE html>\n<html{language}>\n<head>{head}</head>\n' \
-                 '<body>{body}</body>\n</html>'
+    def indent_head(self):
         if self.document.settings.indent_output:
             indent = '\n' + ' ' * self.document.settings.tab_width
             result = []
@@ -274,11 +288,15 @@ class HTML5Translator(nodes.NodeVisitor):
                 result.append(tag(indent, f))
             result.append('\n')
             self.head = result
+        return
 
+    @property
+    def output(self):
+        self.indent_head()
         language = ' lang="%s"' % self.document.settings.language_code
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
-        return output.format(language=language, head=self.head, body=self.body)
+        return self.template.format(language=language, head=self.head, body=self.body)
 
     def set_next_elem_attr(self, name, value):
         '''
@@ -291,7 +309,7 @@ class HTML5Translator(nodes.NodeVisitor):
         Get tag name, indentantion and correct attributes of a node according to its class
         '''
         node_class_name = node.__class__.__name__
-        spec = rst_terms[node_class_name]
+        spec = self.rst_terms[node_class_name]
         name = spec[0] or node_class_name
         use_name_in_class = len(spec) > 3 and spec[3]
         indent = spec[4] if len(spec) > 4 else True
@@ -777,17 +795,6 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.commit_elem(h1)
         node.attributes = {'classes': []}
         return
-
-'''
-Map terms to visit and departure functions
-'''
-for term, spec in rst_terms.items():
-    visit_func = spec[1] and getattr(HTML5Translator, spec[1], HTML5Translator.unknown_visit)
-    depart_func = spec[2] and getattr(HTML5Translator, spec[2], HTML5Translator.unknown_departure)
-    if visit_func:
-        setattr(HTML5Translator, 'visit_' + term, visit_func)
-    if depart_func:
-        setattr(HTML5Translator, 'depart_' + term, depart_func)
 
 def main():
     from docutils.core import publish_cmdline, default_description
