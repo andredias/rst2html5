@@ -632,7 +632,7 @@ references</a>.</pre>
 
 
 parsed_literal_as_code_block = {
-    'rst': """.. class:: code python
+    'rst': """.. class:: code language-python
 
 .. parsed-literal::
 
@@ -647,7 +647,7 @@ parsed_literal_as_code_block = {
 
 """,
     'out': """
-    <pre><code class="highlight language-python">def extract_variables(module):
+    <pre><code class="language-python">def extract_variables(module):
     '''
     Extract variables of a test data module.
     Variables should be a dict().
@@ -672,7 +672,7 @@ code_block = {
             if not v.startswith('__') and isinstance(getattr(module, v), dict))
 """,
     'out': """
-    <pre><code class="highlight language-python"><span class="k">def</span> <span class="nf">extract_variables</span>\
+    <pre><code class="python"><span class="k">def</span> <span class="nf">extract_variables</span>\
 <span class="p">(</span><span class="n">module</span><span class="p">):</span>
     <span class="sd">'''
     Extract variables of a test data module.
