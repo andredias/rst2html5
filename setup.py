@@ -17,7 +17,6 @@ setup(
     author='André Felipe Dias',
     author_email='andref.dias@gmailself.com',
     url='https://bitbucket.org/andre_felipe_dias/rst2html5',
-    setup_requires=['nose >= 1.0'],
     keywords = ["restructuredtext", "rst", "html5", "doctutils"]    ,
     description='Generates (X)HTML5 documents from standalone reStructuredText sources',
     long_description=long_description,
