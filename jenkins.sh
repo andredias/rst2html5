@@ -9,7 +9,7 @@ if [ -d metrics ]; then
     rm -rf metrics
 fi
 mkdir metrics
-if [ ${1:-''} == 'keep-env' ]; then
+if [ ${1:-''} == 'keep-env' ] && [ -d $WORKSPACE/env ]; then
     . $WORKSPACE/env/bin/activate
 else
     if [ -d env ]; then
@@ -24,21 +24,22 @@ fi
 nosetests --verbose --with-xunit --xunit-file=./metrics/xunit.xml --with-coverage \
      --cover-xml --cover-xml-file=../metrics/coverage.xml --cover-package=rst2html5
 
-# sloccount
+echo sloccount...
 sloccount --duplicates --wide --details . | \
      egrep -v '/(env|doc|metrics|build)/' > ./metrics/sloccount.sc
 
-# flakes:
+echo pyflakes...
 find . -name "*.py" | egrep -v '^./(env|doc|metrics|build)'  \
     | xargs pyflakes  > ./metrics/pyflakes.log
 
-#lint:
+echo pylint...
 find . -name "*.py" | egrep -v '^./(env|doc|metrics|build)' \
     | xargs pylint --output-format=parseable --reports=y > ./metrics/pylint.log
 
+echo pep8...
 pep8 --exclude="env,build,doc" > ./metrics/pep8.log
 
-#clone:
+echo clonedigger...
 clonedigger -o ./metrics/clonedigger.xml --ignore-dir=env \
     --ignore-dir=build --ignore-dir=doc --ignore-dir=tests --cpd-output .
 
