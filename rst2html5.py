@@ -5,14 +5,13 @@ from __future__ import unicode_literals
 
 __docformat__ = 'reStructuredText'
 
-import os
 import re
-import docutils
 from docutils import nodes, writers, frontend
 from docutils.math import pick_math_environment
-from genshi.builder import tag, Fragment
+from genshi.builder import tag
 from genshi.output import XHTMLSerializer
 from genshi.core import Markup
+
 
 class HTML5Writer(writers.Writer):
 
@@ -25,20 +24,22 @@ class HTML5Writer(writers.Writer):
         'HTML5 Specific Options',
         None, (
         ('Specify comma separated list of stylesheet URLs.',
-          ['--stylesheet'],
-          {'metavar': '<URL or path>', 'default': None, }),
+            ['--stylesheet'],
+            {'metavar': '<URL or path>', 'default': None, }),
         ('Specify comma separated list of script URLs.',
-          ['--script'],
-          {'metavar': '<URL or path>', 'default': None, }),
+            ['--script'],
+            {'metavar': '<URL or path>', 'default': None, }),
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
         ('Specify the maximum width (in characters) for options in option '
          'lists.  Longer options will span an entire row of the table used '
-         'to render the option list. Default is 0 characters which means "no limit". ',
+         'to render the option list. Default is 0 characters which means '
+         '"no limit". ',
             ['--option-limit'],
             {'default': 0, 'metavar': '<level>',
              'validator': frontend.validate_nonnegative_int}),
-    ))
+        )
+    )
 
     settings_defaults = {'tab_width': 4}
 
@@ -60,7 +61,6 @@ class HTML5Writer(writers.Writer):
         self.parts['head'] = self.head
         self.parts['body'] = self.body
         return
-
 
 
 class ElemStack(object):
@@ -89,7 +89,8 @@ class ElemStack(object):
             result.append(indentation)
         result.append(element)
         if self.indent_output and indent:
-            indentation = '\n' + self.indent_width * (self.indent_level - 1) * ' '
+            indentation = '\n' + self.indent_width * \
+                          (self.indent_level - 1) * ' '
             result.append(indentation)
         return result
 
@@ -131,16 +132,18 @@ class ElemStack(object):
         return result
 
 
-
 dv = 'default_visit'
 dp = 'default_departure'
 pass_ = 'no_op'
 
+
 class HTML5Translator(nodes.NodeVisitor):
 
     rst_terms = {
-        # 'term': ('tag', 'visit_func', 'depart_func', use_term_in_class, indent_elem)
-        # use_term_in_class and indent_elem are optionals. If not given, the default is False, True
+        # 'term': ('tag', 'visit_func', 'depart_func', use_term_in_class,
+        #          indent_elem)
+        # use_term_in_class and indent_elem are optionals.
+        # If not given, the default is False, True
         'Text': (None, 'visit_Text', None),
         'abbreviation': ('abbr', dv, dp),
         'acronym': (None, dv, dp),
@@ -155,7 +158,8 @@ class HTML5Translator(nodes.NodeVisitor):
         'caption': ('figcaption', dv, dp, False),
         'caution': ('aside', 'visit_aside', 'depart_aside', True),
         'citation': (None, 'visit_citation', 'depart_citation', True),
-        'citation_reference': ('a', 'visit_citation_reference', 'depart_citation_reference', True, False),
+        'citation_reference': ('a', 'visit_citation_reference',
+                               'depart_citation_reference', True, False),
         'classifier': (None, 'visit_classifier', None),
         'colspec': ('col', dv, 'depart_colspec'),
         'comment': (None, 'skip_node', None),
@@ -171,7 +175,8 @@ class HTML5Translator(nodes.NodeVisitor):
         'definition_list_item': (None, 'do_nothing', None),
         'description': ('td', dv, dp),
         'docinfo': (None, 'visit_docinfo', 'depart_docinfo', True),
-        'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
+        'doctest_block': ('pre', 'visit_literal_block',
+                          'depart_literal_block', True),
         'document': (None, 'visit_document', 'depart_document'),
         'emphasis': ('em', dv, dp, False, False),
         'entry': (None, dv, 'depart_entry'),
@@ -184,7 +189,8 @@ class HTML5Translator(nodes.NodeVisitor):
         'figure': (None, dv, dp),
         'footer': (None, dv, dp),
         'footnote': (None, 'visit_citation', 'depart_citation', True),
-        'footnote_reference': ('a', 'visit_label', 'depart_citation_reference', True, False),
+        'footnote_reference': ('a', 'visit_label',
+                               'depart_citation_reference', True, False),
         'generated': (None, 'do_nothing', None),
         'header': (None, dv, dp),
         'hint': ('aside', 'visit_aside', 'depart_aside', True),
@@ -197,7 +203,8 @@ class HTML5Translator(nodes.NodeVisitor):
         'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
         'list_item': ('li', dv, dp),
         'literal': ('code', 'visit_literal', None),
-        'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
+        'literal_block': ('pre', 'visit_literal_block',
+                          'depart_literal_block'),
         'math': (None, 'visit_math_block', None),
         'math_block': (None, 'visit_math_block', None),
         'meta': (None, 'visit_meta', None),
@@ -208,12 +215,15 @@ class HTML5Translator(nodes.NodeVisitor):
         'option_list': (None, 'visit_docinfo', 'depart_docinfo', True),
         'option_list_item': ('tr', dv, dp),
         'option_string': (None, 'do_nothing', None),
-        'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'organization': (None, 'visit_field_list_item',
+                         'depart_field_list_item'),
         'paragraph': ('p', 'visit_paragraph', dp),
         'pending': (None, dv, dp),
-        'problematic': ('a', 'visit_problematic', 'depart_reference', True, False),
+        'problematic': ('a', 'visit_problematic', 'depart_reference', True,
+                        False),
         'raw': (None, 'visit_raw', None),
-        'reference': ('a', 'visit_reference', 'depart_reference', False, False),
+        'reference': ('a', 'visit_reference', 'depart_reference', False,
+                      False),
         'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
         'row': ('tr', 'visit_row', 'depart_row'),
         'rubric': ('p', dv, 'depart_rubric', True),
@@ -247,8 +257,12 @@ class HTML5Translator(nodes.NodeVisitor):
         Map terms to visit and departure functions
         '''
         for term, spec in HTML5Translator.rst_terms.items():
-            visit_func = spec[1] and getattr(HTML5Translator, spec[1], HTML5Translator.unknown_visit)
-            depart_func = spec[2] and getattr(HTML5Translator, spec[2], HTML5Translator.unknown_departure)
+            visit_func = spec[1] and \
+                getattr(HTML5Translator, spec[1],
+                        HTML5Translator.unknown_visit)
+            depart_func = spec[2] and \
+                getattr(HTML5Translator, spec[2],
+                        HTML5Translator.unknown_departure)
             if visit_func:
                 setattr(HTML5Translator, 'visit_' + term, visit_func)
             if depart_func:
@@ -259,17 +273,19 @@ class HTML5Translator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = 0
         self.context = ElemStack(document.settings)
-        self.template = '<!DOCTYPE html>\n<html{language}>\n<head>{head}</head>\n' \
-                        '<body>{body}</body>\n</html>'
+        self.template = '<!DOCTYPE html>\n<html{language}>\n' \
+                        '<head>{head}</head>\n<body>{body}</body>\n</html>'
         self.head = []
-        self.head.append(tag.meta(charset=self.document.settings.output_encoding))
+        self.head.append(
+            tag.meta(charset=self.document.settings.output_encoding))
         self.add_stylesheets(document.settings.stylesheet)
         self.add_scripts(document.settings.script)
         self._map_terms_to_functions()
         return
 
     def add_stylesheets(self, stylesheets):
-        stylesheets = stylesheets and re.sub(r'\s+', '', stylesheets).split(',') or []
+        stylesheets = stylesheets and \
+            re.sub(r'\s+', '', stylesheets).split(',') or []
         for href in stylesheets:
             self.head.append(tag.link(rel='stylesheet', href=href))
         return
@@ -296,17 +312,20 @@ class HTML5Translator(nodes.NodeVisitor):
         language = ' lang="%s"' % self.document.settings.language_code
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
-        return self.template.format(language=language, head=self.head, body=self.body)
+        return self.template.format(language=language, head=self.head,
+                                    body=self.body)
 
     def set_next_elem_attr(self, name, value):
         '''
-        The given attribute will be inserted into the attributes of the next element.
+        The given attribute will be inserted into the attributes of the
+        next element.
         '''
         self.next_elem_attr = {name: value}
 
     def parse(self, node):
         '''
-        Get tag name, indentantion and correct attributes of a node according to its class
+        Get tag name, indentantion and correct attributes of a node according
+        to its class
         '''
         node_class_name = node.__class__.__name__
         spec = self.rst_terms[node_class_name]
@@ -317,10 +336,15 @@ class HTML5Translator(nodes.NodeVisitor):
             node['classes'].insert(0, node_class_name)
 
         attrs = {}
-        replacements = {'refuri': 'href', 'uri': 'src', 'refid': 'href',
-            'morerows': 'rowspan', 'morecols': 'colspan', 'classes': 'class', 'ids': 'id', }
-        ignores = ('names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub', 'backrefs',
-                   'auto', 'anonymous', )
+        replacements = {
+            'refuri': 'href', 'uri': 'src', 'refid': 'href',
+            'morerows': 'rowspan', 'morecols': 'colspan', 'classes': 'class',
+            'ids': 'id',
+        }
+        ignores = (
+            'names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub',
+            'backrefs', 'auto', 'anonymous',
+        )
         for k, v in node.attributes.items():
             if not v:
                 continue
@@ -350,14 +374,15 @@ class HTML5Translator(nodes.NodeVisitor):
         else:
             return default
 
-
     def default_visit(self, node):
         '''
         Initiate a new context to store inner HTML5 elements.
         '''
-        if 'ids' in node and self.once_attr('expand_id_to_anchor', default=True):
+        if 'ids' in node and self.once_attr('expand_id_to_anchor',
+                                            default=True):
             '''
-            create an anchor <a id=id></a> for each id found before the current element.
+            create an anchor <a id=id></a> for each id found before the
+            current element.
             '''
             for id in node['ids']:
                 self.context.begin_elem()
@@ -368,7 +393,8 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def default_departure(self, node):
         '''
-        Create the node's corresponding HTML5 element and combine it with its stored context.
+        Create the node's corresponding HTML5 element and combine it with its
+        stored context.
         '''
         name, indent, attr = self.parse(node)
         elem = getattr(tag, name)(**attr)
@@ -380,10 +406,12 @@ class HTML5Translator(nodes.NodeVisitor):
         Determine if the <p> tags around paragraph ``node`` can be omitted.
         Based on :func:`docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph`
         """
-        if (isinstance(node.parent, (nodes.document, nodes.compound, nodes.block_quote,
-           nodes.system_message, )) or node['classes'] or 'paragraph' != node.__class__.__name__):
+        # extra oarenthesis for pep8 alignment conformity
+        if ((isinstance(node.parent, (nodes.document, nodes.compound,
+                        nodes.block_quote, nodes.system_message, )) or
+             node['classes'] or 'paragraph' != node.__class__.__name__)):
             return False
-        first = isinstance(node.parent[0], nodes.label) # skip label
+        first = isinstance(node.parent[0], nodes.label)  # skip label
         for child in node.parent.children[first:]:
             # only first paragraph can be compact
             if isinstance(child, nodes.Invisible):
@@ -452,8 +480,8 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_enumerated_list(self, node):
         '''
         Ordered list.
-        It may have a preffix and suffix that must be handled by CSS3 and javascript to
-        be presented as intended.
+        It may have a preffix and suffix that must be handled by CSS3 and
+        javascript to be presented as intended.
 
         See:
 
@@ -493,7 +521,7 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         term = self.context.pop()
         term(' ', tag.span(':', class_='classifier-delimiter'), ' ',
-                           tag.span(node.astext(), class_='classifier'))
+             tag.span(node.astext(), class_='classifier'))
         self.context.append(term)
         raise nodes.SkipNode
 
@@ -525,7 +553,7 @@ class HTML5Translator(nodes.NodeVisitor):
         self.in_thead = True
         self.default_visit(node)
 
-    def depart_thead(self,node):
+    def depart_thead(self, node):
         self.in_thead = False
         self.default_departure(node)
 
@@ -579,7 +607,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         if 'code' in node['classes']:
-            self.context.begin_elem() # <pre>. The next will be for <code>
+            self.context.begin_elem()  # <pre>. The next will be for <code>
         self.preserve_space = True
         self.default_visit(node)
         return
@@ -602,14 +630,16 @@ class HTML5Translator(nodes.NodeVisitor):
         math_code = node.astext()
         math_env = pick_math_environment(math_code)
         if 'align' in math_env:
-            template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code, math_env)
+            template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code,
+                                                       math_env)
             elem = tag.div(template)
-        else: # equation
+        else:  # equation
             template = '\(%s\)' % math_code
             elem = tag.span(template)
         elem(class_='math')
         self.context.append(elem)
-        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+        src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js" \
+              "?config=TeX-AMS-MML_HTMLorMML"
         self.head.append(tag.script(src=src))
         raise nodes.SkipNode
 
@@ -645,9 +675,9 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_departure(node)
 
     def visit_field_list_item(self, node):
-        self.context.begin_elem() # tr
+        self.context.begin_elem()  # tr
         self.context.append(tag.th(node.__class__.__name__))
-        self.context.begin_elem() # td
+        self.context.begin_elem()  # td
 
     def depart_field_list_item(self, node):
         self.context.commit_elem(tag.td)
@@ -681,15 +711,16 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def depart_address(self, node):
         del self.preserve_space
-        self.context.commit_elem(tag.pre(class_='docinfo-' + node.__class__.__name__))
+        self.context.commit_elem(tag.pre(class_='docinfo-' +
+                                         node.__class__.__name__))
         self.depart_field_list_item(node)
 
     def visit_docinfo(self, node):
-        self.context.begin_elem() # table
+        self.context.begin_elem()  # table
         col = tag.col
         self.context.append(col)
         self.context.append(col)
-        self.context.begin_elem() # tbody
+        self.context.begin_elem()  # tbody
 
     def depart_docinfo(self, node):
         self.context.commit_elem(tag.tbody)
@@ -698,7 +729,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_citation(self, node):
         self.visit_docinfo(node)
-        self.context.begin_elem() # tr
+        self.context.begin_elem()  # tr
 
     def depart_citation(self, node):
         # td initiated at depart_label
@@ -712,12 +743,12 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def depart_option_group(self, node):
         if self.document.settings.option_limit and \
-           len(node.astext()) > self.document.settings.option_limit:
+                len(node.astext()) > self.document.settings.option_limit:
             node['morecols'] = 2
             self.default_departure(node)
-            self.context.commit_elem(tag.tr) # closes this tr
-            self.context.begin_elem() # begins another tr
-            self.context.append(tag.td) # empty td due to colspan
+            self.context.commit_elem(tag.tr)  # closes this tr
+            self.context.begin_elem()  # begins another tr
+            self.context.append(tag.td)  # empty td due to colspan
         else:
             self.default_departure(node)
 
@@ -745,7 +776,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_label(self, node):
         self.context.append(']', indent=False)
         self.default_departure(node)
-        self.context.begin_elem() # next td
+        self.context.begin_elem()  # next td
 
     '''
     Line blocks use <pre>. lines breaks and spacing are reconstructured
@@ -786,19 +817,22 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_system_message(self, node):
         self.default_visit(node)
-        self.context.begin_elem() # h1
+        self.context.begin_elem()  # h1
         backrefs = [tag(' ', tag.a(v, href="#" + v)) for v in node['backrefs']]
         node.attributes.setdefault('line', '')
-        text = 'System Message: {type}/{level} ({source} line {line})'.format(**node.attributes)
+        text = 'System Message: {type}/{level} ({source} line ' \
+               '{line})'.format(**node.attributes)
         h1 = tag.h1(text, *backrefs)
         self.context.commit_elem(h1)
         node.attributes = {'classes': []}
         return
 
+
 def main():
     from docutils.core import publish_cmdline, default_description
 
-    description = 'Generates (X)HTML5 documents from standalone reStructuredText sources.' + default_description
+    description = 'Generates (X)HTML5 documents from standalone ' \
+                  'reStructuredText sources.' + default_description
     publish_cmdline(writer=HTML5Writer(), description=description)
 
 if __name__ == '__main__':

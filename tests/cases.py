@@ -29,7 +29,7 @@ title_accented_chars = {
 }
 
 title_2 = {
-        'rst': '''
+    'rst': '''
 Level 1
 =======
 
@@ -37,8 +37,10 @@ some text
 
 Level 1 Again
 =============''',
-    'out': '<a id="level-1"></a><section><h1>Level 1</h1><p>some text</p></section>'
-           '<a id="level-1-again"></a><section><h1>Level 1 Again</h1></section>',
+    'out': '<a id="level-1"></a><section><h1>Level 1</h1>'
+           '<p>some text</p></section>'
+           '<a id="level-1-again"></a><section><h1>Level 1 Again</h1>'
+           '</section>',
     'indent_output': False,
     'part': 'body',
 }
@@ -96,7 +98,8 @@ Section Title
 
 ...''',
     'out': '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>'
-           '<a id="section-title"></a><section><h1>Section Title</h1><p>...</p></section>',
+           '<a id="section-title"></a><section><h1>Section Title</h1>'
+           '<p>...</p></section>',
     'indent_output': False,
     'part': 'body',
 }
@@ -106,7 +109,7 @@ Section Title
 The subtitle processing should deal with indentation
 '''
 subtitle_2 = {
-        'rst': '''
+    'rst': '''
 ================
  Document Title
 ================
@@ -118,7 +121,7 @@ Section Title
 =============
 
 ...''',
-        'out': '''
+    'out': '''
     <hgroup>
         <h1>Document Title</h1>
         <h2>Subtitle</h2>
@@ -136,7 +139,7 @@ Section Title
 paragraph = {
     'rst': 'Lorem    ipsum dolor sit amet,        consectetur '
            'adipiscing          elit.\n'
-            'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.',
+           'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.',
     'out': '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
            'Vestibulum dignissim lacinia blandit. Suspendisse potenti.</p>',
     'indent_output': False,
@@ -146,7 +149,7 @@ paragraph = {
 
 accented_paragraph = {
     'rst': 'Não há ninguém que ame a dor por si só, que a busque e '
-          'queira tê-la, simplesmente por ser dor...',
+           'queira tê-la, simplesmente por ser dor...',
     'out': '<p>Não há ninguém que ame a dor por si só, que a busque e '
            'queira tê-la, simplesmente por ser dor...</p>',
     'indent_output': False,
@@ -163,9 +166,9 @@ short.
 
 This is another one.''',
     'out': "<p>This is a paragraph. It's quite short.</p>"
-               "<blockquote><p>This paragraph will result in an indented "
-               "block of text, typically used for quoting other text."
-               "</p></blockquote><p>This is another one.</p>",
+           "<blockquote><p>This paragraph will result in an indented "
+           "block of text, typically used for quoting other text."
+           "</p></blockquote><p>This is another one.</p>",
     'indent_output': False,
     'part': 'body',
 }
@@ -201,7 +204,8 @@ figure = {
     'out': '''
     <figure>
         <img src="picture.png" alt="map to buried treasure" scale="50" />
-        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
+        <figcaption>This is the caption of the figure \
+(a simple paragraph).</figcaption>
     </figure>
 ''',
     'part': 'body'
@@ -218,8 +222,9 @@ inline_markup = {
 ``inline  <pre>   text``
 ''',
     'out': '''
-    <p><em>emphasis</em> <strong>strong emphasis</strong> <cite>interpreted text</cite> \
-<sup>superscript</sup> <em>interpreted text with role</em> <sub>subscript</sub> \
+    <p><em>emphasis</em> <strong>strong emphasis</strong> \
+<cite>interpreted text</cite> <sup>superscript</sup> \
+<em>interpreted text with role</em> <sub>subscript</sub> \
 <code>inline&nbsp;&nbsp;&lt;pre&gt;&nbsp;&nbsp;&nbsp;text</code></p>
 ''',
     'part': 'body'
@@ -454,7 +459,8 @@ external_link = {
     'rst': '''This is a paragraph that contains `a link`_.
 
 .. _a link: http://example.com/''',
-    'out': '<p>This is a paragraph that contains <a href="http://example.com/">a link</a>.</p>',
+    'out': '<p>This is a paragraph that contains '
+           '<a href="http://example.com/">a link</a>.</p>',
     'indent_output': False,
     'part': 'body',
 }
@@ -486,10 +492,12 @@ chained_internal_links = {
 The targets "target1" and "target2" are synonyms; they both
 point to this paragraph.''',
     'out': '''
-    <p>Links to <a href="#target1">target1</a> and <a href="#target2">target2</a>.</p>
+    <p>Links to <a href="#target1">target1</a> and \
+<a href="#target2">target2</a>.</p>
     <a id="target2"></a>
     <a id="target1"></a>
-    <p>The targets "target1" and "target2" are synonyms; they both point to this paragraph.</p>
+    <p>The targets "target1" and "target2" are synonyms; \
+they both point to this paragraph.</p>
 ''',
     'part': 'body'
 }
@@ -501,13 +509,15 @@ propagated_target = {
 .. _archive:
 .. _Doc-SIG: http://mail.python.org/pipermail/doc-sig/''',
     'out': '''
-    <p>Link to <a href="http://mail.python.org/pipermail/doc-sig/">archive</a>.</p>
+    <p>Link to \
+<a href="http://mail.python.org/pipermail/doc-sig/">archive</a>.</p>
 ''',
     'part': 'body'
 }
 
 inline_and_indirect_target = {
-    'rst': '''This is a _`inline hyperlink target` that corresponds to a <target> in doctree.
+    'rst': '''This is a _`inline hyperlink target` that corresponds to \
+a <target> in doctree.
 
 Link to one_.
 
@@ -521,12 +531,13 @@ Referencing the  `inline hyperlink target`_.
 ''',
 
     'out': '''
-    <p>This is a <a id="inline-hyperlink-target">inline hyperlink target</a> that corresponds \
-to a &lt;target&gt; in doctree.</p>
+    <p>This is a <a id="inline-hyperlink-target">inline hyperlink target</a> \
+that corresponds to a &lt;target&gt; in doctree.</p>
     <p>Link to <a href="#three">one</a>.</p>
     <a id="three"></a>
     <p>Target paragraph.</p>
-    <p>Referencing the <a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
+    <p>Referencing the \
+<a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
 ''',
     'part': 'body'
 }
@@ -538,8 +549,9 @@ references`__ (`a second reference`__).
 __ http://www.python.org/
 __ http://docutils.sourceforge.net/''',
     'out': '''
-    <p>Paragraphs contain text and may contain <a href="http://www.python.org/">anonymous \
-hyperlink references</a> (<a href="http://docutils.sourceforge.net/">a second reference</a>).</p>
+    <p>Paragraphs contain text and may contain \
+<a href="http://www.python.org/">anonymous hyperlink references</a> \
+(<a href="http://docutils.sourceforge.net/">a second reference</a>).</p>
 ''',
     'part': 'body',
 }
@@ -619,17 +631,17 @@ parsed_literal_block = {
    Inline markup is supported, e.g. *emphasis*, **strong**, ``literal
    text``, _`hyperlink targets`, and `references <http://www.python.org/>`_.
 ''',
-   'out': '''
+    'out': '''
     <pre>This is a parsed literal block.
     This line is indented.  The next line is blank.
 
-Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <code>literal
-text</code>, <a id="hyperlink-targets">hyperlink targets</a>, and <a href="http://www.python.org/">\
-references</a>.</pre>
+Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, \
+<code>literal
+text</code>, <a id="hyperlink-targets">hyperlink targets</a>, \
+and <a href="http://www.python.org/">references</a>.</pre>
 ''',
-   'part': 'body',
+    'part': 'body',
 }
-
 
 parsed_literal_as_code_block = {
     'rst': """.. class:: code language-python
@@ -654,7 +666,8 @@ parsed_literal_as_code_block = {
     For example, {'rst': rst, 'out':out, ...}
     '''
     return ((v, getattr(module, v)) for v in dir(module)
-        if not v.startswith('__') and isinstance(getattr(module, v), dict))</code></pre>
+        if not v.startswith('__') and isinstance(getattr(module, v), \
+dict))</code></pre>
 """,
     'part': 'body',
 }
@@ -672,24 +685,32 @@ code_block = {
             if not v.startswith('__') and isinstance(getattr(module, v), dict))
 """,
     'out': """
-    <pre><code class="python"><span class="k">def</span> <span class="nf">extract_variables</span>\
+    <pre><code class="python"><span class="k">def</span> \
+<span class="nf">extract_variables</span>\
 <span class="p">(</span><span class="n">module</span><span class="p">):</span>
     <span class="sd">'''
     Extract variables of a test data module.
     Variables should be a dict().
     For example, {'rst': rst, 'out':out, ...}
     '''</span>
-    <span class="k">return</span> <span class="p">((</span><span class="n">v</span>\
-<span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">\
-module</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>\
- <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">\
-dir</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">v</span>\
-<span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">\
-'__'</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span>\
-<span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">\
-module</span><span class="p">,</span> <span class="n">v</span><span class="p">),\
-</span> <span class="nb">dict</span><span class="p">))</span></code></pre>
+    <span class="k">return</span> <span class="p">((</span>\
+<span class="n">v</span><span class="p">,</span> \
+<span class="nb">getattr</span><span class="p">(</span>\
+<span class="n">module</span><span class="p">,</span> \
+<span class="n">v</span><span class="p">))</span> \
+<span class="k">for</span> <span class="n">v</span> \
+<span class="ow">in</span> <span class="nb">\
+dir</span><span class="p">\
+(</span><span class="n">module</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> \
+<span class="n">v</span><span class="o">.</span>\
+<span class="n">startswith</span><span class="p">(</span><span class="s">\
+'__'</span><span class="p">)</span> <span class="ow">and</span> \
+<span class="nb">isinstance</span><span class="p">(</span>\
+<span class="nb">getattr</span><span class="p">(</span><span class="n">\
+module</span><span class="p">,</span> <span class="n">v</span>\
+<span class="p">),</span> <span class="nb">dict</span>\
+<span class="p">))</span></code></pre>
 """,
     'part': 'body'
 }
@@ -726,7 +747,8 @@ raw = {
     <br />
 
 more text''',
-    'out': '\n    <p>some text</p>\n<hr width=50 size=10 />\n<br />\n    <p>more text</p>\n',
+    'out': '\n    <p>some text</p>\n<hr width=50 size=10 />\n<br />'
+           '\n    <p>more text</p>\n',
     'part': 'body'
 }
 
@@ -739,7 +761,8 @@ paragraph with some text
 
 Section Title
 =============''',
-    'out': '<p class="nav special">paragraph with some text</p><a id="section-title"></a>'
+    'out': '<p class="nav special">paragraph with some text</p>'
+           '<a id="section-title"></a>'
            '<section class="heading top">'
            '<h1>Section Title</h1></section>',
     'indent_output': False,
@@ -785,8 +808,8 @@ Another Subtitle
         <p>more text</p>
         <aside class="topic">
             <h1>Topic Title</h1>
-            <p>Subsequent indented lines comprise the body of the topic, and are interpreted as \
-body elements.</p>
+            <p>Subsequent indented lines comprise the body of the topic, \
+and are interpreted as body elements.</p>
         </aside>
     </section>
     <a id="another-subtitle"></a>
@@ -848,7 +871,8 @@ admonitions = {
     </aside>
     <aside class="note">This is a note.</aside>
     <aside class="tip">15% if the service is good.</aside>
-    <aside class="warning">Strong prose may provoke extreme mental exertion. Reader discretion is strongly advised.</aside>
+    <aside class="warning">Strong prose may provoke extreme mental exertion. \
+Reader discretion is strongly advised.</aside>
     <aside class="admonition">
         <h1>And, by the way...</h1>
         <p>You can make up your own admonition too.</p>
@@ -892,7 +916,8 @@ Another Subtitle
             <h1>This is a note admonition.</h1>
             <p>This is the second line of the first paragraph.</p>
             <ul>
-                <li>The note contains all indented body elements following.</li>
+                <li>The note contains all indented body elements \
+following.</li>
                 <li>It includes this bullet list.</li>
             </ul>
         </aside>
@@ -943,7 +968,8 @@ Another Subtitle
             </hgroup>
             <p>This is the second line of the first paragraph.</p>
             <ul>
-                <li>The note contains all indented body elements following.</li>
+                <li>The note contains all indented body elements \
+following.</li>
                 <li>It includes this bullet list.</li>
             </ul>
         </aside>
@@ -957,7 +983,8 @@ Another Subtitle
 }
 
 rubric = {
-    'rst': 'some text\n\n.. rubric:: RuBriC\n    :class: special heading\n\nmore text',
+    'rst': 'some text\n\n.. rubric:: RuBriC\n    :class: special heading'
+           '\n\nmore text',
     'out': '<p>some text</p><p class="rubric">RuBriC</p><p>more text</p>',
     'indent_output': False,
     'part': 'body',
@@ -967,8 +994,8 @@ epigraph = {
     'rst': '''.. epigraph::
 
    No matter where you go, there you are.''',
-    'out': '<blockquote class="epigraph"><p>No matter where you go, there you are.</p>'
-           '</blockquote>',
+    'out': '<blockquote class="epigraph"><p>No matter where you go, there you '
+           'are.</p></blockquote>',
     'indent_output': False,
     'part': 'body',
 }
@@ -985,7 +1012,8 @@ compound = {
    you will erase the entire contents of your file system.''',
     'out': '''
     <div class="compound">
-        <p>The 'rm' command is very dangerous. If you are logged in as root and enter</p>
+        <p>The 'rm' command is very dangerous. If you are logged in as \
+root and enter</p>
         <pre>cd /
 rm -rf *</pre>
         <p>you will erase the entire contents of your file system.</p>
@@ -998,7 +1026,8 @@ container = {
     'rst': '''.. container:: custom
 
    This paragraph might be rendered in a custom way.''',
-    'out': '<div class="container custom">This paragraph might be rendered in a custom way.</div>',
+    'out': '<div class="container custom">This paragraph might be rendered '
+           'in a custom way.</div>',
     'indent_output': False,
     'part': 'body',
 }
@@ -1010,7 +1039,8 @@ contents = {
 Basic Usage
 ===========
 
-To start using subrepositories, you need two repositories, a main repo and a nested repo''',
+To start using subrepositories, you need two repositories, a main repo and \
+a nested repo''',
     'out': '''
     <a id="table-of-contents"></a>
     <aside class="topic contents">
@@ -1022,7 +1052,8 @@ To start using subrepositories, you need two repositories, a main repo and a nes
     <a id="basic-usage"></a>
     <section>
         <h1>Basic Usage</h1>
-        <p>To start using subrepositories, you need two repositories, a main repo and a nested repo</p>
+        <p>To start using subrepositories, you need two repositories, a main \
+repo and a nested repo</p>
     </section>
 ''',
     'part': 'body',
@@ -1047,8 +1078,8 @@ replace = {
 
 Yes, |reST| is a long word, so I can't blame anyone for wanting to
 abbreviate it.''',
-    'out': "<p>Yes, reStructuredText is a long word, so I can't blame anyone for wanting to "
-           "abbreviate it.</p>",
+    'out': "<p>Yes, reStructuredText is a long word, so I can't blame "
+           "anyone for wanting to abbreviate it.</p>",
     'indent_output': False,
     'part': 'body',
 }
@@ -1068,7 +1099,8 @@ docinfo = {
 :Date: 2012-07-29
 :Copyright: André Felipe Dias
 :Dedication: To Andréa, Dexter e DeeDee
-:Abstract: Generates (X)HTML5 documents from standalone reStructuredText sources.
+:Abstract: Generates (X)HTML5 documents from standalone reStructuredText \
+sources.
 :Indentation: Since the field marker may be quite long, the second
    and subsequent lines of the field body do not have to line up
    with the first line, but they must be indented relative to the
@@ -1099,7 +1131,8 @@ docinfo = {
             </tr>
             <tr>
                 <th>contact</th>
-                <td><a href="mailto:andref.dias@pronus.eng.br">andref.dias@pronus.eng.br</a></td>
+                <td><a href="mailto:andref.dias@pronus.eng.br">\
+andref.dias@pronus.eng.br</a></td>
             </tr>
             <tr>
                 <th>address</th>
@@ -1128,9 +1161,9 @@ Sumaré - São Paulo - Brasil
             <tr>
                 <th>Indentation</th>
                 <td>Since the field marker may be quite long, the second and \
-subsequent lines of the field body do not have to line up with the first line, \
-but they must be indented relative to the field name marker, and they must line \
-up with each other.</td>
+subsequent lines of the field body do not have to line up with the \
+first line, but they must be indented relative to the field name marker, \
+and they must line up with each other.</td>
             </tr>
             <tr>
                 <th>Parameter i</th>
@@ -1144,7 +1177,8 @@ up with each other.</td>
     </aside>
     <aside class="topic abstract">
         <h1>Abstract</h1>
-        <p>Generates (X)HTML5 documents from standalone reStructuredText sources.</p>
+        <p>Generates (X)HTML5 documents from standalone reStructuredText \
+sources.</p>
     </aside>
 ''',
     'part': 'body',
@@ -1163,13 +1197,14 @@ docinfo2 = {
         <tbody>
             <tr>
                 <th>Info</th>
-                <td>See <a href="https://bitbucket.org/andre_felipe_dias/rst2html5">\
-https://bitbucket.org/andre_felipe_dias/rst2html5</a></td>
+                <td>See <a href="https://bitbucket.org/\
+andre_felipe_dias/rst2html5">https://bitbucket.org/andre_felipe_dias/\
+rst2html5</a></td>
             </tr>
             <tr>
                 <th>author</th>
-                <td>André Felipe Dias &lt;<a href="mailto:andref.dias@gmail.com">\
-andref.dias@gmail.com</a>&gt;</td>
+                <td>André Felipe Dias &lt;<a href="mailto:\
+andref.dias@gmail.com">andref.dias@gmail.com</a>&gt;</td>
             </tr>
             <tr>
                 <th>date</th>
@@ -1208,8 +1243,10 @@ Another [TEST2]_.
 .. [CIT2012] A citation
 .. [TEST2] Test text''',
     'out': '''
-    <p>this is a citation <a href="#cit2012" id="id1" class="citation_reference">[CIT2012]</a></p>
-    <p>Another <a href="#test2" id="id2" class="citation_reference">[TEST2]</a>.</p>
+    <p>this is a citation <a href="#cit2012" id="id1" \
+class="citation_reference">[CIT2012]</a></p>
+    <p>Another <a href="#test2" id="id2" \
+class="citation_reference">[TEST2]</a>.</p>
     <table class="citation" id="cit2012">
         <col />
         <col />
@@ -1237,13 +1274,15 @@ Another [TEST2]_.
 attribution = {
     'rst': '''Quote:
 
-    "Choose a job you love, and you will never have to work a day in your life."
+    "Choose a job you love, and you will never have to work a day \
+in your life."
 
     -- Confucius''',
     'out': '''
     <p>Quote:</p>
     <blockquote>
-        <p>"Choose a job you love, and you will never have to work a day in your life."</p>
+        <p>"Choose a job you love, and you will never have to work a day \
+in your life."</p>
         <p class="attribution">Confucius</p>
     </blockquote>
 ''',
@@ -1312,8 +1351,10 @@ option_list = {
             <tr>
                 <td><kbd>-p</kbd></td>
                 <td>
-                    <p>This option has two paragraphs in the description. This is the first.</p>
-                    <p>This is the second. Blank lines may be omitted between options (as above) or left in (as here and below).</p>
+                    <p>This option has two paragraphs in the description. \
+This is the first.</p>
+                    <p>This is the second. Blank lines may be omitted \
+between options (as above) or left in (as here and below).</p>
                 </td>
             </tr>
             <tr>
@@ -1321,7 +1362,8 @@ option_list = {
             </tr>
             <tr>
                 <td></td>
-                <td>A VMS-style option. Note the adjustment for the required two spaces.</td>
+                <td>A VMS-style option. Note the adjustment for the required \
+two spaces.</td>
             </tr>
             <tr>
                 <td colspan="2"><kbd>--an-even-longer-option</kbd></td>
@@ -1335,7 +1377,8 @@ option_list = {
                 <td>This option has two variants.</td>
             </tr>
             <tr>
-                <td colspan="2"><kbd>-f <var>FILE</var></kbd>, <kbd>--file=<var>FILE</var></kbd></td>
+                <td colspan="2"><kbd>-f <var>FILE</var></kbd>, \
+<kbd>--file=<var>FILE</var></kbd></td>
             </tr>
             <tr>
                 <td></td>
@@ -1369,9 +1412,10 @@ footnote = {
 
 .. [#] This footnote will be labeled "3".  It is the second
    auto-numbered footnote, but footnote label "2" is already used.''',
-   'out': '''
-    <p><a href="#id4" id="id1" class="footnote_reference">[2]</a> will be "2" (manually numbered), \
-<a href="#id5" id="id2" class="footnote_reference">[3]</a> will be "3" (anonymous auto-numbered), \
+    'out': '''
+    <p><a href="#id4" id="id1" class="footnote_reference">[2]</a> \
+will be "2" (manually numbered), <a href="#id5" id="id2" \
+class="footnote_reference">[3]</a> will be "3" (anonymous auto-numbered), \
 and <a href="#label" id="id3" class="footnote_reference">[1]</a> will be "1" \
 (labeled auto-numbered).</p>
     <table id="label" class="footnote">
@@ -1381,11 +1425,12 @@ and <a href="#label" id="id3" class="footnote_reference">[1]</a> will be "1" \
             <tr>
                 <th>[1]</th>
                 <td>
-                    <p>This autonumber-labeled footnote will be labeled "1".</p>
-                    <p>It is the first auto-numbered footnote and no other footnote with label \
-"1" exists.</p>
-                    <p>The order of the footnotes is used to determine numbering, not the order \
-of the footnote references.</p>
+                    <p>This autonumber-labeled footnote will be \
+labeled "1".</p>
+                    <p>It is the first auto-numbered footnote and no other \
+footnote with label "1" exists.</p>
+                    <p>The order of the footnotes is used to determine \
+numbering, not the order of the footnote references.</p>
                 </td>
             </tr>
         </tbody>
@@ -1396,7 +1441,8 @@ of the footnote references.</p>
         <tbody>
             <tr>
                 <th>[2]</th>
-                <td>This footnote is labeled manually, so its number is fixed.</td>
+                <td>This footnote is labeled manually, so its number is \
+fixed.</td>
             </tr>
         </tbody>
     </table>
@@ -1406,12 +1452,13 @@ of the footnote references.</p>
         <tbody>
             <tr>
                 <th>[3]</th>
-                <td>This footnote will be labeled "3". It is the second auto-numbered footnote, but footnote label "2" is already used.</td>
+                <td>This footnote will be labeled "3". It is the second \
+auto-numbered footnote, but footnote label "2" is already used.</td>
             </tr>
         </tbody>
     </table>
 ''',
-   'part': 'body',
+    'part': 'body',
 }
 
 
@@ -1461,14 +1508,14 @@ legend = {
     'out': '''
     <figure>
         <img src="picture.png" alt="map to buried treasure" scale="50" />
-        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
-        <div class="legend">The legend consists of all elements after the caption. In this case, the legend consists of this paragraph.</div>
+        <figcaption>This is the caption of the figure (a simple paragraph).\
+</figcaption>
+        <div class="legend">The legend consists of all elements after the \
+caption. In this case, the legend consists of this paragraph.</div>
     </figure>
 ''',
     'part': 'body'
 }
-
-
 
 # stderr should present: <string>:1: (ERROR/3) Unknown target name: "target"
 system_message = {
@@ -1484,7 +1531,8 @@ system_message = {
         <h1>Docutils System Messages</h1>
         <a id="id1"></a>
         <div>
-            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id2">id2</a></h1>
+            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) \
+<a href="#id2">id2</a></h1>
             <p>Unknown target name: "target".</p>
         </div>
     </section>
@@ -1501,16 +1549,18 @@ Target2__
 .. __: http://opensource.org/licenses/MIT
 ''',
     'out': '''
-    <p><a href="#id2" id="id3" class="problematic">Target1__</a> <a href="#id2" id="id4" \
+    <p><a href="#id2" id="id3" class="problematic">Target1__</a> \
+<a href="#id2" id="id4" \
 class="problematic">Target2__</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
         <a id="id2"></a>
         <div>
-            <h1>System Message: ERROR/3 (&lt;string&gt; line ) <a href="#id3">id3</a> \
+            <h1>System Message: ERROR/3 (&lt;string&gt; line ) \
+<a href="#id3">id3</a> \
 <a href="#id4">id4</a></h1>
-            <p>Anonymous hyperlink mismatch: 2 references but 1 targets. See "backrefs" \
-attribute for IDs.</p>
+            <p>Anonymous hyperlink mismatch: 2 references but 1 targets. \
+See "backrefs" attribute for IDs.</p>
         </div>
     </section>
 ''',
@@ -1537,7 +1587,8 @@ problematic = {
         <h1>Docutils System Messages</h1>
         <a id="id3"></a>
         <div>
-            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id4">id4</a></h1>
+            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) \
+<a href="#id4">id4</a></h1>
             <p>Unknown target name: "2".</p>
         </div>
     </section>
@@ -1553,7 +1604,8 @@ paragraph_h = {
 
 math_role = {
     'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
-    'out': '<meta charset="utf-8" /><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js'\
+    'out': '<meta charset="utf-8" />\
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js'
            '?config=TeX-AMS-MML_HTMLorMML"></script>',
     'indent_output': False,
     'part': 'head',
@@ -1574,16 +1626,19 @@ stylesheet = {
     <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
 ''',
     'part': 'head',
-    'stylesheet': 'http://test.com/css/default.css, http://www.pronus.eng.br/css/standard.css'
+    'stylesheet': 'http://test.com/css/default.css, '
+                  'http://www.pronus.eng.br/css/standard.css'
 }
 
 javascript = {
     'rst': 'ordinary paragraph',
     'out': '''
     <meta charset="utf-8" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/\
+1.7.2/jquery.min.js"></script>
 ''',
-    'script': 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js',
+    'script': 'https://ajax.googleapis.com/ajax/libs/jquery/\
+1.7.2/jquery.min.js',
     'part': 'head',
 }
 
@@ -1601,4 +1656,3 @@ meta_h = {
 ''',
     'part': 'head',
 }
-
