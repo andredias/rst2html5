@@ -7,7 +7,10 @@ __docformat__ = 'reStructuredText'
 
 import re
 from docutils import nodes, writers, frontend
-from docutils.math import pick_math_environment
+try:
+    from docutils.math import pick_math_environment
+except ImportError:
+    from docutils.utils.math import pick_math_environment
 from genshi.builder import tag
 from genshi.output import XHTMLSerializer
 from genshi.core import Markup
