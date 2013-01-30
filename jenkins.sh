@@ -1,9 +1,10 @@
 #!/bin/bash
-
 # use ./jenkins.sh keep-env to keep current virtualenv
 
+PACKAGE='rst2html5'
+
 if [ -z "$WORKSPACE" ]; then
-    WORKSPACE=.
+    WORKSPACE=$(pwd)
 fi
 if [ -d metrics ]; then
     rm -rf metrics
@@ -21,8 +22,10 @@ else
     pip install nose coverage
 fi
 
-nosetests --verbose --with-xunit --xunit-file=./metrics/xunit.xml --with-coverage \
-     --cover-xml --cover-xml-file=../metrics/coverage.xml --cover-package=rst2html5
+echo "PACKAGE = $PACKAGE"
+nosetests --verbose --with-xunit --xunit-file=$WORKSPACE/metrics/xunit.xml \
+    --with-coverage --cover-xml --cover-package=$PACKAGE --cover-branches \
+    --cover-xml-file=$WORKSPACE/metrics/coverage.xml
 
 echo sloccount...
 sloccount --duplicates --wide --details . | \
@@ -37,7 +40,7 @@ find . -name "*.py" | egrep -v '^./(env|doc|metrics|build)' \
     | xargs pylint --output-format=parseable --reports=y > ./metrics/pylint.log
 
 echo pep8...
-pep8 --exclude="env,build,doc" > ./metrics/pep8.log
+pep8 --exclude="env,build,doc" . > ./metrics/pep8.log
 
 echo clonedigger...
 clonedigger -o ./metrics/clonedigger.xml --ignore-dir=env \
