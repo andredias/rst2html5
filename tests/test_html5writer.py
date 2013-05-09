@@ -48,7 +48,6 @@ def test():
         for test_name, case in extract_variables(cases):
             yield _test_part, test_name, case
     finally:
-        sys.stderr.close()
         sys.stderr = old_stderr
 
 

@@ -1,5 +1,6 @@
 #!/bin/bash
-# use ./jenkins.sh keep-env to keep current virtualenv
+# to keep current virtualenv, use
+# ./jenkins.sh keep-env
 
 PACKAGE='rst2html5'
 
@@ -19,7 +20,7 @@ else
     virtualenv env
     . $WORKSPACE/env/bin/activate
     pip install -M -r requirements.txt
-    pip install nose coverage
+    pip install -M -r test_requirements.txt
 fi
 
 echo "PACKAGE = $PACKAGE"
@@ -31,16 +32,12 @@ echo sloccount...
 sloccount --duplicates --wide --details . | \
      egrep -v '/(env|doc|metrics|build)/' > ./metrics/sloccount.sc
 
-echo pyflakes...
-find . -name "*.py" | egrep -v '^./(env|doc|metrics|build)'  \
-    | xargs pyflakes  > ./metrics/pyflakes.log
+echo flake8...
+flake8 --exclude="env,build,doc" . > ./metrics/flake8.log
 
 echo pylint...
 find . -name "*.py" | egrep -v '^./(env|doc|metrics|build)' \
     | xargs pylint --output-format=parseable --reports=y > ./metrics/pylint.log
-
-echo pep8...
-pep8 --exclude="env,build,doc" . > ./metrics/pep8.log
 
 echo clonedigger...
 clonedigger -o ./metrics/clonedigger.xml --ignore-dir=env \
