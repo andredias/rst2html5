@@ -97,7 +97,7 @@ Section Title
 =============
 
 ...''',
-    'out': '<hgroup><h1>Document Title</h1><h2>Subtitle</h2></hgroup>'
+    'out': '<h1>Document Title</h1><h2>Subtitle</h2>'
            '<a id="section-title"></a><section><h1>Section Title</h1>'
            '<p>...</p></section>',
     'indent_output': False,
@@ -122,10 +122,8 @@ Section Title
 
 ...''',
     'out': '''
-    <hgroup>
-        <h1>Document Title</h1>
-        <h2>Subtitle</h2>
-    </hgroup>
+    <h1>Document Title</h1>
+    <h2>Subtitle</h2>
     <a id="section-title"></a>
     <section>
         <h1>Section Title</h1>
@@ -962,10 +960,8 @@ Another Subtitle
         <h2>Subtitle</h2>
         <p>more text</p>
         <aside class="sidebar">
-            <hgroup>
-                <h1>This is a sidebar</h1>
-                <h2>Sidebar Subtitle</h2>
-            </hgroup>
+            <h1>This is a sidebar</h1>
+            <h2>Sidebar Subtitle</h2>
             <p>This is the second line of the first paragraph.</p>
             <ul>
                 <li>The note contains all indented body elements \

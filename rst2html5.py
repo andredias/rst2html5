@@ -473,12 +473,6 @@ class HTML5Translator(nodes.NodeVisitor):
         # mount the subtitle heading
         subheading_level = getattr(tag, 'h' + unicode(self.heading_level + 1))
         self.context.commit_elem(subheading_level)
-        # create hgroup
-        pop = self.context.pop_elements(2)
-        self.context.begin_elem()
-        self.context.append(pop[0])
-        self.context.append(pop[1])
-        self.context.commit_elem(tag.hgroup)
         self.heading_level -= 1
 
     def depart_enumerated_list(self, node):
