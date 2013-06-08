@@ -448,21 +448,24 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_departure(node)
 
     def depart_title(self, node):
-        assert self.heading_level >= 0
-        if self.heading_level == 0:
-            self.heading_level = 1
         spec, indent, attr = self.parse(node)
-        if 'href' in attr:
-            '''
-            backref to toc entry
-            '''
-            # anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
-            # self.context.commit_elem(anchor)
-            # anchor = self.context.pop()
-            # self.context.begin_elem()
-            # self.context.append(anchor, indent=False)
-            del attr['href']
-        elem = getattr(tag, 'h' + unicode(self.heading_level))(**attr)
+        if isinstance(node.parent, nodes.table):
+            elem = tag.caption(**attr)
+        else:
+            assert self.heading_level >= 0
+            if self.heading_level == 0:
+                self.heading_level = 1
+            if 'href' in attr:
+                '''
+                backref to toc entry
+                '''
+                # anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
+                # self.context.commit_elem(anchor)
+                # anchor = self.context.pop()
+                # self.context.begin_elem()
+                # self.context.append(anchor, indent=False)
+                del attr['href']
+            elem = getattr(tag, 'h' + unicode(self.heading_level))(**attr)
         self.context.commit_elem(elem, indent)
 
     def depart_subtitle(self, node):

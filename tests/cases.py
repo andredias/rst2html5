@@ -353,6 +353,34 @@ grid_table = {
     'part': 'body'
 }
 
+grid_table_with_caption = {
+    'rst': '''.. table:: What a nice table!
+
+   +--------------+----------+
+   | row 1, col 1 | column 2 |
+   +--------------+----------+
+   | row 2        |          |
+   +--------------+----------+''',
+    'out': '''
+    <table>
+        <caption>What a nice table!</caption>
+        <col />
+        <col />
+        <tbody>
+            <tr>
+                <td>row 1, col 1</td>
+                <td>column 2</td>
+            </tr>
+            <tr>
+                <td>row 2</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+''',
+    'part': 'body'
+}
+
 grid_table_with_head = {
     'rst': '''+--------------+----------+
 | row 1, col 1 | column 2 |
