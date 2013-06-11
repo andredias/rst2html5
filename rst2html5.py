@@ -53,6 +53,7 @@ class HTML5Writer(writers.Writer):
         return
 
     def translate(self):
+        self.transform_doctree(self.document)
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.output
@@ -65,6 +66,24 @@ class HTML5Writer(writers.Writer):
         self.parts['head'] = self.head
         self.parts['body'] = self.body
         return
+
+    @classmethod
+    def transform_doctree(cls, document):
+        '''
+        The doctree must be adjusted before translation begins
+        since in-place tree modifications doesn't work.
+
+        The footer must be relocated to the bottom of the
+        doctree in order to be translated at the right position.
+        '''
+        for child in document.children:
+            if isinstance(child, nodes.decoration):
+                for footer in child:
+                    if isinstance(footer, nodes.footer):
+                        child.remove(footer)
+                        document.append(footer)
+                break
+        return document
 
 
 class ElemStack(object):

@@ -1097,6 +1097,29 @@ footer = {
     'part': 'body',
 }
 
+header_and_footer = {
+    'rst': '''Title
+=====
+
+some text
+
+.. header:: this is a header
+
+more text
+
+.. footer:: this is a footer''',
+    'out': '''
+    <h1>Title</h1>
+    <header>this is a header</header>
+    <p>some text</p>
+    <p>more text</p>
+    <footer>this is a footer</footer>
+''',
+    'indent_output': True,
+    'part': 'body',
+}
+
+
 replace = {
     'rst': '''.. |reST| replace:: reStructuredText
 
