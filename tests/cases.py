@@ -764,16 +764,33 @@ math_role = {
     'part': 'body',
 }
 
-raw = {
+raw_html = {
     'rst': '''some text
 
 .. raw:: html
 
-    <hr width=50 size=10 />
-    <br />
+    <div class="warning">
+        <p>Warning!!!</p>
+    </div>
 
 more text''',
-    'out': '\n    <p>some text</p>\n<hr width=50 size=10 />\n<br />'
+    'out': '\n    <p>some text</p>'
+           '\n    <div class="warning">'
+           '\n        <p>Warning!!!</p>'
+           '\n    </div>'
+           '\n    <p>more text</p>\n',
+    'part': 'body'
+}
+
+raw_latex = {
+    'rst': '''some text
+
+.. raw:: latex
+
+    \setlength{\parindent}{0pt}
+
+more text''',
+    'out': '\n    <p>some text</p>'
            '\n    <p>more text</p>\n',
     'part': 'body'
 }

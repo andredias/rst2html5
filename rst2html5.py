@@ -675,7 +675,8 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if 'html' in node.get('format', '').split():
-            self.context.append(Markup(node.astext()), indent=False)
+            for line in node.astext().splitlines():
+                self.context.append(Markup(line))
         raise nodes.SkipNode
 
     def visit_aside(self, node):
