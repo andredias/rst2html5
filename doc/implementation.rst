@@ -1,67 +1,73 @@
-==============
-Implementation
-==============
+========================
+rst2html5 Implementation
+========================
 
-The following text describes the knowledge
-
-O texto a seguir descreve o conhecimento coletado durante a implementação do rst2html5.
-Certamente não está completo e talvez nem esteja exato,
-mas pode ser de grande utilidade para outras pessoas que desejem criar um novo conversor de rst para algum outro formato.
-
-Doctree, rst2pseudoxml e NodeVisitor
-====================================
-
-O primeiro passo é entender o que é o Docutils e como ele funciona.
-
-O Docutils foi projetado inicialmente para documentação de projetos.
-
-Os módulos básicos são apresentados no `PEP 0258`_.
-Para construir o rst2html5, o importante foi saber que::
+The following documentation describes the knowledge collected durint rst2html5 implementation.
+Certainly, it isn't complete or even exact,
+but it might be helpful to other people who want to create another rst converter.
 
 
+Docutils, doctree, rst2pseudoxml and NodeVisitor
+================================================
 
-                +-----------+
-   doctree ---->| Conversor |---->  output
-                +-----------+
+The docutils_ is a a set of tools for processing restructuredText_ (rst) documentation
+into useful formats, such as HTML, PDF, LaTeX, man-pages, open-document or XML.
+At first stages of the translation,
+the ``rst`` document is analyzed and converted to an intermediary format called *doctree*,
+that is sent to the converter (``Writer``) to be transformed into the desired output::
 
+                +------------+
+   doctree ---->| Translator |----> output
+                +------------+
 
-O doctree_ é a representação hierárquica do documento rst
-formada por um conjunto de nós organizados em uma estrutura de árvore.
-A doctree pode ser visualizada textualmente através do comando ``rst2pseudoxml``.
-Por exemplo, o trecho de texto rst abaixo::
+Doctree
+-------
 
-Usando o trecho em rst abaixo::
+The doctree_ is an internal hierarchical representation of the elements of the rst document.
+The command ``rst2pseudoxml`` produces a textual representation of the *doctree*
+which is useful to visualize the elements and their nesting.
+This information has been very helpful to *design* and tests of the ``rst2html5``.
 
-    Título
-    ======
+Given the rst snippet below:
 
-    Texto e mais texto
+.. code-block:: rst
 
+    Title
+    =====
 
-O doctree correspondente pode ser entendido melhor com a ajuda do rst2pseudoxml::
+    Text text text
 
-    <document ids="titulo" names="título" source="snippet.rst" title="Título">
+.. _trecho rst usado como exemplo:
+
+The textual representation produced by ``rst2pseudoxml`` is::
+
+    <document ids="title" names="title" source="snippet.rst" title="Title">
         <title>
-            Título
+            Title
         <paragraph>
-            Texto e mais texto:
+            Text text text
 
 
-Para converter o rst para a saída no formato desejado,
-é necessário percorrer cada nó da estrutura
-e executar algum tipo de ação de acordo com o tipo e conteúdo do nó.
-O percorrimento da árvore é feito através de uma implementação do padrão de projeto "Visitor" [GoF95]_.
-A responsabilidade pela visitação está no doctree,
-e é iniciada pelo método ``walkabout`` invocado do nó raiz.
-A cada nó visitado, dois métodos do objeto ``visitor``, que foi recebido como parâmetro,
-são invocados: ``dispatch_visit`` e ``dispatch_departure``.
-O primeiro é invocado antes que os nós-filho sejam visitados e o segundo é invocado depois.
-Por sua vez, o método ``dispatch_visit`` chama um método cujo nome é a combinação da
-palavra ``visit_`` com o nome da classe do nó sendo visitado.
-O método ``dispatch_departure`` tem um comportamento análogo e chama um método de nome ``depart_``
-combinado com o nome da classe do nó sendo visitado.
+NodeVisitor
+-----------
 
-Para a doctree do exemplo acima, a sequência de chamadas correspondentes seria::
+The translation is done by traversing each doctree node
+and performing some kind of action according to the type and content of the node.
+The tree traversal is coordinated by the method :func:`docutils.nodes.Node.walkabout`
+called from the root node of the doctree.
+This method receives a |NodeVisitor| object as parameter,
+which corresponds to the abstract superclass in the "Visitor" design pattern [GoF95]_.
+The "visitor" methods called during the traversal are
+:func:`docutils.nodes.NodeVisitor.dispatch_visit` and
+:func:`docutils.nodes.NodeVisitor.dispatch_departure`.
+The former is called at the beginning of the visit,
+and the latter at the end, just before leaving the node:
+
+.. automethod:: docutils.nodes.NodeVisitor.dispatch_visit
+
+.. automethod:: docutils.nodes.NodeVisitor.dispatch_departure
+
+The sequence of calls for the doctree presented earlier is::
 
     visit_document
         visit_title
@@ -74,85 +80,218 @@ Para a doctree do exemplo acima, a sequência de chamadas correspondentes seria:
         depart_paragraph
     depart_document
 
-A divisão da visitação em dois momentos,
-permite que o conversor faça uma ação inicial e final para a montagem de cada elemento da saída.
+It is up to a |NodeVisitor| subclass to implement correctly the ``visit_...`` and ``depart_...``
+methods for all types of existing nodes.
 
-Cabe a uma subclasse de ``NodeVisitor`` implementar corretamente esses métodos.
-No módulo rst2html5, isto é feito pela classe HTML5Translator.
 
-HTML5Translator
-===============
+Writer
+------
 
-A classe ``HTML5Translator`` é uma subclasse de ``NodeVisitor``
-que implementa os métodos ``visit_<nome da classe do nó>`` e ``depart_<nome da classe do nó>``
-necessários para converter um elemento do rst em seu correspondente em html5.
+A *doctree* não costuma ser enviada diretamente ao |NodeVisitor|.
+No *docutils*, o padrão é passar antes por um objeto da classe |Writer|,
+cuja responsabilidade é coordenar a tradução para o formato final desejado.
+A chamada ao método :func:`~docutils.nodes.Node.walkabout` acontece no
+método :func:`docutils.writers.Writer.translate`:
 
-Como há um aninhamento de nós, isto é, um nó contém outros nós,
-a montagem do resultado final é feita com o auxílio de uma estrutura de pilha
-para registrar o contexto de cada elemento.
+.. automethod:: docutils.writers.Writer.translate
 
-A ação padrão de um método ``visit_<nome da classe do nó>`` é iniciar um novo contexto para o nó sendo tratado.
-A ação padrão no ``depart_`` é criar o elemento html5 de acordo com o contexto salvo
-e registrá esse elemento no nó-pai.
+A relação formada é apresentada na ilustração abaixo::
 
-.. code-block:: python
 
-    def default_visit(self, node):
-        # cria um novo contexto na pilha para o elemento corrente
-
-    def default_departure(self, node):
-        # Cria o elemento html5 de acordo com o contexto corrente
-
-Nem todos os elementos rst seguem exatamente o mesmo procedimento padrão.
-O elemento ``Text``, por exemplo, é um nó folha e, por isso,
-não requer a criação de um contexto específico.
-Basta adicionar o texto correspondente ao elemento pai (veja ref???).
-
-Outros elementos rst têm um comportamento comum e compartilham o mesmo método ``visit_`` e/ou
-``depart_``.
-O mapeamento entre o nó rst e os métodos correspondentes é feito pelo dicionário ``rst_terms``.
-Além dos nomes dos métodos, define também qual a *tag* padrão para o elemento,
-se o nome do elemento rst deve aparecer como um atributo ``class="nome_da_classe_do_nó"``
-e se o elemento deve ou não ser indentado na saída formatada.
-O mapeamento é executado ao final do módulo,
-no trecho de código que realmente amarra o mapeamento aos atributos da classe ``HTML5Translator``.
-
-A montagem do elemento html5 é feito com ajuda do módulo genshi.builder,
-que possui uma documentação muito boa e, por isso, não será explicado aqui.
-
-HTML5Writer
-===========
-
-A doctree não é passada diretamente ao HTML5Translator.
-Ao invés disso, o docutils usa como padrão um objeto da classe ``Writer``,
-cuja responsabilidade é coordenar a tradução para o formato final desejado::
-
-                      Converter
                 +-------------------+
                 |    +---------+    |
-    doctree -------->|  Writer |------->  output
+    doctree -------->|  Writer |-------> output
                 |    +----+----+    |
                 |         |         |
                 |         |         |
-                |   +-----+------+  |
-                |   | Translator |  |
-                |   +------------+  |
+                |  +------+------+  |
+                |  | NodeVisitor |  |
+                |  +-------------+  |
                 +-------------------+
 
+Portanto, para desenvolver um novo script para o *docutils*,
+o modo mais simples é através de uma especialização dessas duas classes.
 
-A conversão acontece efetivamente no método ``translate``,
-que é sobrescrito na subclasse ``HTML5Writer``,
-que chama o método de visitação ``walkabout`` de doctree passando um objeto ``HTML5Translator``,
-que é quem faz a conversão na verdade::
+rst2html5
+=========
+
+O módulo :mod:`rst2html5` segue as recomendações originais e especializa as classes |Writer| e |NodeVisitor|::
 
                         rst2html5
                 +-----------------------+
                 |    +-------------+    |
-     doctree ------->| HTML5Writer |------->  html5
+     doctree ------->| HTML5Writer |------->  HTML5
                 |    +------+------+    |
                 |           |           |
                 |           |           |
-                |  +-----------------+  |
+                |  +--------+--------+  |
                 |  | HTML5Translator |  |
                 |  +-----------------+  |
                 +-----------------------+
+
+HTML5Writer
+-----------
+
+:class:`rst2html5.HTML5Writer` é a subclasse de :class:`~docutils.writers.Writer`
+criada para coordenar a tradução da *doctree* para HTML5.
+Conforme o padrão recomendado,
+o método :func:`~rst2html5.HTML5Writer.translate` delega a tradução para um objeto :class:`~rst2html5.HTML5Translator` (linhas 2 e 3):
+
+.. literalinclude:: ../rst2html5.py
+    :pyobject: HTML5Writer.translate
+    :linenos:
+    :emphasize-lines: 2, 3
+
+
+HTML5Translator
+---------------
+
+:class:`rst2html5.HTML5Translator` é a subclasse de ``NodeVisitor``
+criada para implementar os métodos ``visit_<nome da classe do nó>`` e ``depart_<nome da classe do nó>``
+necessários para traduzir um elemento ``rst`` em seu correspondente em HTML5.
+Conta ainda com ajuda de um outro objeto da classe auxiliar ElemStack_
+que controla uma pilha de contextos para lidar com o aninhamento dos nós.
+
+A ação padrão de um método ``visit_<nome da classe do nó>`` é iniciar um novo contexto para o nó sendo tratado.
+A ação padrão no ``depart_<nome da classe do nó>`` é criar o elemento HTML5 de acordo com o contexto salvo:
+
+.. automethod:: rst2html5.HTML5Translator.default_visit
+
+.. automethod:: rst2html5.HTML5Translator.default_departure
+
+Nem todos os elementos rst seguem o este processamento.
+O elemento ``Text``, por exemplo, é um nó folha e, por isso,
+não requer a criação de um contexto específico.
+Basta adicionar o texto correspondente ao elemento pai (veja :func:`~rst2html5.HTML5Translator.visit_Text`).
+
+Outros nós têm um processamento comum e podem compartilhar o mesmo método ``visit_`` e/ou ``depart_``.
+Para aproveitar essas similaridades,
+é feito um mapeamento entre o nó rst e os métodos correspondentes pelo dicionário ``rst_terms``,
+que registra também qual a *tag* padrão para o elemento,
+se o nome do elemento rst deve aparecer como um atributo ``class`` no HTML5 (``class="nome_da_classe_do_nó"``)
+e se o elemento deve ou não ser indentado na saída formatada:
+
+A construção das *tags* do HTML5 é feita através do objeto ``tag`` do módulo :mod:`genshi.builder`.
+Veja a própria documentação do módulo para mais informações.
+
+.. _ElemStack:
+
+ElemStack
+---------
+
+A finalidade desta classe é registrar os contextos de cada elemento sendo processado
+e controlar o nível de endentação.
+Na maioria dos casos,
+a tradução de um elemento rst só pode ser concluída quando seus elementos internos forem processados.
+Como a travessia da *doctree* não é feita por recursão,
+é necessária uma estrutura auxiliar de pilha para armazenar os contextos prévios.
+
+O comportamento de um objeto ElemStack é ilustrado a seguir,
+através da visualização da estrutura de pilha durante a análise do trecho rst
+que vem sendo usado como exemplo.
+
+As chamadas ``visit_...`` e ``depart_...`` acontecerão na seguinte ordem::
+
+    1. visit_document
+        2. visit_title
+            3. visit_Text
+            4. depart_Text
+        5. depart_title
+        6. visit_paragraph
+            7. visit_Text
+            8. depart_Text
+        9. depart_paragraph
+    10. depart_document
+
+
+
+0. **Estado inicial**. A pilha (``stack``) está vazia::
+
+    stack = []
+
+
+1. **visit_document**. É criado contexto para ``document``, mantido por uma nova lista em ``stack``::
+
+    stack = [ [] ]
+               \
+                document
+                context
+
+2. **visit_title**. Um novo contexto é criado para o elemento ``title``::
+
+                    title
+                    context
+                   /
+    stack = [ [], [] ]
+               \
+                document
+                context
+
+
+3. **visit_Text**. O nó do tipo ``Text`` não precisa de um novo contexto pois é um nó-folha.
+   O texto é simplesmente adicionado ao contexto do seu nó-pai::
+
+                    title
+                    context
+                   /
+    stack = [ [], ['Título'] ]
+               \
+                document
+                context
+
+4. **depart_Text**. Nenhuma ação é executada neste passo. A pilha permanece inalterada.
+
+5. **depart_title**. Representa o fim do processamento do título.
+   O contexto do título é extraído da pilha e combinado com uma tag ``h1``
+   que é inserida no contexto do nó-pai (``document``)::
+
+    stack = [ [<h1>] ]
+               \
+                document
+                context
+
+6. **visit_paragraph**. Um novo contexto é criado::
+
+                        paragraph
+                        context
+                       /
+    stack = [ [<h1>], [] ]
+               \
+                document
+                context
+
+7. **visit_Text**. Mais uma vez, o texto é adicionado ao contexto do nó-pai::
+
+                        paragraph
+                        context
+                       /
+    stack = [ [<h1>], ['Texto e mais texto'] ]
+               \
+                document
+                context
+
+8. **depart_Text**. Nenhuma ação é necessária.
+
+9. **depart_paragraph**. Segue o comportamento padrão, isto é,
+   o contexto é combinado com a tag do elemento rst atual e então é inserida no contexto do nó-pai::
+
+    stack = [ [<h1>, <p>] ]
+               \
+                document
+                context
+
+10. **depart_document**. O nó da classe ``document`` não tem um correspondente em HTML5.
+    Seu contexto é simplesmente combinado com o contexto mais geral que será o ``body``::
+
+        stack = [<h1>, <p>]
+
+
+
+
+.. |NodeVisitor| replace:: :class:`docutils.nodes.NodeVisitor`
+.. |Writer| replace::  :class:`~docutils.writers.Writer`
+.. |HTML5Translator| replace:: :class:`rst2html5.HTML5Translator`
+
+.. [GoF95] Gamma, Helm, Johnson, Vlissides. *Design Patterns: Elements of
+   Reusable Object-Oriented Software*. Addison-Wesley, Reading, MA, USA,
+   1995.

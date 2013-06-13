@@ -1,7 +1,7 @@
 .. rubric:: Hyperlinks
 
-.. _docutils: http://docutils.sourceforge.net/README.html#purpose
+.. _Docutils: http://docutils.sourceforge.net/README.html#purpose
 .. _restructuredText: http://docutils.sourceforge.net/rst.html
-.. _doctree: http://docutils.sourceforge.net/docs/ref/doctree.html
+.. _doctree: http://docutils.sourceforge.net/docs/peps/pep-0258.html#document-tree
 .. _Visitor: http://en.wikipedia.org/wiki/Visitor_pattern
 .. _PEP 0258: http://docutils.sourceforge.net/docs/peps/pep-0258.html
