@@ -1585,7 +1585,7 @@ caption. In this case, the legend consists of this paragraph.</div>
 system_message = {
     'rst': 'target_',
     'out': '''<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8" />
 </head>
@@ -1682,6 +1682,21 @@ metadata = {
     'part': 'head',
 }
 
+html_tag_attributes = {
+    'rst': 'text',
+    'out': '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+    <p>text</p>
+</body>
+</html>''',
+    'part': 'whole',
+    'html_tag_attributes': ['lang="en"', ]
+}
+
 stylesheet = {
     'rst': 'ordinary paragraph',
     'out': '''
@@ -1690,8 +1705,8 @@ stylesheet = {
     <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
 ''',
     'part': 'head',
-    'stylesheet': 'http://test.com/css/default.css, '
-                  'http://www.pronus.eng.br/css/standard.css'
+    'stylesheet': ['http://test.com/css/default.css',
+                   'http://www.pronus.eng.br/css/standard.css']
 }
 
 javascript = {
@@ -1701,8 +1716,8 @@ javascript = {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/\
 1.7.2/jquery.min.js"></script>
 ''',
-    'script': 'https://ajax.googleapis.com/ajax/libs/jquery/\
-1.7.2/jquery.min.js',
+    'script': ['https://ajax.googleapis.com/ajax/libs/jquery/\
+1.7.2/jquery.min.js', ],
     'part': 'head',
 }
 

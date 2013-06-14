@@ -11,18 +11,20 @@ Usage
 
 .. code-block:: bash
 
-	$ rst2html5 [options] <source>
+	$ rst2html5 [options] SOURCE
 
 Options:
 
 --stylesheet=<URL or path>
-                        Specify comma separated list of stylesheet URLs.
---script=<URL or path>  Specify comma separated list of script URLs.
+                        Specify a stylesheet URL to be included.
+                        (This option can be used multiple times)
+--script=<URL or path>  Specify a script URL to be included.
+                        (This option can be used multiple times)
+--html-tag-attribute=<html-tag attribute>
+                        Specify a html tag attribute.
+                        (This option can be used multiple times)
 --no-indent             Don't indent output
---option-limit=<level>  Specify the maximum width (in characters) for options
-                        in option lists.  Longer options will span an entire
-                        row of the table used to render the option list.
-                        Default is 0 characters which means "no limit".
+
 
 Examples
 ========
@@ -54,7 +56,7 @@ The html5 produced is clean and tidy:
 .. code-block:: html
 
     <!DOCTYPE html>
-    <html lang="en">
+    <html>
     <head>
         <meta charset="utf-8" />
     </head>
@@ -85,17 +87,18 @@ No stylesheets or classes are spread over the html5 by default. However:
 
     .. parsed-literal::
 
-        $ rst2html5 example.rst **--stylesheet** "css/default.css, css/special/css" \\
+        $ rst2html5 example.rst **--html-tag-attribute** 'lang="pt-BR"' \\
+        **--stylesheet** css/default.css **--stylesheet** css/special.css \\
         **--script** ``https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js``
 
     .. code-block:: html
 
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="pt-BR">
         <head>
             <meta charset="utf-8" />
             <link href="css/default.css" rel="stylesheet" />
-            <link href="css/special/css" rel="stylesheet" />
+            <link href="css/special.css" rel="stylesheet" />
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         </head>
         ...

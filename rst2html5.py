@@ -27,25 +27,36 @@ class HTML5Writer(writers.Writer):
     settings_spec = (
         'HTML5 Specific Options',
         None, (
-        ('Specify comma separated list of stylesheet URLs.',
+        ('Specify a stylesheet URL to be included in the output HTML file. '
+         '(This option can be used multiple times)',
             ['--stylesheet'],
-            {'metavar': '<URL or path>', 'default': None, }),
-        ('Specify comma separated list of script URLs.',
+            {'metavar': '<URL or path>', 'default': None,
+             'action': 'append',
+             'validator': frontend.validate_comma_separated_list, }),
+        ('Specify a script URL to be included in the output HTML file. '
+         '(This option can be used multiple times)',
             ['--script'],
-            {'metavar': '<URL or path>', 'default': None, }),
+            {'metavar': '<URL or path>', 'default': None,
+             'action': 'append',
+             'validator': frontend.validate_comma_separated_list, }),
+        ('Specify a html tag attribute. '
+         '(This option can be used multiple times)',
+            ['--html-tag-attribute'],
+            {'metavar': '<html-tag attribute>', 'default': None,
+             'dest': 'html_tag_attributes',
+             'action': 'append',
+             'validator': frontend.validate_comma_separated_list, }),
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
-        ('Specify the maximum width (in characters) for options in option '
-         'lists.  Longer options will span an entire row of the table used '
-         'to render the option list. Default is 0 characters which means '
-         '"no limit". ',
-            ['--option-limit'],
-            {'default': 0, 'metavar': '<level>',
-             'validator': frontend.validate_nonnegative_int}),
         )
     )
 
-    settings_defaults = {'tab_width': 4, 'syntax_highlight': 'short'}
+    settings_defaults = {
+        'tab_width': 4,
+        'syntax_highlight': 'short',
+        'field-limit': 0,
+        'option-limit': 0,
+    }
 
     def __init__(self):
         writers.Writer.__init__(self)
@@ -296,7 +307,7 @@ class HTML5Translator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = 0
         self.context = ElemStack(document.settings)
-        self.template = '<!DOCTYPE html>\n<html{language}>\n' \
+        self.template = '<!DOCTYPE html>\n<html{html_tag_attributes}>\n' \
                         '<head>{head}</head>\n<body>{body}</body>\n</html>'
         self.head = []
         self.head.append(
@@ -307,14 +318,13 @@ class HTML5Translator(nodes.NodeVisitor):
         return
 
     def add_stylesheets(self, stylesheets):
-        stylesheets = stylesheets and \
-            re.sub(r'\s+', '', stylesheets).split(',') or []
+        stylesheets = stylesheets or []
         for href in stylesheets:
             self.head.append(tag.link(rel='stylesheet', href=href))
         return
 
     def add_scripts(self, scripts):
-        scripts = scripts and re.sub(r'\s+', '', scripts).split(',') or []
+        scripts = scripts or []
         for src in scripts:
             self.head.append(tag.script(src=src))
         return
@@ -332,11 +342,13 @@ class HTML5Translator(nodes.NodeVisitor):
     @property
     def output(self):
         self.indent_head()
-        language = ' lang="%s"' % self.document.settings.language_code
+        html_tag_attributes = self.document.settings.html_tag_attributes
+        html_tag_attributes = html_tag_attributes and \
+                              ' ' + ' '.join(html_tag_attributes) or ''
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
-        return self.template.format(language=language, head=self.head,
-                                    body=self.body)
+        return self.template.format(html_tag_attributes=html_tag_attributes,
+                                    head=self.head, body=self.body)
 
     def set_next_elem_attr(self, name, value):
         '''
