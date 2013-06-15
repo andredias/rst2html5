@@ -15,19 +15,23 @@ Usage
 
 Options:
 
+--no-indent             Don't indent output
 --stylesheet=<URL or path>
                         Specify a stylesheet URL to be included.
                         (This option can be used multiple times)
 --script=<URL or path>  Specify a script URL to be included.
                         (This option can be used multiple times)
---script-attr=<attribute>
-                        Specify a script attribute.
-                        Possible values are async, defer or None.
-                        (This option should be used once for each script or none at all)
+--script-defer=<attribute>
+                        Specify a script URL with a defer attribute
+                        to be included in the output HTML file.
+                        (This option can be used multiple times)
+--script-async=<attribute>
+                        Specify a script URL with a async attribute
+                        to be included in the output HTML file.
+                        (This option can be used multiple times)
 --html-tag-attr=<attribute>
                         Specify a html tag attribute.
                         (This option can be used multiple times)
---no-indent             Don't indent output
 
 
 Examples
@@ -108,14 +112,14 @@ No stylesheets or classes are spread over the html5 by default. However:
         ...
 
 
-#. Script attributes ``defer`` and ``async`` can be specified:
+#. Script attributes ``defer`` and ``async``:
 
     .. parsed-literal::
 
         $ rst2html5 example.rst \\
-        **--script** js/test.js **--script-attr** defer \\
-        **--script** js/test2.js **--script-attr** None \\
-        **--script** js/test3.js **--script-attr** async
+        **--script** js/test1.js \\
+        **--script-defer** js/test2.js \\
+        **--script-async** js/test3.js
 
     .. code-block:: html
 
@@ -123,8 +127,8 @@ No stylesheets or classes are spread over the html5 by default. However:
         <html>
         <head>
             <meta charset="utf-8" />
-            <script src="js/test.js" defer="defer"></script>
-            <script src="js/test2.js"></script>
+            <script src="js/test1.js"></script>
+            <script src="js/test2.js" defer="defer"></script>
             <script src="js/test3.js" async="async"></script>
         ...
 

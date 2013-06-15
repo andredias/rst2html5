@@ -1716,8 +1716,8 @@ javascript = {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/\
 1.7.2/jquery.min.js"></script>
 ''',
-    'script': ['https://ajax.googleapis.com/ajax/libs/jquery/\
-1.7.2/jquery.min.js', ],
+    'script': [('https://ajax.googleapis.com/ajax/libs/jquery/'
+               '1.7.2/jquery.min.js', None)],
     'part': 'head',
 }
 
@@ -1726,35 +1726,12 @@ javascript_2 = {
     'out': '''
     <meta charset="utf-8" />
     <script src="js/test1.js" defer="defer"></script>
-    <script src="js/test2.js"></script>
-    <script src="js/test3.js" async="async"></script>
-''',
-    'script': ['js/test1.js', 'js/test2.js', 'js/test3.js', ],
-    'script_attribute': ['defer', 'None', 'async', ],
-    'part': 'head',
-}
-
-javascript_3 = {
-    'rst': 'ordinary paragraph',
-    'out': '''
-    <meta charset="utf-8" />
-    <script src="js/test1.js" defer="defer"></script>
-    <script src="js/test2.js"></script>
+    <script src="js/test2.js" async="async"></script>
     <script src="js/test3.js"></script>
 ''',
-    'script': ['js/test1.js', 'js/test2.js', 'js/test3.js', ],
-    'script_attribute': ['defer', ],
-    'part': 'head',
-}
-
-javascript_4 = {
-    'rst': 'ordinary paragraph',
-    'out': '''
-    <meta charset="utf-8" />
-    <script src="js/test1.js" defer="defer"></script>
-''',
-    'script': ['js/test1.js', ],
-    'script_attribute': ['defer', 'async', 'async', ],
+    'script': [('js/test1.js', 'defer'),
+               ('js/test2.js', 'async'),
+               ('js/test3.js', None), ],
     'part': 'head',
 }
 

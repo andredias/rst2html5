@@ -17,6 +17,18 @@ from genshi.output import XHTMLSerializer
 from genshi.core import Markup
 
 
+def _script_callback_option_parser(option, opt_str, value, parser):
+    '''
+    Store a script's URL or path along to its attribute 'defer', 'async' or None
+    '''
+    attr = 'defer' in opt_str and 'defer' or \
+           'async' in opt_str and 'async' or \
+           None
+    parser.values.script = parser.values.script or []
+    parser.values.script.append((value, attr))
+    return
+
+
 class HTML5Writer(writers.Writer):
 
     supported = ('html', 'html5', 'html5css3')
@@ -27,6 +39,8 @@ class HTML5Writer(writers.Writer):
     settings_spec = (
         'HTML5 Specific Options',
         None, (
+        ("Don't indent output", ['--no-indent'],
+            {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
         ('Specify a stylesheet URL to be included in the output HTML file. '
          '(This option can be used multiple times)',
             ['--stylesheet'],
@@ -37,16 +51,28 @@ class HTML5Writer(writers.Writer):
          '(This option can be used multiple times)',
             ['--script'],
             {'metavar': '<URL or path>', 'default': None,
-             'action': 'append',
-             'validator': frontend.validate_comma_separated_list, }),
-        ('Specify a script attribute. '
-         'Possible values are async, defer or None. '
-         '(This option should be used once for each script or none at all)',
-            ['--script-attr'],
-            {'metavar': '<attribute>',
-             'dest': 'script_attribute',
-             'choices': ['async', 'defer', 'None'],
-             'action': 'append', }),
+             'dest': 'script',
+             'type': 'string',
+             'action': 'callback',
+             'callback': _script_callback_option_parser, }),
+        ('Specify a script URL with a defer attribute '
+         'to be included in the output HTML file. '
+         '(This option can be used multiple times)',
+            ['--script-defer'],
+            {'metavar': '<URL or path>',
+             'dest': 'script',
+             'type': 'string',
+             'action': 'callback',
+             'callback': _script_callback_option_parser, }),
+        ('Specify a script URL with a async attribute '
+         'to be included in the output HTML file. '
+         '(This option can be used multiple times)',
+            ['--script-async'],
+            {'metavar': '<URL or path>',
+             'dest': 'script',
+             'type': 'string',
+             'action': 'callback',
+             'callback': _script_callback_option_parser, }),
         ('Specify a html tag attribute. '
          '(This option can be used multiple times)',
             ['--html-tag-attr'],
@@ -54,8 +80,6 @@ class HTML5Writer(writers.Writer):
              'dest': 'html_tag_attr',
              'action': 'append',
              'validator': frontend.validate_comma_separated_list, }),
-        ("Don't indent output", ['--no-indent'],
-            {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
         )
     )
 
@@ -320,31 +344,22 @@ class HTML5Translator(nodes.NodeVisitor):
         self.head = []
         self.head.append(
             tag.meta(charset=self.document.settings.output_encoding))
-        self.add_stylesheets(document.settings.stylesheet)
-        self.add_scripts(document.settings.script,
-                         document.settings.script_attribute)
+        self.add_stylesheets()
+        self.add_scripts()
         self._map_terms_to_functions()
         return
 
-    def add_stylesheets(self, stylesheets):
-        stylesheets = stylesheets or []
+    def add_stylesheets(self):
+        stylesheets = self.document.settings.stylesheet or []
         for href in stylesheets:
             self.head.append(tag.link(rel='stylesheet', href=href))
         return
 
-    def add_scripts(self, scripts, attributes):
-        if not scripts:
-            return
-        attributes = attributes or []
-        if len(attributes) > len(scripts):
-            attributes = attributes[:len(scripts)]
-        elif len(attributes) < len(scripts):
-            attributes.extend(
-                ['None' for i in range(len(scripts) - len(attributes))]
-            )
-        for src, attr in zip(scripts, attributes):
+    def add_scripts(self):
+        scripts = self.document.settings.script or []
+        for src, attr in scripts:
             script = tag.script(src=src)
-            if attr != 'None':
+            if attr:
                 script = script(**{attr: attr})
             self.head.append(script)
         return
