@@ -39,11 +39,19 @@ class HTML5Writer(writers.Writer):
             {'metavar': '<URL or path>', 'default': None,
              'action': 'append',
              'validator': frontend.validate_comma_separated_list, }),
+        ('Specify a script attribute. '
+         'Possible values are async, defer or None. '
+         '(This option should be used once for each script or none at all)',
+            ['--script-attr'],
+            {'metavar': '<attribute>',
+             'dest': 'script_attribute',
+             'choices': ['async', 'defer', 'None'],
+             'action': 'append', }),
         ('Specify a html tag attribute. '
          '(This option can be used multiple times)',
-            ['--html-tag-attribute'],
-            {'metavar': '<html-tag attribute>', 'default': None,
-             'dest': 'html_tag_attributes',
+            ['--html-tag-attr'],
+            {'metavar': '<attribute>', 'default': None,
+             'dest': 'html_tag_attr',
              'action': 'append',
              'validator': frontend.validate_comma_separated_list, }),
         ("Don't indent output", ['--no-indent'],
@@ -307,13 +315,14 @@ class HTML5Translator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = 0
         self.context = ElemStack(document.settings)
-        self.template = '<!DOCTYPE html>\n<html{html_tag_attributes}>\n' \
+        self.template = '<!DOCTYPE html>\n<html{html_attr}>\n' \
                         '<head>{head}</head>\n<body>{body}</body>\n</html>'
         self.head = []
         self.head.append(
             tag.meta(charset=self.document.settings.output_encoding))
         self.add_stylesheets(document.settings.stylesheet)
-        self.add_scripts(document.settings.script)
+        self.add_scripts(document.settings.script,
+                         document.settings.script_attribute)
         self._map_terms_to_functions()
         return
 
@@ -323,10 +332,21 @@ class HTML5Translator(nodes.NodeVisitor):
             self.head.append(tag.link(rel='stylesheet', href=href))
         return
 
-    def add_scripts(self, scripts):
-        scripts = scripts or []
-        for src in scripts:
-            self.head.append(tag.script(src=src))
+    def add_scripts(self, scripts, attributes):
+        if not scripts:
+            return
+        attributes = attributes or []
+        if len(attributes) > len(scripts):
+            attributes = attributes[:len(scripts)]
+        elif len(attributes) < len(scripts):
+            attributes.extend(
+                ['None' for i in range(len(scripts) - len(attributes))]
+            )
+        for src, attr in zip(scripts, attributes):
+            script = tag.script(src=src)
+            if attr != 'None':
+                script = script(**{attr: attr})
+            self.head.append(script)
         return
 
     def indent_head(self):
@@ -342,13 +362,12 @@ class HTML5Translator(nodes.NodeVisitor):
     @property
     def output(self):
         self.indent_head()
-        html_tag_attributes = self.document.settings.html_tag_attributes
-        html_tag_attributes = html_tag_attributes and \
-                              ' ' + ' '.join(html_tag_attributes) or ''
+        html_attrs = self.document.settings.html_tag_attr
+        html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
-        return self.template.format(html_tag_attributes=html_tag_attributes,
-                                    head=self.head, body=self.body)
+        return self.template.format(html_attr=html_attrs, head=self.head,
+                                    body=self.body)
 
     def set_next_elem_attr(self, name, value):
         '''

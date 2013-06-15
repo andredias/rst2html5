@@ -20,7 +20,11 @@ Options:
                         (This option can be used multiple times)
 --script=<URL or path>  Specify a script URL to be included.
                         (This option can be used multiple times)
---html-tag-attribute=<html-tag attribute>
+--script-attr=<attribute>
+                        Specify a script attribute.
+                        Possible values are async, defer or None.
+                        (This option should be used once for each script or none at all)
+--html-tag-attr=<attribute>
                         Specify a html tag attribute.
                         (This option can be used multiple times)
 --no-indent             Don't indent output
@@ -82,26 +86,62 @@ The html5 produced is clean and tidy:
 
 No stylesheets or classes are spread over the html5 by default. However:
 
-1. Stylesheets and javascritps URLs or paths can be included through ``stylesheet`` and
-   ``script`` options:
+#. Stylesheets and javascritps URLs or paths can be included through ``stylesheet`` and
+   ``script`` options.
 
     .. parsed-literal::
 
-        $ rst2html5 example.rst **--html-tag-attribute** 'lang="pt-BR"' \\
-        **--stylesheet** css/default.css **--stylesheet** css/special.css \\
+        $ rst2html5 example.rst \\
+        **--stylesheet** css/default.css \\
+        **--stylesheet** css/special.css \\
         **--script** ``https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js``
 
     .. code-block:: html
 
         <!DOCTYPE html>
-        <html lang="pt-BR">
+        <html>
         <head>
             <meta charset="utf-8" />
             <link href="css/default.css" rel="stylesheet" />
             <link href="css/special.css" rel="stylesheet" />
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        </head>
         ...
+
+
+#. Script attributes ``defer`` and ``async`` can be specified:
+
+    .. parsed-literal::
+
+        $ rst2html5 example.rst \\
+        **--script** js/test.js **--script-attr** defer \\
+        **--script** js/test2.js **--script-attr** None \\
+        **--script** js/test3.js **--script-attr** async
+
+    .. code-block:: html
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8" />
+            <script src="js/test.js" defer="defer"></script>
+            <script src="js/test2.js"></script>
+            <script src="js/test3.js" async="async"></script>
+        ...
+
+
+#. Html tag attributes can be included through ``html-tag-attr`` option:
+
+    .. parsed-literal::
+
+        $ rst2html5 **--html-tag-attr** 'lang="pt-BR"' example.rst
+
+    .. code-block:: html
+
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        ...
+
+
 
 #. Classes can be explicitly associated to rst elements (see ref__):
 

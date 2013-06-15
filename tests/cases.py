@@ -1682,7 +1682,7 @@ metadata = {
     'part': 'head',
 }
 
-html_tag_attributes = {
+html_tag_attr = {
     'rst': 'text',
     'out': '''<!DOCTYPE html>
 <html lang="en">
@@ -1694,7 +1694,7 @@ html_tag_attributes = {
 </body>
 </html>''',
     'part': 'whole',
-    'html_tag_attributes': ['lang="en"', ]
+    'html_tag_attr': ['lang="en"', ]
 }
 
 stylesheet = {
@@ -1718,6 +1718,43 @@ javascript = {
 ''',
     'script': ['https://ajax.googleapis.com/ajax/libs/jquery/\
 1.7.2/jquery.min.js', ],
+    'part': 'head',
+}
+
+javascript_2 = {
+    'rst': 'ordinary paragraph',
+    'out': '''
+    <meta charset="utf-8" />
+    <script src="js/test1.js" defer="defer"></script>
+    <script src="js/test2.js"></script>
+    <script src="js/test3.js" async="async"></script>
+''',
+    'script': ['js/test1.js', 'js/test2.js', 'js/test3.js', ],
+    'script_attribute': ['defer', 'None', 'async', ],
+    'part': 'head',
+}
+
+javascript_3 = {
+    'rst': 'ordinary paragraph',
+    'out': '''
+    <meta charset="utf-8" />
+    <script src="js/test1.js" defer="defer"></script>
+    <script src="js/test2.js"></script>
+    <script src="js/test3.js"></script>
+''',
+    'script': ['js/test1.js', 'js/test2.js', 'js/test3.js', ],
+    'script_attribute': ['defer', ],
+    'part': 'head',
+}
+
+javascript_4 = {
+    'rst': 'ordinary paragraph',
+    'out': '''
+    <meta charset="utf-8" />
+    <script src="js/test1.js" defer="defer"></script>
+''',
+    'script': ['js/test1.js', ],
+    'script_attribute': ['defer', 'async', 'async', ],
     'part': 'head',
 }
 
