@@ -1,6 +1,6 @@
 #!/bin/bash
 # to keep current virtualenv, use
-# ./jenkins.sh keep-env
+# ./runtests.sh keep-env
 
 PACKAGE='rst2html5'
 
