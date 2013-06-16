@@ -130,6 +130,9 @@ class HTML5Writer(writers.Writer):
 
 
 class ElemStack(object):
+    '''
+    Helper class to handle nested contexts and indentation
+    '''
     def __init__(self, settings):
         self.stack = []
         self.indent_level = 0
@@ -168,6 +171,9 @@ class ElemStack(object):
         return
 
     def begin_elem(self):
+        '''
+        Start a new element context
+        '''
         self.stack.append([])
         self.indent_level += 1
         return
@@ -534,10 +540,6 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.commit_elem(elem, indent)
 
     def depart_subtitle(self, node):
-        '''
-        The subtitle and its predecessor title should be combined
-        into a hgroup
-        '''
         # mount the subtitle heading
         subheading_level = getattr(tag, 'h' + unicode(self.heading_level + 1))
         self.context.commit_elem(subheading_level)

@@ -11,6 +11,8 @@ Contents:
    :maxdepth: 2
 
    implementation
+   implementation.pt_br
+   reference
 ..   testing
 
 
