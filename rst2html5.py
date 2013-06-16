@@ -551,10 +551,10 @@ class HTML5Translator(nodes.NodeVisitor):
         It may have a preffix and suffix that must be handled by CSS3 and
         javascript to be presented as intended.
 
-        See:
+        .. seealso::
 
-        * http://dev.opera.com/articles/view/automatic-numbering-with-css-counters/
-        * http://stackoverflow.com/questions/2558358/how-to-add-brackets-a-to-ordered-list-compatible-in-all-browsers
+            * `Automatic numbering with CSS Counters <http://goo.gl/nXq02>`_
+            * `How to add brackets to an ordered list? <http://goo.gl/Tdzmf>`_
         '''
         if 'enumtype' in node:
             enumtypes = {
@@ -611,7 +611,7 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         A "stub" attribute indicates that the column should be a th tag.
         It could be resolved by CSS3 instead...
-        see http://demosthenes.info/blog/556/The-HTML-col-and-colgroup-elements
+        See `The HTML col and colgroup elements <http://goo.gl/8FERk>`_
         '''
         if 'stub' in node:
             self.th_required += 1
