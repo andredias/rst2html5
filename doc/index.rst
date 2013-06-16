@@ -10,6 +10,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   contributing
    implementation
    implementation.pt_br
    reference
