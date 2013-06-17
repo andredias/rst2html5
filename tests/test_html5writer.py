@@ -51,6 +51,7 @@ def test():
     sys.stderr = open(os.devnull, 'w')
     try:
         for test_name, case in extract_variables(cases):
+            _test_part.description = test_name
             yield _test_part, test_name, case
     finally:
         sys.stderr = old_stderr
