@@ -18,6 +18,10 @@ unittest.TestCase.maxDiff = None
 
 
 def rst_to_html5_part(case):
+    '''
+    The main parts of a test case dict are rst, part and out.
+    Everything else is a configuration setting.
+    '''
     overrides = case.copy()
     rst = overrides.pop('rst')
     part = overrides.pop('part')
@@ -40,6 +44,7 @@ def extract_variables(module):
 def test():
     '''
     Test cases
+    See http://nose.readthedocs.org/en/latest/writing_tests.html#test-generators
     '''
     import cases
     old_stderr = sys.stderr
@@ -62,11 +67,9 @@ def _test_part(test_name, case):
         filename = os.path.join(tmpdir, test_name)
         with codecs.open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(case['rst'])
-        with codecs.open(filename + '.result', encoding='utf-8',
-                         mode='w') as f:
+        with codecs.open(filename + '.result', encoding='utf-8', mode='w') as f:
             f.write(result)
-        with codecs.open(filename + '.expected', encoding='utf-8',
-                         mode='w') as f:
+        with codecs.open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
 
         if isinstance(error, AssertionError):

@@ -158,8 +158,7 @@ class ElemStack(object):
             result.append(indentation)
         result.append(element)
         if self.indent_output and indent:
-            indentation = '\n' + self.indent_width * \
-                          (self.indent_level - 1) * ' '
+            indentation = '\n' + self.indent_width * (self.indent_level - 1) * ' '
             result.append(indentation)
         return result
 
@@ -387,8 +386,7 @@ class HTML5Translator(nodes.NodeVisitor):
         html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
-        return self.template.format(html_attr=html_attrs, head=self.head,
-                                    body=self.body)
+        return self.template.format(html_attr=html_attrs, head=self.head, body=self.body)
 
     def set_next_elem_attr(self, name, value):
         '''
@@ -453,8 +451,7 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         Initiate a new context to store inner HTML5 elements.
         '''
-        if 'ids' in node and self.once_attr('expand_id_to_anchor',
-                                            default=True):
+        if 'ids' in node and self.once_attr('expand_id_to_anchor', default=True):
             '''
             create an anchor <a id=id></a> for each id found before the
             current element.
@@ -698,16 +695,14 @@ class HTML5Translator(nodes.NodeVisitor):
         math_code = node.astext()
         math_env = pick_math_environment(math_code)
         if 'align' in math_env:
-            template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code,
-                                                       math_env)
+            template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code, math_env)
             elem = tag.div(template)
         else:  # equation
             template = '\(%s\)' % math_code
             elem = tag.span(template)
         elem(class_='math')
         self.context.append(elem)
-        src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js" \
-              "?config=TeX-AMS-MML_HTMLorMML"
+        src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
         self.head.append(tag.script(src=src))
         raise nodes.SkipNode
 
@@ -780,8 +775,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def depart_address(self, node):
         del self.preserve_space
-        self.context.commit_elem(tag.pre(class_='docinfo-' +
-                                         node.__class__.__name__))
+        self.context.commit_elem(tag.pre(class_='docinfo-' + node.__class__.__name__))
         self.depart_field_list_item(node)
 
     def visit_docinfo(self, node):

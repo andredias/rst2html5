@@ -202,8 +202,7 @@ figure = {
     'out': '''
     <figure>
         <img src="picture.png" alt="map to buried treasure" scale="50" />
-        <figcaption>This is the caption of the figure \
-(a simple paragraph).</figcaption>
+        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
     </figure>
 ''',
     'part': 'body'
@@ -315,13 +314,11 @@ term 4 : classifier one : classifier two
             <p>Definition 2, paragraph 2.</p>
         </dd>
         <dt>term 3 <span class="classifier-delimiter">:</span> \
-<span class="classifier">\
-classifier</span></dt>
+<span class="classifier">classifier</span></dt>
         <dd>Definition 3.</dd>
         <dt>term 4 <span class="classifier-delimiter">:</span> <span \
 class="classifier">classifier one</span> <span class="classifier-delimiter">\
-:</span> <span class="classifier">\
-classifier two</span></dt>
+:</span> <span class="classifier">classifier two</span></dt>
         <dd>Definition 4.</dd>
     </dl>
 ''',
@@ -518,12 +515,10 @@ chained_internal_links = {
 The targets "target1" and "target2" are synonyms; they both
 point to this paragraph.''',
     'out': '''
-    <p>Links to <a href="#target1">target1</a> and \
-<a href="#target2">target2</a>.</p>
+    <p>Links to <a href="#target1">target1</a> and <a href="#target2">target2</a>.</p>
     <a id="target2"></a>
     <a id="target1"></a>
-    <p>The targets "target1" and "target2" are synonyms; \
-they both point to this paragraph.</p>
+    <p>The targets "target1" and "target2" are synonyms; they both point to this paragraph.</p>
 ''',
     'part': 'body'
 }
@@ -535,15 +530,13 @@ propagated_target = {
 .. _archive:
 .. _Doc-SIG: http://mail.python.org/pipermail/doc-sig/''',
     'out': '''
-    <p>Link to \
-<a href="http://mail.python.org/pipermail/doc-sig/">archive</a>.</p>
+    <p>Link to <a href="http://mail.python.org/pipermail/doc-sig/">archive</a>.</p>
 ''',
     'part': 'body'
 }
 
 inline_and_indirect_target = {
-    'rst': '''This is a _`inline hyperlink target` that corresponds to \
-a <target> in doctree.
+    'rst': '''This is a _`inline hyperlink target` that corresponds to a <target> in doctree.
 
 Link to one_.
 
@@ -562,8 +555,7 @@ that corresponds to a &lt;target&gt; in doctree.</p>
     <p>Link to <a href="#three">one</a>.</p>
     <a id="three"></a>
     <p>Target paragraph.</p>
-    <p>Referencing the \
-<a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
+    <p>Referencing the <a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
 ''',
     'part': 'body'
 }
@@ -661,8 +653,7 @@ parsed_literal_block = {
     <pre>This is a parsed literal block.
     This line is indented.  The next line is blank.
 
-Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, \
-<code>literal
+Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <code>literal
 text</code>, <a id="hyperlink-targets">hyperlink targets</a>, \
 and <a href="http://www.python.org/">references</a>.</pre>
 ''',
@@ -692,8 +683,7 @@ parsed_literal_as_code_block = {
     For example, {'rst': rst, 'out':out, ...}
     '''
     return ((v, getattr(module, v)) for v in dir(module)
-        if not v.startswith('__') and isinstance(getattr(module, v), \
-dict))</code></pre>
+        if not v.startswith('__') and isinstance(getattr(module, v), dict))</code></pre>
 """,
     'part': 'body',
 }
@@ -959,8 +949,7 @@ Another Subtitle
             <h1>This is a note admonition.</h1>
             <p>This is the second line of the first paragraph.</p>
             <ul>
-                <li>The note contains all indented body elements \
-following.</li>
+                <li>The note contains all indented body elements following.</li>
                 <li>It includes this bullet list.</li>
             </ul>
         </aside>
@@ -1009,8 +998,7 @@ Another Subtitle
             <h2>Sidebar Subtitle</h2>
             <p>This is the second line of the first paragraph.</p>
             <ul>
-                <li>The note contains all indented body elements \
-following.</li>
+                <li>The note contains all indented body elements following.</li>
                 <li>It includes this bullet list.</li>
             </ul>
         </aside>
@@ -1053,8 +1041,7 @@ compound = {
    you will erase the entire contents of your file system.''',
     'out': '''
     <div class="compound">
-        <p>The 'rm' command is very dangerous. If you are logged in as \
-root and enter</p>
+        <p>The 'rm' command is very dangerous. If you are logged in as root and enter</p>
         <pre>cd /
 rm -rf *</pre>
         <p>you will erase the entire contents of your file system.</p>
@@ -1080,8 +1067,7 @@ contents = {
 Basic Usage
 ===========
 
-To start using subrepositories, you need two repositories, a main repo and \
-a nested repo''',
+To start using subrepositories, you need two repositories, a main repo and a nested repo''',
     'out': '''
     <a id="table-of-contents"></a>
     <aside class="topic contents">
@@ -1163,8 +1149,7 @@ docinfo = {
 :Date: 2012-07-29
 :Copyright: André Felipe Dias
 :Dedication: To Andréa, Dexter e DeeDee
-:Abstract: Generates (X)HTML5 documents from standalone reStructuredText \
-sources.
+:Abstract: Generates (X)HTML5 documents from standalone reStructuredText sources.
 :Indentation: Since the field marker may be quite long, the second
    and subsequent lines of the field body do not have to line up
    with the first line, but they must be indented relative to the
@@ -1195,8 +1180,7 @@ sources.
             </tr>
             <tr>
                 <th>contact</th>
-                <td><a href="mailto:andref.dias@pronus.eng.br">\
-andref.dias@pronus.eng.br</a></td>
+                <td><a href="mailto:andref.dias@pronus.eng.br">andref.dias@pronus.eng.br</a></td>
             </tr>
             <tr>
                 <th>address</th>
@@ -1241,8 +1225,7 @@ and they must line up with each other.</td>
     </aside>
     <aside class="topic abstract">
         <h1>Abstract</h1>
-        <p>Generates (X)HTML5 documents from standalone reStructuredText \
-sources.</p>
+        <p>Generates (X)HTML5 documents from standalone reStructuredText sources.</p>
     </aside>
 ''',
     'part': 'body',
@@ -1261,14 +1244,13 @@ docinfo2 = {
         <tbody>
             <tr>
                 <th>Info</th>
-                <td>See <a href="https://bitbucket.org/\
-andre_felipe_dias/rst2html5">https://bitbucket.org/andre_felipe_dias/\
-rst2html5</a></td>
+                <td>See <a href="https://bitbucket.org/andre_felipe_dias/rst2html5">\
+https://bitbucket.org/andre_felipe_dias/rst2html5</a></td>
             </tr>
             <tr>
                 <th>author</th>
-                <td>André Felipe Dias &lt;<a href="mailto:\
-andref.dias@gmail.com">andref.dias@gmail.com</a>&gt;</td>
+                <td>André Felipe Dias &lt;<a href="mailto:andref.dias@gmail.com">\
+andref.dias@gmail.com</a>&gt;</td>
             </tr>
             <tr>
                 <th>date</th>
@@ -1307,10 +1289,8 @@ Another [TEST2]_.
 .. [CIT2012] A citation
 .. [TEST2] Test text''',
     'out': '''
-    <p>this is a citation <a href="#cit2012" id="id1" \
-class="citation_reference">[CIT2012]</a></p>
-    <p>Another <a href="#test2" id="id2" \
-class="citation_reference">[TEST2]</a>.</p>
+    <p>this is a citation <a href="#cit2012" id="id1" class="citation_reference">[CIT2012]</a></p>
+    <p>Another <a href="#test2" id="id2" class="citation_reference">[TEST2]</a>.</p>
     <table class="citation" id="cit2012">
         <col />
         <col />
@@ -1338,15 +1318,13 @@ class="citation_reference">[TEST2]</a>.</p>
 attribution = {
     'rst': '''Quote:
 
-    "Choose a job you love, and you will never have to work a day \
-in your life."
+    "Choose a job you love, and you will never have to work a day in your life."
 
     -- Confucius''',
     'out': '''
     <p>Quote:</p>
     <blockquote>
-        <p>"Choose a job you love, and you will never have to work a day \
-in your life."</p>
+        <p>"Choose a job you love, and you will never have to work a day in your life."</p>
         <p class="attribution">Confucius</p>
     </blockquote>
 ''',
@@ -1415,10 +1393,9 @@ option_list = {
             <tr>
                 <td><kbd>-p</kbd></td>
                 <td>
-                    <p>This option has two paragraphs in the description. \
-This is the first.</p>
-                    <p>This is the second. Blank lines may be omitted \
-between options (as above) or left in (as here and below).</p>
+                    <p>This option has two paragraphs in the description. This is the first.</p>
+                    <p>This is the second. Blank lines may be omitted between options (as above) \
+or left in (as here and below).</p>
                 </td>
             </tr>
             <tr>
@@ -1426,8 +1403,7 @@ between options (as above) or left in (as here and below).</p>
             </tr>
             <tr>
                 <td></td>
-                <td>A VMS-style option. Note the adjustment for the required \
-two spaces.</td>
+                <td>A VMS-style option. Note the adjustment for the required two spaces.</td>
             </tr>
             <tr>
                 <td colspan="2"><kbd>--an-even-longer-option</kbd></td>
@@ -1489,8 +1465,7 @@ and <a href="#label" id="id3" class="footnote_reference">[1]</a> will be "1" \
             <tr>
                 <th>[1]</th>
                 <td>
-                    <p>This autonumber-labeled footnote will be \
-labeled "1".</p>
+                    <p>This autonumber-labeled footnote will be labeled "1".</p>
                     <p>It is the first auto-numbered footnote and no other \
 footnote with label "1" exists.</p>
                     <p>The order of the footnotes is used to determine \
@@ -1505,8 +1480,7 @@ numbering, not the order of the footnote references.</p>
         <tbody>
             <tr>
                 <th>[2]</th>
-                <td>This footnote is labeled manually, so its number is \
-fixed.</td>
+                <td>This footnote is labeled manually, so its number is fixed.</td>
             </tr>
         </tbody>
     </table>
@@ -1572,8 +1546,7 @@ legend = {
     'out': '''
     <figure>
         <img src="picture.png" alt="map to buried treasure" scale="50" />
-        <figcaption>This is the caption of the figure (a simple paragraph).\
-</figcaption>
+        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
         <div class="legend">The legend consists of all elements after the \
 caption. In this case, the legend consists of this paragraph.</div>
     </figure>
@@ -1595,8 +1568,7 @@ system_message = {
         <h1>Docutils System Messages</h1>
         <a id="id1"></a>
         <div>
-            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) \
-<a href="#id2">id2</a></h1>
+            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id2">id2</a></h1>
             <p>Unknown target name: "target".</p>
         </div>
     </section>
@@ -1613,15 +1585,13 @@ Target2__
 .. __: http://opensource.org/licenses/MIT
 ''',
     'out': '''
-    <p><a href="#id2" id="id3" class="problematic">Target1__</a> \
-<a href="#id2" id="id4" \
+    <p><a href="#id2" id="id3" class="problematic">Target1__</a> <a href="#id2" id="id4" \
 class="problematic">Target2__</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
         <a id="id2"></a>
         <div>
-            <h1>System Message: ERROR/3 (&lt;string&gt; line ) \
-<a href="#id3">id3</a> \
+            <h1>System Message: ERROR/3 (&lt;string&gt; line ) <a href="#id3">id3</a> \
 <a href="#id4">id4</a></h1>
             <p>Anonymous hyperlink mismatch: 2 references but 1 targets. \
 See "backrefs" attribute for IDs.</p>
@@ -1651,8 +1621,7 @@ problematic = {
         <h1>Docutils System Messages</h1>
         <a id="id3"></a>
         <div>
-            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) \
-<a href="#id4">id4</a></h1>
+            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id4">id4</a></h1>
             <p>Unknown target name: "2".</p>
         </div>
     </section>
@@ -1713,8 +1682,7 @@ javascript = {
     'rst': 'ordinary paragraph',
     'out': '''
     <meta charset="utf-8" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/\
-1.7.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 ''',
     'script': [('https://ajax.googleapis.com/ajax/libs/jquery/'
                '1.7.2/jquery.min.js', None)],
