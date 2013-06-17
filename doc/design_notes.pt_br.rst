@@ -1,6 +1,6 @@
-=====================
-Implementação (pt_BR)
-=====================
+=======================
+Notas de Design (pt_BR)
+=======================
 
 O texto a seguir descreve o conhecimento coletado durante a implementação do rst2html5.
 Certamente não está completo e talvez nem esteja exato,

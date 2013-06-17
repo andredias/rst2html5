@@ -181,4 +181,13 @@ Installation
     $ pip install rst2html5
 
 
+Links
+=====
+
+* `Documentation`__
+* `Project page at BitBucket`__
+
+
 .. __: http://docutils.sourceforge.net/docs/ref/rst/directives.html#class
+.. __: https://rst2html5.readthedocs.org/
+.. __: https://bitbucket.org/andre_felipe_dias/rst2html5
