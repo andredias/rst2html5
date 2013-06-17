@@ -1,6 +1,6 @@
-========================
-rst2html5 Implementation
-========================
+======================
+rst2html5 Design Notes
+======================
 
 The following documentation describes the knowledge collected durint rst2html5 implementation.
 Probably, it isn't complete or even exact,
@@ -315,3 +315,33 @@ Its text is simply added to the context of its parent node::
     Its context is simply combined to the outer context to form the body of the HTML5 document::
 
         context = [tag.h1('Title'), tag.p('Text and more text')]
+
+
+.. _tests:
+
+rst2html5 Tests
+===============
+
+The tests executed in :mod:`rst2html5.tests.test_html5writer` are bases on generators
+(veja http://nose.readthedocs.org/en/latest/writing_tests.html#test-generators).
+The test cases are in :file:`tests/cases.py`.
+Each test case is a dictionary whose main keys are:
+
+:rst: text snippet in rst format
+:out: expected output
+:part: specifies which part of ``rst2html5`` output will be compared to ``out``.
+       Possible values are ``head``,  ``body`` or ``whole``.
+
+All other keys are ``rst2html5`` configuration settings such as
+``indent_output``, ``script``, ``script-defer``, ``html-tag-attr`` or ``stylesheet``.
+
+When test fails,
+three auxiliary files are saved on the temporary directory (:file:`/tmp`):
+
+#. :file:`TEST_CASE.rst` com o trecho de texto rst do caso de teste;
+#. :file:`TEST_CASE.result` com resultado produzido pelo ``rst2html5`` e
+#. :file:`TEST_CASE.expected` com o resultado esperado pelo caso de teste.
+
+Their differences can be easily visualized::
+
+    $ kdiff3 /tmp/TEST_CASE.result /tmp/TEST_CASE.expected

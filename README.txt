@@ -180,10 +180,5 @@ Installation
 
     $ pip install rst2html5
 
-License
-=======
-
-`MIT License`__
 
 .. __: http://docutils.sourceforge.net/docs/ref/rst/directives.html#class
-.. __: http://opensource.org/licenses/MIT

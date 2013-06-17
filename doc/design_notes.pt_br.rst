@@ -367,3 +367,36 @@ As chamadas ``visit_...`` e ``depart_...`` acontecerão na seguinte ordem::
 ::
 
     context = [tag.h1('Title'), tag.p('Text e more text')]
+
+
+.. _testes:
+
+Testes
+======
+
+Os testes executados no módulo :mod:`rst2html5.tests.test_html5writer` são baseados em geradores
+(veja http://nose.readthedocs.org/en/latest/writing_tests.html#test-generators).
+Os casos de teste são registrados no arquivo :file:`tests/cases.py`.
+Cada caso de teste fica registrado em uma variável do tipo dicionário cujas entradas principais são:
+
+:rst: Trecho de texto rst a ser transformado
+:out: Saída esperada
+:part: A qual parte da saída produzida pelo ``rst2html5`` será usada na comparação com ``out``.
+       As partes possíveis são: ``head``,  ``body`` e ``whole``.
+
+Todas as demais entradas são consideradas opções de configuração do ``rst2html5``.
+Exemplos: ``indent_output``, ``script``, ``script-defer``, ``html-tag-attr`` e ``stylesheet``.
+
+Em caso de falha no teste,
+três arquivos auxiliares são gravados no diretório temporário (:file:`/tmp` no Linux):
+
+#. :file:`NOME_CASO_TESTE.rst` com o trecho de texto rst do caso de teste;
+#. :file:`NOME_CASO_TESTE.result` com resultado produzido pelo ``rst2html5`` e
+#. :file:`NOME_CASO_TESTE.expected` com o resultado esperado pelo caso de teste.
+
+Em que ``NOME_CASO_TESTE`` é o nome da variável que contém o dicionário do caso de teste.
+
+A partir desses arquivos é mais fácil comparar as diferenças::
+
+    $ kdiff3 /tmp/NOME_CASO_TESTE.result /tmp/NOME_CASO_TESTE.expected
+

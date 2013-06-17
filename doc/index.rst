@@ -5,23 +5,15 @@
 
 .. include:: ../README.txt
 
-Contents:
+Additional Documentation
+========================
 
 .. toctree::
    :maxdepth: 2
 
+   license
+   changelog
    contributing
-   implementation
-   implementation.pt_br
+   design_notes
+   design_notes.pt_br
    reference
-..   testing
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
