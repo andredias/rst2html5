@@ -7,6 +7,7 @@ __docformat__ = 'reStructuredText'
 
 import re
 from docutils import nodes, writers, frontend
+from docutils.transforms import Transform
 try:
     # docutils >= 0.10
     from docutils.utils.math import pick_math_environment
@@ -15,6 +16,31 @@ except ImportError:
 from genshi.builder import tag
 from genshi.output import XHTMLSerializer
 from genshi.core import Markup
+
+
+class FooterToBottom(Transform):
+    '''
+    The doctree must be adjusted before translation begins
+    since in-place tree modifications doesn't work.
+
+    The footer must be relocated to the bottom of the
+    doctree in order to be translated at the right position.
+
+    .. seealso::
+
+        * http://docutils.sourceforge.net/docs/ref/transforms.html
+    '''
+
+    default_priority = 850
+
+    def apply(self):
+        for child in self.document.children:
+            if isinstance(child, nodes.decoration):
+                for footer in child:
+                    if isinstance(footer, nodes.footer):
+                        child.remove(footer)
+                        self.document.append(footer)
+                break
 
 
 def _script_callback_option_parser(option, opt_str, value, parser):
@@ -96,7 +122,6 @@ class HTML5Writer(writers.Writer):
         return
 
     def translate(self):
-        self.transform_doctree(self.document)
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.output
@@ -110,23 +135,9 @@ class HTML5Writer(writers.Writer):
         self.parts['body'] = self.body
         return
 
-    @classmethod
-    def transform_doctree(cls, document):
-        '''
-        The doctree must be adjusted before translation begins
-        since in-place tree modifications doesn't work.
+    def get_transforms(self):
+        return writers.Writer.get_transforms(self) + [FooterToBottom]
 
-        The footer must be relocated to the bottom of the
-        doctree in order to be translated at the right position.
-        '''
-        for child in document.children:
-            if isinstance(child, nodes.decoration):
-                for footer in child:
-                    if isinstance(footer, nodes.footer):
-                        child.remove(footer)
-                        document.append(footer)
-                break
-        return document
 
 
 class ElemStack(object):
