@@ -21,11 +21,11 @@ Options:
                         (This option can be used multiple times)
 --script=<URL or path>  Specify a script URL to be included.
                         (This option can be used multiple times)
---script-defer=<attribute>
+--script-defer=<URL or path>
                         Specify a script URL with a defer attribute
                         to be included in the output HTML file.
                         (This option can be used multiple times)
---script-async=<attribute>
+--script-async=<URL or path>
                         Specify a script URL with a async attribute
                         to be included in the output HTML file.
                         (This option can be used multiple times)
