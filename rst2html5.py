@@ -243,7 +243,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'citation_reference': ('a', 'visit_citation_reference',
                                'depart_citation_reference', True, False),
         'classifier': (None, 'visit_classifier', None),
-        'colspec': ('col', dv, 'depart_colspec'),
+        'colspec': (None, pass_, 'depart_colspec'),
         'comment': (None, 'skip_node', None),
         'compound': ('div', dv, dp, True),
         'contact': (None, 'visit_field_list_item', 'depart_field_list_item'),
@@ -617,13 +617,17 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def depart_colspec(self, node):
         '''
-        A "stub" attribute indicates that the column should be a th tag.
-        It could be resolved by CSS3 instead...
-        See `The HTML col and colgroup elements <http://goo.gl/8FERk>`_
+        <col /> tags are not generated anymore because they're pretty useless
+        since they cannot receive any attribute from a rst table.
+        Anyway, there are better ways to apply styles to columns.
+        See http://csswizardry.com/demos/zebra-striping/ for example.
+
+        Nevertheless,
+        if a colspec node with a "stub" attribute indicates that the column should be a th tag.
         '''
         if 'stub' in node:
             self.th_required += 1
-        self.default_departure(node)
+        return
 
     def visit_thead(self, node):
         self.in_thead = True
@@ -791,9 +795,6 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_docinfo(self, node):
         self.context.begin_elem()  # table
-        col = tag.col
-        self.context.append(col)
-        self.context.append(col)
         self.context.begin_elem()  # tbody
 
     def depart_docinfo(self, node):

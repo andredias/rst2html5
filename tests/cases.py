@@ -333,8 +333,6 @@ grid_table = {
 +--------------+----------+''',
     'out': '''
     <table>
-        <col />
-        <col />
         <tbody>
             <tr>
                 <td>row 1, col 1</td>
@@ -361,8 +359,6 @@ grid_table_with_caption = {
     'out': '''
     <table>
         <caption>What a nice table!</caption>
-        <col />
-        <col />
         <tbody>
             <tr>
                 <td>row 1, col 1</td>
@@ -386,8 +382,6 @@ grid_table_with_head = {
 +--------------+----------+''',
     'out': '''
     <table>
-        <col />
-        <col />
         <thead>
             <tr>
                 <th>row 1, col 1</th>
@@ -414,10 +408,6 @@ csv_table = {
 ''',
     'out': '''
     <table>
-        <col />
-        <col />
-        <col />
-        <col />
         <thead>
             <tr>
                 <th>Command</th>
@@ -449,9 +439,6 @@ grid_table_span = {
 +------------------------+------------+---------------------+''',
     'out': '''
     <table>
-        <col />
-        <col />
-        <col />
         <tbody>
             <tr>
                 <td>body row 1</td>
@@ -1157,8 +1144,6 @@ docinfo = {
 :Parameter i: integer''',
     'out': '''
     <table class="docinfo">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>version</th>
@@ -1239,8 +1224,6 @@ docinfo2 = {
 :Description: This is a "docinfo block", or bibliographic field list''',
     'out': '''
     <table class="docinfo">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>Info</th>
@@ -1292,8 +1275,6 @@ Another [TEST2]_.
     <p>this is a citation <a href="#cit2012" id="id1" class="citation_reference">[CIT2012]</a></p>
     <p>Another <a href="#test2" id="id2" class="citation_reference">[TEST2]</a>.</p>
     <table class="citation" id="cit2012">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>[CIT2012]</th>
@@ -1302,8 +1283,6 @@ Another [TEST2]_.
         </tbody>
     </table>
     <table class="citation" id="test2">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>[TEST2]</th>
@@ -1371,8 +1350,6 @@ option_list = {
 /V         A VMS/DOS-style option.''',
     'out': '''
     <table class="option_list">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <td><kbd>-a</kbd></td>
@@ -1459,8 +1436,6 @@ class="footnote_reference">[3]</a> will be "3" (anonymous auto-numbered), \
 and <a href="#label" id="id3" class="footnote_reference">[1]</a> will be "1" \
 (labeled auto-numbered).</p>
     <table id="label" class="footnote">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>[1]</th>
@@ -1475,8 +1450,6 @@ numbering, not the order of the footnote references.</p>
         </tbody>
     </table>
     <table id="id4" class="footnote">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>[2]</th>
@@ -1485,8 +1458,6 @@ numbering, not the order of the footnote references.</p>
         </tbody>
     </table>
     <table id="id5" class="footnote">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>[3]</th>
@@ -1608,8 +1579,6 @@ problematic = {
     'out': '''
     <p><a href="#id3" id="id4" class="problematic">[2]_</a></p>
     <table id="id2" class="footnote">
-        <col />
-        <col />
         <tbody>
             <tr>
                 <th>[1]</th>
