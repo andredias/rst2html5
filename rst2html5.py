@@ -112,8 +112,8 @@ class HTML5Writer(writers.Writer):
     settings_defaults = {
         'tab_width': 4,
         'syntax_highlight': 'short',
-        'field-limit': 0,
-        'option-limit': 0,
+        'field_limit': 0,
+        'option_limit': 0,
     }
 
     def __init__(self):
