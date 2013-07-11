@@ -241,7 +241,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'caution': ('aside', 'visit_aside', 'depart_aside', True),
         'citation': (None, 'visit_citation', 'depart_citation', True),
         'citation_reference': ('a', 'visit_citation_reference',
-                               'depart_citation_reference', True, False),
+                               'depart_reference', True, False),
         'classifier': (None, 'visit_classifier', None),
         'colspec': (None, pass_, 'depart_colspec'),
         'comment': (None, 'skip_node', None),
@@ -270,14 +270,14 @@ class HTML5Translator(nodes.NodeVisitor):
         'figure': (None, dv, dp),
         'footer': (None, dv, dp),
         'footnote': (None, 'visit_citation', 'depart_citation', True),
-        'footnote_reference': ('a', 'visit_label', 'depart_citation_reference', True, False),
+        'footnote_reference': ('a', 'visit_citation_reference', 'depart_reference', True, False),
         'generated': (None, 'do_nothing', None),
         'header': (None, dv, dp),
         'hint': ('aside', 'visit_aside', 'depart_aside', True),
         'image': ('img', dv, dp),
         'important': ('aside', 'visit_aside', 'depart_aside', True),
         'inline': ('span', dv, dp, False, False),
-        'label': ('th', 'visit_citation_reference', 'depart_label'),
+        'label': ('th', 'visit_reference', 'depart_label'),
         'legend': ('div', dv, dp, True),
         'line': (None, 'visit_line', None),
         'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
@@ -833,17 +833,15 @@ class HTML5Translator(nodes.NodeVisitor):
             del node.attributes['delimiter']
         self.default_visit(node)
 
-    def depart_citation_reference(self, node):
-        self.context.append(']', indent=False)
-        self.depart_reference(node)
-
     def visit_citation_reference(self, node):
+        """
+        Instead of a typical visit_reference call this def is required to
+        remove the backref id that is included but not used in rst2html5.
+        """
         self.expand_id_to_anchor = False
         self.default_visit(node)
-        self.context.append('[', indent=False)
-
+    
     def depart_label(self, node):
-        self.context.append(']', indent=False)
         self.default_departure(node)
         self.context.begin_elem()  # next td
 
