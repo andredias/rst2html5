@@ -37,9 +37,9 @@ some text
 
 Level 1 Again
 =============''',
-    'out': '<a id="level-1"></a><section><h1>Level 1</h1>'
+    'out': '<section id="level-1"><h1>Level 1</h1>'
            '<p>some text</p></section>'
-           '<a id="level-1-again"></a><section><h1>Level 1 Again</h1>'
+           '<section id="level-1-again"><h1>Level 1 Again</h1>'
            '</section>',
     'indent_output': False,
     'part': 'body',
@@ -68,13 +68,11 @@ link to `section 2`_''',
     'out': '''
     <h1>Level 1</h1>
     <p>some text. Link to <a href="#level-3">Level 3</a></p>
-    <a id="level-2"></a>
     <a id="section-2"></a>
-    <section>
+    <section id="level-2">
         <h2>Level 2</h2>
         <p>more text</p>
-        <a id="level-3"></a>
-        <section>
+        <section id="level-3">
             <h3>Level 3</h3>
             <p>link to <a href="#section-2">section 2</a></p>
         </section>
@@ -98,7 +96,7 @@ Section Title
 
 ...''',
     'out': '<h1>Document Title</h1><h2>Subtitle</h2>'
-           '<a id="section-title"></a><section><h1>Section Title</h1>'
+           '<section id="section-title"><h1>Section Title</h1>'
            '<p>...</p></section>',
     'indent_output': False,
     'part': 'body',
@@ -124,8 +122,7 @@ Section Title
     'out': '''
     <h1>Document Title</h1>
     <h2>Subtitle</h2>
-    <a id="section-title"></a>
-    <section>
+    <section id="section-title">
         <h1>Section Title</h1>
         <p>...</p>
     </section>
@@ -185,7 +182,7 @@ target paragraph
    :class: top
 
 ''',
-    'out': '<a id="target"></a><p>target paragraph</p><a href="#target">'
+    'out': '<p id="target">target paragraph</p><a href="#target">'
            '<img src="images/biohazard.png" alt="alternate text" width="50px" '
            'class="top" height="100px" /></a>',
     'indent_output': False,
@@ -487,25 +484,46 @@ The hyperlink target above points to this paragraph.''',
     'out': '''
     <p>Clicking on this internal hyperlink will take us to the \
 <a href="#target">target</a> below.</p>
-    <a id="target"></a>
-    <p>The hyperlink target above points to this paragraph.</p>
+    <p id="target">The hyperlink target above points to this paragraph.</p>
 ''',
     'part': 'body'
 }
 
-chained_internal_links = {
-    'rst': '''Links to target1_ and target2_.
+chained_internal_links_1 = {
+    'rst': '''Links to outer_target_ and inner_target_.
 
-.. _target1:
-.. _target2:
+.. _outer_target:
+.. _inner_target:
 
-The targets "target1" and "target2" are synonyms; they both
+The targets "outer_target" and "inner_target" are synonyms; they both
 point to this paragraph.''',
     'out': '''
-    <p>Links to <a href="#target1">target1</a> and <a href="#target2">target2</a>.</p>
-    <a id="target2"></a>
-    <a id="target1"></a>
-    <p>The targets "target1" and "target2" are synonyms; they both point to this paragraph.</p>
+    <p>Links to <a href="#outer-target">outer_target</a> and <a href="#inner-target">inner_target</a>.</p>
+    <a id="outer-target"></a>
+    <p id="inner-target">The targets "outer_target" and "inner_target" are synonyms; they both point to this paragraph.</p>
+''',
+    'part': 'body'
+}
+
+
+chained_internal_links_2 = {
+    'rst': '''Links to outer_target_ and inner_target_.
+
+.. _outer_target:
+.. _inner_target:
+
+Title 1
+=======
+
+The targets "outer_target" and "inner_target" point both to Title 1.''',
+    'out': '''
+    <p>Links to <a href="#outer-target">outer_target</a> and <a href="#inner-target">inner_target</a>.</p>
+    <a id="inner-target"></a>
+    <a id="outer-target"></a>
+    <section id="title-1">
+        <h1>Title 1</h1>
+        <p>The targets "outer_target" and "inner_target" point both to Title 1.</p>
+    </section>
 ''',
     'part': 'body'
 }
@@ -540,8 +558,7 @@ Referencing the  `inline hyperlink target`_.
     <p>This is a <a id="inline-hyperlink-target">inline hyperlink target</a> \
 that corresponds to a &lt;target&gt; in doctree.</p>
     <p>Link to <a href="#three">one</a>.</p>
-    <a id="three"></a>
-    <p>Target paragraph.</p>
+    <p id="three">Target paragraph.</p>
     <p>Referencing the <a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
 ''',
     'part': 'body'
@@ -581,20 +598,17 @@ Example
 
 This paragraph belongs to Example section.''',
     'out': '''
-    <a id="citations"></a>
-    <section>
+    <section id="citations">
         <h1>Citations</h1>
         <p>Here's a reference to <a href="#example">example</a>.</p>
     </section>
-    <a id="targets"></a>
     <a id="another-target"></a>
-    <section>
+    <section id="targets">
         <h1>Targets</h1>
         <p>Text of section target</p>
     </section>
-    <a id="id1"></a>
     <a id="example"></a>
-    <section>
+    <section id="id1">
         <h1>Example</h1>
         <p>This paragraph belongs to Example section.</p>
     </section>
@@ -782,8 +796,7 @@ paragraph with some text
 Section Title
 =============''',
     'out': '<p class="nav special">paragraph with some text</p>'
-           '<a id="section-title"></a>'
-           '<section class="heading top">'
+           '<section class="heading top" id="section-title">'
            '<h1>Section Title</h1></section>',
     'indent_output': False,
     'part': 'body',
@@ -822,8 +835,7 @@ Another Subtitle
     'out': '''
     <h1>Title 1</h1>
     <p>text</p>
-    <a id="subtitle"></a>
-    <section>
+    <section id="subtitle">
         <h2>Subtitle</h2>
         <p>more text</p>
         <aside class="topic">
@@ -832,8 +844,7 @@ Another Subtitle
 and are interpreted as body elements.</p>
         </aside>
     </section>
-    <a id="another-subtitle"></a>
-    <section>
+    <section id="another-subtitle">
         <h2>Another Subtitle</h2>
     </section>
 ''',
@@ -928,8 +939,7 @@ Another Subtitle
     'out': '''
     <h1>Title</h1>
     <p>text</p>
-    <a id="subtitle"></a>
-    <section>
+    <section id="subtitle">
         <h2>Subtitle</h2>
         <p>more text</p>
         <aside class="admonition special">
@@ -941,8 +951,7 @@ Another Subtitle
             </ul>
         </aside>
     </section>
-    <a id="another-subtitle"></a>
-    <section>
+    <section id="another-subtitle">
         <h2>Another Subtitle</h2>
     </section>
 ''',
@@ -976,8 +985,7 @@ Another Subtitle
     'out': '''
     <h1>Title</h1>
     <p>text</p>
-    <a id="subtitle"></a>
-    <section>
+    <section id="subtitle">
         <h2>Subtitle</h2>
         <p>more text</p>
         <aside class="sidebar">
@@ -990,8 +998,7 @@ Another Subtitle
             </ul>
         </aside>
     </section>
-    <a id="another-subtitle"></a>
-    <section>
+    <section id="another-subtitle">
         <h2>Another Subtitle</h2>
     </section>
 ''',
@@ -1056,15 +1063,13 @@ Basic Usage
 
 To start using subrepositories, you need two repositories, a main repo and a nested repo''',
     'out': '''
-    <a id="table-of-contents"></a>
-    <aside class="topic contents">
+    <aside class="topic contents" id="table-of-contents">
         <h1>Table of Contents</h1>
         <ul>
             <li><a href="#basic-usage">Basic Usage</a></li>
         </ul>
     </aside>
-    <a id="basic-usage"></a>
-    <section>
+    <section id="basic-usage">
         <h1>Basic Usage</h1>
         <p>To start using subrepositories, you need two repositories, a main \
 repo and a nested repo</p>
@@ -1537,8 +1542,7 @@ system_message = {
     <p><a href="#id1" id="id2" class="problematic">target_</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
-        <a id="id1"></a>
-        <div>
+        <div id="id1">
             <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id2">id2</a></h1>
             <p>Unknown target name: "target".</p>
         </div>
@@ -1560,8 +1564,7 @@ Target2__
 class="problematic">Target2__</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
-        <a id="id2"></a>
-        <div>
+        <div id="id2">
             <h1>System Message: ERROR/3 (&lt;string&gt; line ) <a href="#id3">id3</a> \
 <a href="#id4">id4</a></h1>
             <p>Anonymous hyperlink mismatch: 2 references but 1 targets. \
@@ -1588,8 +1591,7 @@ problematic = {
     </table>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
-        <a id="id3"></a>
-        <div>
+        <div id="id3">
             <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id4">id4</a></h1>
             <p>Unknown target name: "2".</p>
         </div>

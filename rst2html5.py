@@ -461,10 +461,10 @@ class HTML5Translator(nodes.NodeVisitor):
             create an anchor <a id=id></a> for each id found before the
             current element.
             '''
-            for id in node['ids']:
+            for id in node['ids'][1:]:
                 self.context.begin_elem()
                 self.context.commit_elem(tag.a(id=id))
-            del node.attributes['ids']
+            node.attributes['ids'] = node.attributes['ids'][0:1]
         self.context.begin_elem()
         return
 
@@ -891,7 +891,7 @@ class HTML5Translator(nodes.NodeVisitor):
                '{line})'.format(**node.attributes)
         h1 = tag.h1(text, *backrefs)
         self.context.commit_elem(h1)
-        node.attributes = {'classes': []}
+        node.attributes = {'classes': [], 'ids': node.attributes['ids']}
         return
 
 
