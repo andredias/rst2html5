@@ -192,12 +192,13 @@ target paragraph
 
 figure = {
     'rst': '''.. figure:: picture.png
+   :name: buried treasure
    :scale: 50%
    :alt: map to buried treasure
 
    This is the caption of the figure (a simple paragraph).''',
     'out': '''
-    <figure>
+    <figure id="buried-treasure">
         <img src="picture.png" alt="map to buried treasure" scale="50" />
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
     </figure>
@@ -1525,6 +1526,34 @@ legend = {
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
         <div class="legend">The legend consists of all elements after the \
 caption. In this case, the legend consists of this paragraph.</div>
+    </figure>
+''',
+    'part': 'body'
+}
+
+legend_more = {
+    'rst': '''.. figure:: picture.png
+   :scale: 50%
+   :alt: map to buried treasure
+
+   This is the caption of the figure (a simple paragraph).
+
+   The legend consists of all elements after the caption.  In this
+   case, the legend consists of this paragraph.
+
+   .. image:: x-mark.png
+      :name: xmark
+      :alt: image of x mark
+''',
+    'out': '''
+    <figure>
+        <img src="picture.png" alt="map to buried treasure" scale="50" />
+        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
+        <div class="legend">
+            <p>The legend consists of all elements after the \
+caption. In this case, the legend consists of this paragraph.</p>
+            <img src="x-mark.png" alt="image of x mark" id="xmark" />
+        </div>
     </figure>
 ''',
     'part': 'body'

@@ -267,7 +267,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'field_body': ('td', dv, dp),
         'field_list': (None, 'visit_docinfo', 'depart_docinfo', True),
         'field_name': ('th', dv, dp),
-        'figure': (None, dv, dp),
+        'figure': (None, 'visit_figure', dp),
         'footer': (None, dv, dp),
         'footnote': (None, 'visit_citation', 'depart_citation', True),
         'footnote_reference': ('a', 'visit_citation_reference', 'depart_reference', True, False),
@@ -893,6 +893,15 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.commit_elem(h1)
         node.attributes = {'classes': [], 'ids': node.attributes['ids']}
         return
+
+    def visit_figure(self, node):
+        # move up the ids of child img
+        for child in node:
+            if isinstance(child, nodes.image) and 'ids' in child:
+                node['ids'].extend(child['ids'])
+                child['ids'] = []
+
+        self.default_visit(node)
 
 
 def main():
