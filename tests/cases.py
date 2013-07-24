@@ -220,7 +220,7 @@ inline_markup = {
     <p><em>emphasis</em> <strong>strong emphasis</strong> \
 <cite>interpreted text</cite> <sup>superscript</sup> \
 <em>interpreted text with role</em> <sub>subscript</sub> \
-<code>inline&nbsp;&nbsp;&lt;pre&gt;&nbsp;&nbsp;&nbsp;text</code></p>
+<code>inline  &lt;pre&gt;   text</code></p>
 ''',
     'part': 'body'
 }
@@ -622,6 +622,23 @@ literal_text = {
     'rst': '``<style>``',
     'out': '<p><code>&lt;style&gt;</code></p>',
     'indent_output': False,
+    'part': 'body',
+}
+
+code_role = {
+    'rst': '''
+.. role:: htmlcode(code)
+   :language: html
+
+Is it okay to use :htmlcode:`<input type="tel"/>` now?
+
+Yes, any unsupported type will revert to the ``type=text`` format.
+''',
+    'out': '''
+    <p>Is it okay to use <code class="html"><span class="nt">&lt;input</span> <span class="na">type=</span>\
+<span class="s">"tel"</span><span class="nt">/&gt;</span></code> now?</p>
+    <p>Yes, any unsupported type will revert to the <code>type=text</code> format.</p>
+''',
     'part': 'body',
 }
 

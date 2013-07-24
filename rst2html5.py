@@ -282,7 +282,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'line': (None, 'visit_line', None),
         'line_block': ('pre', 'visit_line_block', 'depart_line_block', True),
         'list_item': ('li', dv, dp),
-        'literal': ('code', 'visit_literal', None),
+        'literal': ('code', 'visit_literal', 'depart_literal', False, False),
         'literal_block': ('pre', 'visit_literal_block', 'depart_literal_block'),
         'math': (None, 'visit_math_block', None),
         'math_block': (None, 'visit_math_block', None),
@@ -675,14 +675,23 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_visit(node)
 
     def visit_literal(self, node):
-        text = Markup(Markup.escape(node.astext()).replace(' ', '&nbsp;'))
-        self.context.append(tag.code(text), indent=False)
-        raise nodes.SkipNode
+        self.preserve_space = getattr(self, 'preserve_space', 0) + 1
+        self.default_visit(node)
+        return
+
+    def depart_literal(self, node):
+        self.preserve_space -= 1
+        if self.preserve_space == 0:
+            del self.preserve_space
+        if node['classes']:
+            node['classes'] = node['classes'][-1]
+        self.default_departure(node)
+        return
 
     def visit_literal_block(self, node):
         if 'code' in node['classes']:
             self.context.begin_elem()  # <pre>. The next will be for <code>
-        self.preserve_space = True
+        self.preserve_space = 1
         self.default_visit(node)
         return
 
@@ -840,7 +849,7 @@ class HTML5Translator(nodes.NodeVisitor):
         """
         self.expand_id_to_anchor = False
         self.default_visit(node)
-    
+
     def depart_label(self, node):
         self.default_departure(node)
         self.context.begin_elem()  # next td
