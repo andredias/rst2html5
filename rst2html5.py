@@ -127,12 +127,14 @@ class HTML5Writer(writers.Writer):
         self.output = visitor.output
         self.head = visitor.head
         self.body = visitor.body
+        self.title = visitor.title
         return
 
     def assemble_parts(self):
         writers.Writer.assemble_parts(self)
         self.parts['head'] = self.head
         self.parts['body'] = self.body
+        self.parts['title'] = self.title
         return
 
     def get_transforms(self):
@@ -727,6 +729,9 @@ class HTML5Translator(nodes.NodeVisitor):
     def visit_document(self, node):
         if 'title' in node:
             self.head.append(tag.title(node['title']))
+            self.title = node['title']
+        else:
+            self.title = ''
         self.expand_id_to_anchor = False
         self.default_visit(node)
 

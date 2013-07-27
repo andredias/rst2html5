@@ -19,6 +19,22 @@ title = {
     'part': 'body',
 }
 
+title_part = {
+    'rst': '''
+AbCdE fGhIjK
+============''',
+    'out': 'AbCdE fGhIjK',
+    'part': 'title',
+}
+
+title_part_2 = {
+    'rst': '''
+AbCdE fGhIjK
+============''',
+    'out': 'Hello World',
+    'title': 'Hello World',
+    'part': 'title',
+}
 
 title_accented_chars = {
     'rst': 'Título com Acentuação\n'
