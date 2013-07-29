@@ -1182,67 +1182,6 @@ docinfo = {
    field name marker, and they must line up with each other.
 :Parameter i: integer''',
     'out': '''
-    <table class="docinfo">
-        <tbody>
-            <tr>
-                <th>version</th>
-                <td>1</td>
-            </tr>
-            <tr>
-                <th>authors</th>
-                <td>
-                    <ul>
-                        <li>André</li>
-                        <li>Felipe</li>
-                        <li>Dias</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th>organization</th>
-                <td>Pronus Engenharia de Software</td>
-            </tr>
-            <tr>
-                <th>contact</th>
-                <td><a href="mailto:andref.dias@pronus.eng.br">andref.dias@pronus.eng.br</a></td>
-            </tr>
-            <tr>
-                <th>address</th>
-                <td>
-                    <pre class="docinfo-address">Av. Ipê Amarelo
-Sumaré - São Paulo - Brasil
-13175-667</pre>
-                </td>
-            </tr>
-            <tr>
-                <th>version</th>
-                <td>1</td>
-            </tr>
-            <tr>
-                <th>status</th>
-                <td>Alpha</td>
-            </tr>
-            <tr>
-                <th>date</th>
-                <td>2012-07-29</td>
-            </tr>
-            <tr>
-                <th>copyright</th>
-                <td>André Felipe Dias</td>
-            </tr>
-            <tr>
-                <th>Indentation</th>
-                <td>Since the field marker may be quite long, the second and \
-subsequent lines of the field body do not have to line up with the \
-first line, but they must be indented relative to the field name marker, \
-and they must line up with each other.</td>
-            </tr>
-            <tr>
-                <th>Parameter i</th>
-                <td>integer</td>
-            </tr>
-        </tbody>
-    </table>
     <aside class="topic dedication">
         <h1>Dedication</h1>
         <p>To Andréa, Dexter e DeeDee</p>
@@ -1255,6 +1194,24 @@ and they must line up with each other.</td>
     'part': 'body',
 }
 
+docinfo1 = {
+    'rst': docinfo['rst'],
+    'out': '''
+    <meta charset="utf-8" />
+    <meta content="1" name="version" />
+    <meta content="André; Felipe; Dias" name="authors" />
+    <meta content="Pronus Engenharia de Software" name="organization" />
+    <meta content="andref.dias@pronus.eng.br" name="contact" />
+    <meta content="Av. Ipê Amarelo, Sumaré - São Paulo - Brasil, 13175-667" name="address" />
+    <meta content="Alpha" name="status" />
+    <meta content="2012-07-29" name="date" />
+    <meta content="André Felipe Dias" name="copyright" />
+    <meta content="Since the field marker may be quite long, the second and subsequent lines of the field body do not have to line up with the first line, but they must be indented relative to the field name marker, and they must line up with each other." name="Indentation" />
+    <meta content="integer" name="Parameter i" />
+''',
+    'part': 'head',
+}
+
 docinfo2 = {
     'rst': ''':Info: See https://bitbucket.org/andre_felipe_dias/rst2html5
 :Author: André Felipe Dias <andref.dias@gmail.com>
@@ -1262,34 +1219,48 @@ docinfo2 = {
 :Revision: 38
 :Description: This is a "docinfo block", or bibliographic field list''',
     'out': '''
-    <table class="docinfo">
-        <tbody>
-            <tr>
-                <th>Info</th>
-                <td>See <a href="https://bitbucket.org/andre_felipe_dias/rst2html5">\
-https://bitbucket.org/andre_felipe_dias/rst2html5</a></td>
-            </tr>
-            <tr>
-                <th>author</th>
-                <td>André Felipe Dias &lt;<a href="mailto:andref.dias@gmail.com">\
-andref.dias@gmail.com</a>&gt;</td>
-            </tr>
-            <tr>
-                <th>date</th>
-                <td>2012-07-30</td>
-            </tr>
-            <tr>
-                <th>revision</th>
-                <td>38</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>This is a "docinfo block", or bibliographic field list</td>
-            </tr>
-        </tbody>
-    </table>
+    <meta charset="utf-8" />
+    <meta content="See https://bitbucket.org/andre_felipe_dias/rst2html5" name="Info" />
+    <meta content="André Felipe Dias &lt;andref.dias@gmail.com&gt;" name="author" />
+    <meta content="2012-07-30" name="date" />
+    <meta content="38" name="revision" />
+    <meta content="This is a &#34;docinfo block&#34;, or bibliographic field list" name="Description" />
 ''',
-    'part': 'body'
+    'part': 'head',
+}
+
+docinfo3 = {
+    'rst': ''':tags: oh, bar, yeah
+:category: bar
+:slug: oh-yeah
+:license: WTFPL
+:test: <tag>''',
+    'out': '''
+    <meta charset="utf-8" />
+    <meta content="oh, bar, yeah" name="tags" />
+    <meta content="bar" name="category" />
+    <meta content="oh-yeah" name="slug" />
+    <meta content="WTFPL" name="license" />
+    <meta content="&lt;tag&gt;" name="test" />
+''',
+    'part': 'head',
+}
+
+docinfo4 = {
+    'rst': docinfo3['rst'],
+    'out': '',
+    'part': 'body',
+}
+
+docinfo5 = {
+    'rst':  docinfo3['rst'],
+    'part': 'docinfo',
+    'out': {'tags': 'oh, bar, yeah',
+            'category': 'bar',
+            'slug': 'oh-yeah',
+            'license': 'WTFPL',
+            'test': '<tag>',
+            },
 }
 
 comment = {

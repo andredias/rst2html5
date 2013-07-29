@@ -8,6 +8,7 @@ __docformat__ = 'reStructuredText'
 import re
 from docutils import nodes, writers, frontend
 from docutils.transforms import Transform
+from collections import OrderedDict
 try:
     # docutils >= 0.10
     from docutils.utils.math import pick_math_environment
@@ -128,6 +129,7 @@ class HTML5Writer(writers.Writer):
         self.head = visitor.head
         self.body = visitor.body
         self.title = visitor.title
+        self.docinfo = visitor.docinfo
         return
 
     def assemble_parts(self):
@@ -135,6 +137,7 @@ class HTML5Writer(writers.Writer):
         self.parts['head'] = self.head
         self.parts['body'] = self.body
         self.parts['title'] = self.title
+        self.parts['docinfo'] = self.docinfo
         return
 
     def get_transforms(self):
@@ -231,11 +234,11 @@ class HTML5Translator(nodes.NodeVisitor):
         'Text': (None, 'visit_Text', None),
         'abbreviation': ('abbr', dv, dp),
         'acronym': (None, dv, dp),
-        'address': (None, 'visit_address', 'depart_address'),
+        'address': (None, 'visit_address', None),
         'admonition': ('aside', 'visit_aside', 'depart_aside', True),
         'attention': ('aside', 'visit_aside', 'depart_aside', True),
         'attribution': ('p', dv, dp, True),
-        'author': (None, 'visit_author', 'depart_author'),
+        'author': (None, 'visit_bibliographic_field', None),
         'authors': (None, 'visit_authors', 'depart_authors'),
         'block_quote': ('blockquote', dv, dp),
         'bullet_list': ('ul', dv, dp, False),
@@ -248,27 +251,26 @@ class HTML5Translator(nodes.NodeVisitor):
         'colspec': (None, pass_, 'depart_colspec'),
         'comment': (None, 'skip_node', None),
         'compound': ('div', dv, dp, True),
-        'contact': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'contact': (None, 'visit_bibliographic_field', None),
         'container': ('div', dv, dp, True),
-        'copyright': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'copyright': (None, 'visit_bibliographic_field', None),
         'danger': ('aside', 'visit_aside', 'depart_aside', True),
-        'date': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'date': (None, 'visit_bibliographic_field', None),
         'decoration': (None, 'do_nothing', None),
         'definition': ('dd', dv, dp),
         'definition_list': ('dl', dv, dp),
         'definition_list_item': (None, 'do_nothing', None),
         'description': ('td', dv, dp),
-        'docinfo': (None, 'visit_docinfo', 'depart_docinfo', True),
+        'docinfo': (None, 'do_nothing', None),
         'doctest_block': ('pre', 'visit_literal_block', 'depart_literal_block', True),
         'document': (None, 'visit_document', 'depart_document'),
         'emphasis': ('em', dv, dp, False, False),
         'entry': (None, dv, 'depart_entry'),
         'enumerated_list': ('ol', dv, 'depart_enumerated_list'),
         'error': ('aside', 'visit_aside', 'depart_aside', True),
-        'field': ('tr', dv, dp),
-        'field_body': ('td', dv, dp),
-        'field_list': (None, 'visit_docinfo', 'depart_docinfo', True),
-        'field_name': ('th', dv, dp),
+        'field': (None, 'visit_field', None),
+        'field_body': (None, 'do_nothing', None),
+        'field_name': (None, 'do_nothing', None),
         'figure': (None, 'visit_figure', dp),
         'footer': (None, dv, dp),
         'footnote': (None, 'visit_citation', 'depart_citation', True),
@@ -293,21 +295,21 @@ class HTML5Translator(nodes.NodeVisitor):
         'option': ('kbd', 'visit_option', dp, False, False),
         'option_argument': ('var', 'visit_option_argument', dp, False, False),
         'option_group': ('td', 'visit_option_group', 'depart_option_group'),
-        'option_list': (None, 'visit_docinfo', 'depart_docinfo', True),
+        'option_list': (None, 'visit_option_list', 'depart_option_list', True),
         'option_list_item': ('tr', dv, dp),
         'option_string': (None, 'do_nothing', None),
-        'organization': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'organization': (None, 'visit_bibliographic_field', None),
         'paragraph': ('p', 'visit_paragraph', dp),
         'pending': (None, dv, dp),
         'problematic': ('a', 'visit_problematic', 'depart_reference', True, False),
         'raw': (None, 'visit_raw', None),
         'reference': ('a', 'visit_reference', 'depart_reference', False, False),
-        'revision': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'revision': (None, 'visit_bibliographic_field', None),
         'row': ('tr', 'visit_row', 'depart_row'),
         'rubric': ('p', dv, 'depart_rubric', True),
         'section': ('section', 'visit_section', 'depart_section'),
         'sidebar': ('aside', 'visit_aside', 'depart_aside', True),
-        'status': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'status': (None, 'visit_bibliographic_field', None),
         'strong': (None, dv, dp, False, False),
         'subscript': ('sub', dv, dp, False, False),
         'substitution_definition': (None, 'skip_node', None),
@@ -326,7 +328,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'title_reference': ('cite', dv, dp, False, False),
         'topic': ('aside', 'visit_aside', 'depart_aside', True),
         'transition': ('hr', dv, dp),
-        'version': (None, 'visit_field_list_item', 'depart_field_list_item'),
+        'version': (None, 'visit_bibliographic_field', None),
         'warning': ('aside', 'visit_aside', 'depart_aside', True),
     }
 
@@ -356,6 +358,7 @@ class HTML5Translator(nodes.NodeVisitor):
         self.head = []
         self.head.append(
             tag.meta(charset=self.document.settings.output_encoding))
+        self.docinfo = OrderedDict()
         self.add_stylesheets()
         self.add_scripts()
         self._map_terms_to_functions()
@@ -388,6 +391,8 @@ class HTML5Translator(nodes.NodeVisitor):
 
     @property
     def output(self):
+        for key, value in self.docinfo.iteritems():
+            self.head.append(tag.meta(name=key, content=value))
         self.indent_head()
         html_attrs = self.document.settings.html_tag_attr
         html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
@@ -507,10 +512,13 @@ class HTML5Translator(nodes.NodeVisitor):
             raise nodes.SkipDeparture
         self.default_visit(node)
 
+    def _strip_spaces(self, text):
+        return re.sub(r'\s+', ' ', text)
+
     def visit_Text(self, node):
         text = node.astext()
         if not getattr(self, 'preserve_space', None):
-            text = re.sub(r'\s+', ' ', text)
+            text = self._strip_spaces(text)
         self.context.append(text, indent=False)
         raise nodes.SkipDeparture
 
@@ -761,64 +769,40 @@ class HTML5Translator(nodes.NodeVisitor):
         node['classes'] = []
         self.default_departure(node)
 
-    def visit_field_list_item(self, node):
-        self.context.begin_elem()  # tr
-        self.context.append(tag.th(node.__class__.__name__))
-        self.context.begin_elem()  # td
+    def visit_field(self, node):
+        self.docinfo[node.children[0].astext()] = self._strip_spaces(node.children[1].astext())
+        raise nodes.SkipNode
 
-    def depart_field_list_item(self, node):
-        self.context.commit_elem(tag.td)
-        self.context.commit_elem(tag.tr)
-
-    def visit_author(self, node):
-        if isinstance(node.parent, nodes.authors):
-            self.default_visit(node)
-        else:
-            self.visit_field_list_item(node)
-
-    def depart_author(self, node):
-        if isinstance(node.parent, nodes.authors):
-            elem = tag.li
-            self.context.commit_elem(elem)
-        else:
-            self.depart_field_list_item(node)
-
-    def visit_authors(self, node):
-        self.visit_field_list_item(node)
-        self.context.begin_elem()
-
-    def depart_authors(self, node):
-        self.context.commit_elem(tag.ul)
-        self.depart_field_list_item(node)
+    def visit_bibliographic_field(self, node):
+        self.docinfo[node.__class__.__name__] = self._strip_spaces(node.astext())
+        raise nodes.SkipNode
 
     def visit_address(self, node):
-        self.visit_field_list_item(node)
-        self.context.begin_elem()
-        self.preserve_space = True
+        self.docinfo[node.__class__.__name__] = ', '.join(node.astext().split('\n'))
+        raise nodes.SkipNode
 
-    def depart_address(self, node):
-        del self.preserve_space
-        self.context.commit_elem(tag.pre(class_='docinfo-' + node.__class__.__name__))
-        self.depart_field_list_item(node)
+    def visit_authors(self, node):
+        self.docinfo[node.__class__.__name__] = '; '.join(node.astext().split())
+        raise nodes.SkipNode
 
-    def visit_docinfo(self, node):
+    def visit_option_list(self, node):
         self.context.begin_elem()  # table
         self.context.begin_elem()  # tbody
 
-    def depart_docinfo(self, node):
+    def depart_option_list(self, node):
         self.context.commit_elem(tag.tbody)
         waste, waste_, attr = self.parse(node)
         self.context.commit_elem(tag.table(**attr))
 
     def visit_citation(self, node):
-        self.visit_docinfo(node)
+        self.visit_option_list(node)
         self.context.begin_elem()  # tr
 
     def depart_citation(self, node):
         # td initiated at depart_label
         self.context.commit_elem(tag.td)
         self.context.commit_elem(tag.tr)
-        self.depart_docinfo(node)
+        self.depart_option_list(node)
 
     def visit_option_group(self, node):
         self.option_level = 0
