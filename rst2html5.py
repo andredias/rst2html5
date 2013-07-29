@@ -239,7 +239,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'attention': ('aside', 'visit_aside', 'depart_aside', True),
         'attribution': ('p', dv, dp, True),
         'author': (None, 'visit_bibliographic_field', None),
-        'authors': (None, 'visit_authors', 'depart_authors'),
+        'authors': (None, 'visit_authors', None),
         'block_quote': ('blockquote', dv, dp),
         'bullet_list': ('ul', dv, dp, False),
         'caption': ('figcaption', dv, dp, False),
