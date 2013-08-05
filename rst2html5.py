@@ -336,17 +336,13 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         Map terms to visit and departure functions
         '''
-        for term, spec in HTML5Translator.rst_terms.items():
-            visit_func = spec[1] and \
-                getattr(HTML5Translator, spec[1],
-                        HTML5Translator.unknown_visit)
-            depart_func = spec[2] and \
-                getattr(HTML5Translator, spec[2],
-                        HTML5Translator.unknown_departure)
+        for term, spec in self.rst_terms.items():
+            visit_func = spec[1] and getattr(self, spec[1], self.unknown_visit)
+            depart_func = spec[2] and getattr(self, spec[2], self.unknown_departure)
             if visit_func:
-                setattr(HTML5Translator, 'visit_' + term, visit_func)
+                setattr(self, 'visit_' + term, visit_func)
             if depart_func:
-                setattr(HTML5Translator, 'depart_' + term, depart_func)
+                setattr(self, 'depart_' + term, depart_func)
         return
 
     def __init__(self, document):
