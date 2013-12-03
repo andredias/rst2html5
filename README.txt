@@ -3,7 +3,7 @@ rst2html5
 =========
 
 rst2html5 generates (X)HTML5 documents from standalone reStructuredText sources.
-It is a complete rewrite of the docutils' rst2html and uses new HTML5 constructs as
+It is a complete rewrite of the docutils' rst2html and uses new HTML5 constructs such as
 <section> and <aside>.
 
 Usage

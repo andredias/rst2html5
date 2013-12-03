@@ -1569,12 +1569,14 @@ Half a bee, philosophically,
     must, <em>ipso facto</em>, half not be.
 But half the bee has got to be,
     <em>vis a vis</em> its entity. D'you see?
-    
+    \
+
 But can a bee be said to be
     or not to be an entire bee,
         when half the bee is not a bee,
             due to some ancient injury?
-            
+            \
+
 Singing...</pre>
 ''',
     'part': 'body',

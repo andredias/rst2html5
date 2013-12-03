@@ -144,7 +144,6 @@ class HTML5Writer(writers.Writer):
         return writers.Writer.get_transforms(self) + [FooterToBottom]
 
 
-
 class ElemStack(object):
     '''
     Helper class to handle nested contexts and indentation
@@ -839,14 +838,12 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_departure(node)
         self.context.begin_elem()  # next td
 
-
     def visit_line(self, node):
         self.line_level = getattr(self, 'line_level', -1) + 1
         if self.line_level:
             tab_width = self.document.settings.tab_width
             separator = '\n' + ' ' * tab_width * (self.line_block_level - 1)
             self.context.append(separator, indent=False)
-
         raise nodes.SkipDeparture
 
     def visit_line_block(self, node):
