@@ -839,21 +839,21 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_departure(node)
         self.context.begin_elem()  # next td
 
-    '''
-    Line blocks use <pre>. lines breaks and spacing are reconstructured
-    '''
 
     def visit_line(self, node):
-        if self.line_block_number:
+        self.line_level = getattr(self, 'line_level', -1) + 1
+        if self.line_level:
             tab_width = self.document.settings.tab_width
             separator = '\n' + ' ' * tab_width * (self.line_block_level - 1)
-        else:
-            separator = ''
-        self.context.append(separator, indent=False)
+            self.context.append(separator, indent=False)
+
         raise nodes.SkipDeparture
 
     def visit_line_block(self, node):
-        self.line_block_number = getattr(self, 'line_block_number', -1) + 1
+        '''
+        Line blocks use <pre>.
+        Lines breaks and spacing are reconstructured based on line_block_level
+        '''
         self.line_block_level = getattr(self, 'line_block_level', 0) + 1
         if self.line_block_level == 1:
             self.default_visit(node)
@@ -862,6 +862,7 @@ class HTML5Translator(nodes.NodeVisitor):
         self.line_block_level -= 1
         if self.line_block_level == 0:
             del self.line_block_level
+            del self.line_level
             self.default_departure(node)
 
     def visit_meta(self, node):

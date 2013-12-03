@@ -1514,6 +1514,72 @@ def <strong>test_body</strong>():
     'part': 'body'
 }
 
+
+line_block_2 = {
+    'rst': '''Some text
+
+|      1234 Sesame St.
+|      New York, NY 10001
+|      tel:555-111-1111
+|      nobody@nowhere.org
+
+.. sidebar:: Contact
+
+   | 123 Address St.
+   | City, State ZIP
+''',
+    'part': 'body',
+    'out': '''
+    <p>Some text</p>
+    <pre class="line_block">1234 Sesame St.
+New York, NY 10001
+<a href="tel:555-111-1111">tel:555-111-1111</a>
+<a href="mailto:nobody@nowhere.org">nobody@nowhere.org</a></pre>
+    <aside class="sidebar">
+        <h1>Contact</h1>
+        <pre class="line_block">123 Address St.
+City, State ZIP</pre>
+    </aside>
+''',
+}
+
+line_block_3 = {
+    'rst': '''Take it away, Eric the Orchestra Leader!
+
+| A one, two, a one two three four
+|
+| Half a bee, philosophically,
+|     must, *ipso facto*, half not be.
+| But half the bee
+  has got to be,
+|     *vis a vis* its entity.  D'you see?
+|
+| But can a bee be said to be
+|     or not to be an entire bee,
+|         when half the bee is not a bee,
+|             due to some ancient injury?
+|
+| Singing...
+''',
+    'out': '''
+    <p>Take it away, Eric the Orchestra Leader!</p>
+    <pre class="line_block">A one, two, a one two three four
+
+Half a bee, philosophically,
+    must, <em>ipso facto</em>, half not be.
+But half the bee has got to be,
+    <em>vis a vis</em> its entity. D'you see?
+    
+But can a bee be said to be
+    or not to be an entire bee,
+        when half the bee is not a bee,
+            due to some ancient injury?
+            
+Singing...</pre>
+''',
+    'part': 'body',
+}
+
 legend = {
     'rst': '''.. figure:: picture.png
    :scale: 50%
