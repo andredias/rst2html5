@@ -90,7 +90,7 @@ The html5 produced is clean and tidy:
 
 No stylesheets or classes are spread over the html5 by default. However:
 
-#. Stylesheets and javascritps URLs or paths can be included through ``stylesheet`` and
+#. Stylesheets and javascripts URLs or paths can be included through ``stylesheet`` and
    ``script`` options.
 
     .. parsed-literal::
