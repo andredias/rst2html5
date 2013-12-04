@@ -69,8 +69,7 @@ The html5 produced is clean and tidy:
         <meta charset="utf-8" />
     </head>
     <body>
-        <a id="title"></a>
-        <section>
+        <section id="title">
             <h1>Title</h1>
             <p>Some text and a target to <a href="#title-2">Title 2</a>. <strong>strong emphasis</strong>:</p>
             <ul>
@@ -78,8 +77,7 @@ The html5 produced is clean and tidy:
                 <li>item 2</li>
             </ul>
         </section>
-        <a id="title-2"></a>
-        <section>
+        <section id="title-2">
             <h1>Title 2</h1>
             <pre>Inline markup is supported, e.g. <em>emphasis</em>, <strong>strong</strong>, <code>literal
     text</code>,
@@ -166,12 +164,13 @@ No stylesheets or classes are spread over the html5 by default. However:
 
    .. parsed-literal::
 
+
         <p **class="special"**>This is a "special" paragraph.</p>
-        <a id="an-exceptional-section"></a>
-        <section **class="exceptional remarkable"**>
+        <section **class="exceptional remarkable"** id="an-exceptional-section">
             <h1>An Exceptional Section</h1>
             <p>This is an ordinary paragraph.</p>
         </section>
+
 
 Installation
 ============
