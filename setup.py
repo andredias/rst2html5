@@ -13,7 +13,7 @@ with open('README.txt') as f:
 
 setup(
     name='rst2html5',
-    version='1.2',
+    version='1.3',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
     url='https://bitbucket.org/andre_felipe_dias/rst2html5',
