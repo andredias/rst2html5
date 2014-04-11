@@ -1789,3 +1789,47 @@ meta_h = {
 ''',
     'part': 'head',
 }
+
+template_text = {
+    'rst': 'ordinary paragraph',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="css/default.css" rel="stylesheet" />
+    <link href="css/pygments.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+    <p>ordinary paragraph</p>
+</body>
+</html>''',
+    'template': '''<!DOCTYPE html>
+<html>
+<head>{head}    <link href="css/default.css" rel="stylesheet" />
+    <link href="css/pygments.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>{body}</body>
+</html>''',
+    'part': 'whole',
+}
+
+
+template_filename = {
+    'rst': 'ordinary paragraph',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="css/default.css" rel="stylesheet" />
+    <link href="css/pygments.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+    <p>ordinary paragraph</p>
+</body>
+</html>''',
+    'template': 'template.html',
+    'part': 'whole',
+}

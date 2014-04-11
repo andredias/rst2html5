@@ -63,6 +63,7 @@ class HTML5Writer(writers.Writer):
     config_section = 'html5writer'
     config_section_dependencies = ('writers')
 
+    # OptParse see https://docs.python.org/2/library/optparse.html
     settings_spec = (
         'HTML5 Specific Options',
         None, (
@@ -107,6 +108,14 @@ class HTML5Writer(writers.Writer):
              'dest': 'html_tag_attr',
              'action': 'append',
              'validator': frontend.validate_comma_separated_list, }),
+        ('Specify a filename or text to be used as the HTML5 output template. '
+         'The template must have the {head} and {body} placeholders. '
+         'The "<html{html_attr}>" placeholder is recommended.',
+            ['--template'],
+            {'metavar': '<filename or text>', 'default': None,
+             'dest': 'template',
+             'type': 'string',
+             'action': 'store', }),
         )
     )
 
@@ -344,11 +353,24 @@ class HTML5Translator(nodes.NodeVisitor):
                 setattr(self, 'depart_' + term, depart_func)
         return
 
+    def _get_template(self, document):
+        template = document.settings.template
+        if not template:
+            return None
+        import os
+        if os.path.isfile(template):
+            import codecs
+            with codecs.open(template, 'r', 'utf-8') as template_file:
+                return template_file.read()
+        else:
+            return template
+
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = 0
         self.context = ElemStack(document.settings)
-        self.template = '<!DOCTYPE html>\n<html{html_attr}>\n' \
+        self.template = self._get_template(document) or \
+                        '<!DOCTYPE html>\n<html{html_attr}>\n' \
                         '<head>{head}</head>\n<body>{body}</body>\n</html>'
         self.head = []
         self.head.append(
