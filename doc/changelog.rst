@@ -7,7 +7,7 @@ Here you can see the full list of changes between each rst2html5 releases.
 1.3 -
 ================
 
-* New --template option
+* Fixes #16 | New --template option
 * runtests.sh without parameter should keep current virtualenv
 
 

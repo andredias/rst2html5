@@ -32,7 +32,11 @@ Options:
 --html-tag-attr=<attribute>
                         Specify a html tag attribute.
                         (This option can be used multiple times)
-
+--template=<filename or text>
+                        Specify a filename or text to be used as the HTML5
+                        output template. The template must have the {head} and
+                        {body} placeholders. The "<html{html_attr}>"
+                        placeholder is recommended.
 
 Examples
 ========
@@ -170,6 +174,40 @@ No stylesheets or classes are spread over the html5 by default. However:
             <h1>An Exceptional Section</h1>
             <p>This is an ordinary paragraph.</p>
         </section>
+
+#. Custom html5 template via the :literal:`--template` option. Example:
+
+    .. parsed-literal::
+
+        $ template='<!DOCTYPE html>
+        <html{html_attr}>
+        <head>{head}    <!-- custom links and scripts -->
+            <link href="css/default.css" rel="stylesheet" />
+            <link href="css/pygments.css" rel="stylesheet" />
+            <script src="http\://code.jquery.com/jquery-latest.min.js"></script>
+        </head>
+        <body>{body}</body>
+        </html>'
+
+        $ echo 'one line' > example.rst
+
+        $ rst2html5 **--template "$template"** example.rst
+
+    .. code-block:: html
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8" />
+            <!-- custom links and scripts -->
+            <link href="css/default.css" rel="stylesheet" />
+            <link href="css/pygments.css" rel="stylesheet" />
+            <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        </head>
+        <body>
+            <p>one line</p>
+        </body>
+        </html>
 
 
 Installation
