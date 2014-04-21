@@ -4,7 +4,12 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
-1.3 -
+
+1.4 -
+================
+
+
+1.3 - 2014-04-21
 ================
 
 * Fixes #16 | New --template option
