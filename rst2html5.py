@@ -747,8 +747,10 @@ class HTML5Translator(nodes.NodeVisitor):
             elem = tag.span(template)
         elem(class_='math')
         self.context.append(elem)
-        src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-        self.head.append(tag.script(src=src))
+        if not getattr(self, 'alread_has_math_script', None):
+            src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+            self.head.append(tag.script(src=src))
+            self.alread_has_math_script = True
         raise nodes.SkipNode
 
     def visit_document(self, node):

@@ -782,6 +782,15 @@ math = {
     'part': 'body'
 }
 
+math_one_script_only = {
+    'rst': '\n'.join([math['rst']] * 10),
+    'part': 'head',
+    'out': '''
+    <meta charset="utf-8" />
+    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+''',
+}
+
 math_role = {
     'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
     'out': '<p><span class="math">\(\sqrt{3x-1}+(1+x)^2\)</span></p>',
