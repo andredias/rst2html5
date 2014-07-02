@@ -373,13 +373,20 @@ class HTML5Translator(nodes.NodeVisitor):
         self.heading_level = 0
         self.context = ElemStack(document.settings)
         self.template = self._get_template(document)
-        self.head = []
-        self.head.append(
-            tag.meta(charset=self.document.settings.output_encoding))
         self.docinfo = OrderedDict()
+        self.head = []
+        self._prepare_head()
+        self._map_terms_to_functions()
+        return
+
+    def _prepare_head(self):
+        self.add_metatags()
         self.add_stylesheets()
         self.add_scripts()
-        self._map_terms_to_functions()
+        return
+
+    def add_metatags(self):
+        self.head.append(tag.meta(charset=self.document.settings.output_encoding))
         return
 
     def add_stylesheets(self):
