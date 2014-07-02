@@ -340,6 +340,9 @@ class HTML5Translator(nodes.NodeVisitor):
         'warning': ('aside', 'visit_aside', 'depart_aside', True),
     }
 
+    default_template = '<!DOCTYPE html>\n<html{html_attr}>\n' \
+                       '<head>{head}</head>\n<body>{body}</body>\n</html>'
+
     def _map_terms_to_functions(self):
         '''
         Map terms to visit and departure functions
@@ -356,7 +359,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def _get_template(self, document):
         template = document.settings.template
         if not template:
-            return None
+            return self.default_template
         import os
         if os.path.isfile(template):
             import codecs
@@ -369,9 +372,7 @@ class HTML5Translator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = 0
         self.context = ElemStack(document.settings)
-        self.template = self._get_template(document) or \
-                        '<!DOCTYPE html>\n<html{html_attr}>\n' \
-                        '<head>{head}</head>\n<body>{body}</body>\n</html>'
+        self.template = self._get_template(document)
         self.head = []
         self.head.append(
             tag.meta(charset=self.document.settings.output_encoding))
@@ -406,8 +407,7 @@ class HTML5Translator(nodes.NodeVisitor):
             self.head = result
         return
 
-    @property
-    def output(self):
+    def _get_template_values(self):
         for key, value in self.docinfo.iteritems():
             self.head.append(tag.meta(name=key, content=value))
         self.indent_head()
@@ -415,7 +415,16 @@ class HTML5Translator(nodes.NodeVisitor):
         html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
-        return self.template.format(html_attr=html_attrs, head=self.head, body=self.body)
+        values = {}
+        values['html_attr'] = html_attrs
+        values['head'] = self.head
+        values['body'] = self.body
+        return values
+
+    @property
+    def output(self):
+        values = self._get_template_values()
+        return self.template.format(**values)
 
     def set_next_elem_attr(self, name, value):
         '''
