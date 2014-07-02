@@ -362,8 +362,8 @@ class HTML5Translator(nodes.NodeVisitor):
             return self.default_template
         import os
         if os.path.isfile(template):
-            import codecs
-            with codecs.open(template, 'r', 'utf-8') as template_file:
+            from io import open
+            with open(template, 'r', encoding='utf-8') as template_file:
                 return template_file.read()
         else:
             return template
@@ -457,16 +457,12 @@ class HTML5Translator(nodes.NodeVisitor):
             'backrefs', 'auto', 'anonymous',
         )
         for k, v in node.attributes.items():
-            if not v:
+            if k in ignores or not v:
                 continue
-            elif isinstance(v, list):
-                v = ' '.join(v)
-
-            if k in ignores:
-                continue
-            elif k in replacements:
+            if k in replacements:
                 k = replacements[k]
-
+            if isinstance(v, list):
+                v = ' '.join(v)
             attrs[k] = v
 
         if getattr(self, 'next_elem_attr', None):
