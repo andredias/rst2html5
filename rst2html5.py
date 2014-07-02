@@ -73,8 +73,7 @@ class HTML5Writer(writers.Writer):
          '(This option can be used multiple times)',
             ['--stylesheet'],
             {'metavar': '<URL or path>', 'default': None,
-             'action': 'append',
-             'validator': frontend.validate_comma_separated_list, }),
+             'action': 'append', }),
         ('Specify a script URL to be included in the output HTML file. '
          '(This option can be used multiple times)',
             ['--script'],
@@ -106,8 +105,7 @@ class HTML5Writer(writers.Writer):
             ['--html-tag-attr'],
             {'metavar': '<attribute>', 'default': None,
              'dest': 'html_tag_attr',
-             'action': 'append',
-             'validator': frontend.validate_comma_separated_list, }),
+             'action': 'append', }),
         ('Specify a filename or text to be used as the HTML5 output template. '
          'The template must have the {head} and {body} placeholders. '
          'The "<html{html_attr}>" placeholder is recommended.',
