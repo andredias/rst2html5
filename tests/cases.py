@@ -1727,7 +1727,7 @@ math_role = {
 
 metadata = {
     'rst': '.. title:: Foo Bar',
-    'out': '<meta charset="utf-8" /><title>Foo Bar</title>',
+    'out': '<title>Foo Bar</title><meta charset="utf-8" />',
     'indent_output': False,
     'part': 'head',
 }

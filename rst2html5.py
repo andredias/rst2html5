@@ -372,34 +372,23 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context = ElemStack(document.settings)
         self.template = self._get_template(document)
         self.docinfo = OrderedDict()
-        self.head = []
-        self._prepare_head()
+        self._parse_params()
         self._map_terms_to_functions()
         return
 
-    def _prepare_head(self):
-        self.add_metatags()
-        self.add_stylesheets()
-        self.add_scripts()
-        return
-
-    def add_metatags(self):
-        self.head.append(tag.meta(charset=self.document.settings.output_encoding))
-        return
-
-    def add_stylesheets(self):
+    def _parse_params(self):
+        self.metatags = [tag.meta(charset=self.document.settings.output_encoding)]
+        self.stylesheets = []
         stylesheets = self.document.settings.stylesheet or []
         for href in stylesheets:
-            self.head.append(tag.link(rel='stylesheet', href=href))
-        return
-
-    def add_scripts(self):
+            self.stylesheets.append(tag.link(rel='stylesheet', href=href))
+        self.scripts = []
         scripts = self.document.settings.script or []
         for src, attr in scripts:
             script = tag.script(src=src)
             if attr:
                 script = script(**{attr: attr})
-            self.head.append(script)
+            self.scripts.append(script)
         return
 
     def indent_head(self):
@@ -413,11 +402,12 @@ class HTML5Translator(nodes.NodeVisitor):
         return
 
     def _get_template_values(self):
+        html_attrs = self.document.settings.html_tag_attr
+        html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
+        self.head = self.metatags + self.stylesheets + self.scripts
         for key, value in self.docinfo.iteritems():
             self.head.append(tag.meta(name=key, content=value))
         self.indent_head()
-        html_attrs = self.document.settings.html_tag_attr
-        html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
         values = {}
@@ -759,13 +749,13 @@ class HTML5Translator(nodes.NodeVisitor):
         self.context.append(elem)
         if not getattr(self, 'alread_has_math_script', None):
             src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-            self.head.append(tag.script(src=src))
+            self.scripts.append(tag.script(src=src))
             self.alread_has_math_script = True
         raise nodes.SkipNode
 
     def visit_document(self, node):
         if 'title' in node:
-            self.head.append(tag.title(node['title']))
+            self.metatags.insert(0, tag.title(node['title']))
             self.title = node['title']
         else:
             self.title = ''
@@ -898,7 +888,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_meta(self, node):
         waste, waste_, attr = self.parse(node)
-        self.head.append(tag.meta(**attr))
+        self.metatags.append(tag.meta(**attr))
         raise nodes.SkipNode
 
     def visit_problematic(self, node):
