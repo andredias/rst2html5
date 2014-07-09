@@ -1799,6 +1799,12 @@ meta_h = {
     'part': 'head',
 }
 
+meta_h2 = {
+    'rst': meta_h['rst'],
+    'out': '',
+    'part': 'body',
+}
+
 template_text = {
     'rst': 'ordinary paragraph',
     'out': '''<!DOCTYPE html>
