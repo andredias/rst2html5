@@ -163,18 +163,16 @@ class ElemStack(object):
 
     def _indent_elem(self, element, indent):
         result = []
-        '''
-        Indentation schema:
-
-                current position
-                       |
-                       v
-                  <tag>|
-        |   indent   |<elem>
-        |indent-1|</tag>
-                 ^
-             ends here
-        '''
+        # Indentation schema:
+        #
+        #         current position
+        #                |
+        #                v
+        #           <tag>|
+        # |   indent   |<elem>
+        # |indent-1|</tag>
+        #          ^
+        #      ends here
         if self.indent_output and indent:
             indentation = '\n' + self.indent_width * self.indent_level * ' '
             result.append(indentation)
@@ -481,10 +479,8 @@ class HTML5Translator(nodes.NodeVisitor):
         Initiate a new context to store inner HTML5 elements.
         '''
         if 'ids' in node and self.once_attr('expand_id_to_anchor', default=True):
-            '''
-            create an anchor <a id=id></a> for each id found before the
-            current element.
-            '''
+            # create an anchor <a id=id></a> for each id found before the
+            # current element.
             for id in node['ids'][1:]:
                 self.context.begin_elem()
                 self.context.commit_elem(tag.a(id=id))
@@ -556,9 +552,7 @@ class HTML5Translator(nodes.NodeVisitor):
             if self.heading_level == 0:
                 self.heading_level = 1
             if 'href' in attr:
-                '''
-                backref to toc entry
-                '''
+                # backref to toc entry
                 # anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
                 # self.context.commit_elem(anchor)
                 # anchor = self.context.pop()
