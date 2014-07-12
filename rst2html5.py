@@ -274,6 +274,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'error': ('aside', 'visit_aside', 'depart_aside', True),
         'field': (None, 'visit_field', None),
         'field_body': (None, 'do_nothing', None),
+        'field_list': (None, 'do_nothing', None),
         'field_name': (None, 'do_nothing', None),
         'figure': (None, 'visit_figure', dp),
         'footer': (None, dv, dp),

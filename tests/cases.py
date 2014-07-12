@@ -1215,7 +1215,9 @@ docinfo1 = {
     <meta content="Alpha" name="status" />
     <meta content="2012-07-29" name="date" />
     <meta content="André Felipe Dias" name="copyright" />
-    <meta content="Since the field marker may be quite long, the second and subsequent lines of the field body do not have to line up with the first line, but they must be indented relative to the field name marker, and they must line up with each other." name="Indentation" />
+    <meta content="Since the field marker may be quite long, the second and subsequent lines of \
+the field body do not have to line up with the first line, but they must be indented relative to \
+the field name marker, and they must line up with each other." name="Indentation" />
     <meta content="integer" name="Parameter i" />
 ''',
     'part': 'head',
@@ -1270,6 +1272,88 @@ docinfo5 = {
             'license': 'WTFPL',
             'test': '<tag>',
             },
+}
+
+field_list_1 = {
+    'rst': ''':http-equiv=X-UA-Compatible: chrome=1:
+:viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
+
+..
+
+:data-x: 1000
+:data-y: 2000
+
+Title
+=====
+
+Text
+
+Title 2
+=======
+
+Another line
+''',
+    'part': 'whole',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="chrome=1:" name="http-equiv=X-UA-Compatible" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+    <meta content="1000" name="data-x" />
+    <meta content="2000" name="data-y" />
+</head>
+<body>
+    <section id="title">
+        <h1>Title</h1>
+        <p>Text</p>
+    </section>
+    <section id="title-2">
+        <h1>Title 2</h1>
+        <p>Another line</p>
+    </section>
+</body>
+</html>''',
+}
+
+field_list_2 = {
+    'rst': ''':http-equiv=X-UA-Compatible: chrome=1:
+:viewport: width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes
+
+Title
+=====
+
+Text
+
+:data-x: 1000
+:data-y: 2000
+
+Title 2
+=======
+
+Another line
+''',
+    'part': 'whole',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="chrome=1:" name="http-equiv=X-UA-Compatible" />
+    <meta content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport" />
+    <meta content="1000" name="data-x" />
+    <meta content="2000" name="data-y" />
+</head>
+<body>
+    <section id="title">
+        <h1>Title</h1>
+        <p>Text</p>
+    </section>
+    <section id="title-2">
+        <h1>Title 2</h1>
+        <p>Another line</p>
+    </section>
+</body>
+</html>''',
 }
 
 comment = {
