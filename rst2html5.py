@@ -382,10 +382,10 @@ class HTML5Translator(nodes.NodeVisitor):
             self.stylesheets.append(tag.link(rel='stylesheet', href=href))
         self.scripts = []
         scripts = self.document.settings.script or []
-        for src, attr in scripts:
+        for src, attributes in scripts:
             script = tag.script(src=src)
-            if attr:
-                script = script(**{attr: attr})
+            if attributes:
+                script = script(**{attributes: attributes})
             self.scripts.append(script)
         return
 
@@ -433,13 +433,13 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         node_class_name = node.__class__.__name__
         spec = self.rst_terms[node_class_name]
-        name = spec[0] or node_class_name
+        tag_name = spec[0] or node_class_name
         use_name_in_class = len(spec) > 3 and spec[3]
         indent = spec[4] if len(spec) > 4 else True
         if use_name_in_class:
             node['classes'].insert(0, node_class_name)
 
-        attrs = {}
+        attributes = {}
         replacements = {
             'refuri': 'href', 'uri': 'src', 'refid': 'href',
             'morerows': 'rowspan', 'morecols': 'colspan', 'classes': 'class',
@@ -456,12 +456,12 @@ class HTML5Translator(nodes.NodeVisitor):
                 k = replacements[k]
             if isinstance(v, list):
                 v = ' '.join(v)
-            attrs[k] = v
+            attributes[k] = v
 
         if getattr(self, 'next_elem_attr', None):
-            attrs.update(self.next_elem_attr)
+            attributes.update(self.next_elem_attr)
             del self.next_elem_attr
-        return name, indent, attrs
+        return tag_name, indent, attributes
 
     def once_attr(self, name, default=None):
         '''
@@ -493,8 +493,8 @@ class HTML5Translator(nodes.NodeVisitor):
         Create the node's corresponding HTML5 element and combine it with its
         stored context.
         '''
-        name, indent, attr = self.parse(node)
-        elem = getattr(tag, name)(**attr)
+        tag_name, indent, attributes = self.parse(node)
+        elem = getattr(tag, tag_name)(**attributes)
         self.context.commit_elem(elem, indent)
         return
 
