@@ -254,9 +254,9 @@ class HTML5Translator(nodes.NodeVisitor):
         'classifier': (None, 'visit_classifier', None),
         'colspec': (None, pass_, 'depart_colspec'),
         'comment': (None, 'skip_node', None),
-        'compound': ('div', dv, dp, True),
+        'compound': ('div', dv, dp),
         'contact': (None, 'visit_bibliographic_field', None),
-        'container': ('div', dv, dp, True),
+        'container': ('div', dv, dp),
         'copyright': (None, 'visit_bibliographic_field', None),
         'danger': ('aside', 'visit_aside', 'depart_aside', True),
         'date': (None, 'visit_bibliographic_field', None),
@@ -504,7 +504,7 @@ class HTML5Translator(nodes.NodeVisitor):
         Determine if the <p> tags around paragraph ``node`` can be omitted.
         Based on :func:`docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph`
         """
-        # extra oarenthesis for pep8 alignment conformity
+        # extra parenthesis for pep8 alignment conformity
         if ((isinstance(node.parent, (nodes.document, nodes.compound,
                         nodes.block_quote, nodes.system_message, )) or
              node['classes'] or 'paragraph' != node.__class__.__name__)):

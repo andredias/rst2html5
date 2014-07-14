@@ -1068,6 +1068,7 @@ epigraph = {
 
 compound = {
     'rst': '''.. compound::
+   :class: custom
 
    The 'rm' command is very dangerous.  If you are logged
    in as root and enter ::
@@ -1077,7 +1078,7 @@ compound = {
 
    you will erase the entire contents of your file system.''',
     'out': '''
-    <div class="compound">
+    <div class="custom">
         <p>The 'rm' command is very dangerous. If you are logged in as root and enter</p>
         <pre>cd /
 rm -rf *</pre>
@@ -1091,7 +1092,7 @@ container = {
     'rst': '''.. container:: custom
 
    This paragraph might be rendered in a custom way.''',
-    'out': '<div class="container custom">This paragraph might be rendered '
+    'out': '<div class="custom">This paragraph might be rendered '
            'in a custom way.</div>',
     'indent_output': False,
     'part': 'body',
