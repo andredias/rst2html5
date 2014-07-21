@@ -59,4 +59,4 @@ def check_part(test_name, case):
             f.write(result)
         with open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
-    assert_equals(result, case['out'])
+    assert_equals(case['out'], result)  # better diff visualization

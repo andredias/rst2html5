@@ -65,8 +65,8 @@ class HTML5Writer(writers.Writer):
 
     # OptParse see https://docs.python.org/2/library/optparse.html
     settings_spec = (
-        'HTML5 Specific Options',
-        None, (
+        'rst2html5 Specific Options',
+        'For the rst2html5 writer the default tab width value is 4.', (
         ("Don't indent output", ['--no-indent'],
             {'default': 1, 'action': 'store_false', 'dest': 'indent_output'}),
         ('Specify a stylesheet URL to be included in the output HTML file. '
