@@ -39,6 +39,7 @@ setup(
     ],
     zip_safe=False,
     py_modules=['rst2html5'],
+    packages=find_packages('rst2html5'),
     entry_points={
         'console_scripts': [
             'rst2html5 = rst2html5:main',
