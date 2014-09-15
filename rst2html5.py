@@ -6,6 +6,7 @@ from __future__ import unicode_literals
 __docformat__ = 'reStructuredText'
 
 import re
+import sys
 from docutils import nodes, writers, frontend
 from docutils.transforms import Transform
 from collections import OrderedDict
@@ -17,6 +18,9 @@ except ImportError:
 from genshi.builder import tag
 from genshi.output import XHTMLSerializer
 from genshi.core import Markup
+
+if sys.version[0] == '3':
+    unicode = str
 
 
 class FooterToBottom(Transform):
@@ -404,7 +408,7 @@ class HTML5Translator(nodes.NodeVisitor):
         html_attrs = self.document.settings.html_tag_attr
         html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
         self.head = self.metatags + self.stylesheets + self.scripts
-        for key, value in self.docinfo.iteritems():
+        for key, value in self.docinfo.items():
             self.head.append(tag.meta(name=key, content=value))
         self.indent_head()
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
