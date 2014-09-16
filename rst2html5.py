@@ -371,7 +371,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.heading_level = 0
+        self.heading_level = int(getattr(self.document.settings, 'initial_header_level', 0))
         self.context = ElemStack(document.settings)
         self.template = self._get_template(document)
         self.docinfo = OrderedDict()

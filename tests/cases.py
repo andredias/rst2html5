@@ -19,6 +19,15 @@ title = {
     'part': 'body',
 }
 
+title_with_initial_header = {
+    'rst': 'Title\n=====\n\nhello\n-------',
+    'out': '<h2>Title</h2><h3>hello</h3>',
+    'indent_output': False,
+    'part': 'body',
+    'initial_header_level': 2
+}
+
+
 title_part = {
     'rst': '''
 AbCdE fGhIjK
