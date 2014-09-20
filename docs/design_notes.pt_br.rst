@@ -213,7 +213,7 @@ da doctree e com a endentação::
 A ação padrão de um método ``visit_TIPO_NÓ``
 é iniciar um novo contexto para o nó sendo tratado:
 
-.. literalinclude:: ../rst2html5.py
+.. literalinclude:: ../src/rst2html5.py
     :pyobject: HTML5Translator.default_visit
     :linenos:
     :emphasize-lines: 15
@@ -221,7 +221,7 @@ A ação padrão de um método ``visit_TIPO_NÓ``
 A ação padrão no ``depart_TIPO_NÓ``
 é criar o elemento HTML5 de acordo com o contexto salvo:
 
-.. literalinclude:: ../rst2html5.py
+.. literalinclude:: ../src/rst2html5.py
     :pyobject: HTML5Translator.default_departure
     :linenos:
     :emphasize-lines: 6-8
@@ -237,7 +237,7 @@ e podem compartilhar o mesmo método ``visit_`` e/ou ``depart_``.
 Para aproveitar essas similaridades,
 é feito um mapeamento entre o nó rst e os métodos correspondentes pelo dicionário ``rst_terms``:
 
-.. literalinclude:: ../rst2html5.py
+.. literalinclude:: ../src/rst2html5.py
     :language: python
     :linenos:
     :lines: 207-326

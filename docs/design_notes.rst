@@ -179,7 +179,7 @@ to handle indentation and the nesting of the doctree traversal::
 
 The standard ``visit_NODE_TYPE`` action is initiate a new node context:
 
-.. literalinclude:: ../rst2html5.py
+.. literalinclude:: ../src/rst2html5.py
     :pyobject: HTML5Translator.default_visit
     :linenos:
     :emphasize-lines: 15
@@ -187,7 +187,7 @@ The standard ``visit_NODE_TYPE`` action is initiate a new node context:
 The standard ``depart_NODE_TYPE`` action is to create the HTML5 element
 according to the saved context:
 
-.. literalinclude:: ../rst2html5.py
+.. literalinclude:: ../src/rst2html5.py
     :pyobject: HTML5Translator.default_departure
     :linenos:
     :emphasize-lines: 6-8
@@ -198,7 +198,7 @@ Other elements have a common processing and can share the same ``visit_`` and/or
 To take advantage of theses similarities,
 the ``rst_terms`` dict maps a node type to a ``visit_`` and ``depart_`` methods:
 
-.. literalinclude:: ../rst2html5.py
+.. literalinclude:: ../src/rst2html5.py
     :language: python
     :linenos:
     :lines: 207-326
@@ -345,3 +345,4 @@ three auxiliary files are saved on the temporary directory (:file:`/tmp`):
 Their differences can be easily visualized::
 
     $ kdiff3 /tmp/TEST_CASE.result /tmp/TEST_CASE.expected
+

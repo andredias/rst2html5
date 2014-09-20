@@ -3,7 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. include:: ../README.txt
+.. include:: ../README.rst
+.. include:: ../CHANGELOG.rst
 
 Additional Documentation
 ========================
@@ -12,7 +13,6 @@ Additional Documentation
    :maxdepth: 2
 
    license
-   changelog
    contributing
    design_notes
    design_notes.pt_br

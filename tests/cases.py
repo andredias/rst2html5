@@ -511,7 +511,8 @@ point to this paragraph.''',
     'out': '''
     <p>Links to <a href="#outer-target">outer_target</a> and <a href="#inner-target">inner_target</a>.</p>
     <a id="outer-target"></a>
-    <p id="inner-target">The targets "outer_target" and "inner_target" are synonyms; they both point to this paragraph.</p>
+    <p id="inner-target">The targets "outer_target" and "inner_target" are synonyms; \
+they both point to this paragraph.</p>
 ''',
     'part': 'body'
 }
