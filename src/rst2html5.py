@@ -385,7 +385,8 @@ class HTML5Translator(nodes.NodeVisitor):
         self.stylesheets = []
         stylesheets = self.document.settings.stylesheet or []
         for href in stylesheets:
-            self.stylesheets.append(tag.link(rel='stylesheet', href=href))
+            elem = self._ordered_tag_attributes(tag.link(), OrderedDict(href=href, rel='stylesheet'))
+            self.stylesheets.append(elem)
         self.scripts = []
         scripts = self.document.settings.script or []
         for src, attributes in scripts:
@@ -410,7 +411,8 @@ class HTML5Translator(nodes.NodeVisitor):
         html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
         self.head = self.metatags + self.stylesheets + self.scripts
         for key, value in self.docinfo.items():
-            self.head.append(tag.meta(content=value, name=key))
+            elem = self._ordered_tag_attributes(tag.meta(), OrderedDict(content=value, name=key))
+            self.head.append(elem)
         self.indent_head()
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
@@ -454,8 +456,8 @@ class HTML5Translator(nodes.NodeVisitor):
             'names', 'dupnames', 'bullet', 'enumtype', 'colwidth', 'stub',
             'backrefs', 'auto', 'anonymous',
         )
-        attributes = {}
-        for k, v in node.attributes.items():
+        attributes = OrderedDict()
+        for k, v in sorted(node.attributes.items(), key=lambda t: t[0]):
             if k in ignores or not v:
                 continue
             if k in replacements:
@@ -468,6 +470,19 @@ class HTML5Translator(nodes.NodeVisitor):
             attributes.update(self.next_elem_attr)
             del self.next_elem_attr
         return tag_name, indent, attributes
+
+    def _ordered_tag_attributes(self, tag, attributes):
+        '''
+        To a browser, it doesn't matter the order of attributes of a tag and thus
+        tag(**attributes) would be sufficient.
+        However, to rst2html5's test cases, it is important
+        that attributes always follow the same sequence.
+        However, since Python doesn't preserve the order of **kwargs in a function (see PEP 468),
+        it is necessary to call attributes manually to preserve the order
+        '''
+        for key, value in attributes.items():   # supposed to be an OrderedDict
+            tag(**{key: value})
+        return tag
 
     def once_attr(self, name, default=None):
         '''
@@ -500,7 +515,7 @@ class HTML5Translator(nodes.NodeVisitor):
         stored context.
         '''
         tag_name, indent, attributes = self.parse(node)
-        elem = getattr(tag, tag_name)(**attributes)
+        elem = self._ordered_tag_attributes(getattr(tag, tag_name), attributes)
         self.context.commit_elem(elem, indent)
         return
 
@@ -552,7 +567,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_title(self, node):
         spec, indent, attr = self.parse(node)
         if isinstance(node.parent, nodes.table):
-            elem = tag.caption(**attr)
+            elem = self._ordered_tag_attributes(tag.caption(), attr)
         else:
             assert self.heading_level >= 0
             if self.heading_level == 0:
@@ -560,7 +575,7 @@ class HTML5Translator(nodes.NodeVisitor):
             if 'href' in attr:
                 # backref to toc entry
                 del attr['href']
-            elem = getattr(tag, 'h' + unicode(self.heading_level))(**attr)
+            elem = self._ordered_tag_attributes(getattr(tag, 'h' + unicode(self.heading_level)), attr)
         self.context.commit_elem(elem, indent)
 
     def depart_subtitle(self, node):
@@ -674,7 +689,8 @@ class HTML5Translator(nodes.NodeVisitor):
             node['morecols'] = node['morecols'] + 1
 
         waste, indent, attr = self.parse(node)
-        self.context.commit_elem(getattr(tag, name)(**attr))
+        self.context.commit_elem(self._ordered_tag_attributes(getattr(tag, name), attr))
+        return
 
     def visit_reference(self, node):
         if 'ids' in node:
@@ -806,7 +822,8 @@ class HTML5Translator(nodes.NodeVisitor):
     def depart_option_list(self, node):
         self.context.commit_elem(tag.tbody)
         waste, waste_, attr = self.parse(node)
-        self.context.commit_elem(tag.table(**attr))
+        self.context.commit_elem(self._ordered_tag_attributes(tag.table(), attr))
+        return
 
     def visit_citation(self, node):
         self.visit_option_list(node)
@@ -883,7 +900,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_meta(self, node):
         waste, waste_, attr = self.parse(node)
-        self.metatags.append(tag.meta(**attr))
+        self.metatags.append(self._ordered_tag_attributes(tag.meta(), attr))
         raise nodes.SkipNode
 
     def visit_problematic(self, node):
