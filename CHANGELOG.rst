@@ -4,6 +4,20 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+1.4 - 2014-09-21
+================
+
+* Improved packaging
+* Using tox for testing management
+* Improved compatibility to Python3
+* Respect initial_header_level_setting
+* Container and compound directives map to div
+* rst2html5 now process field_list nodes
+* Additional tests
+* Multiple-time options should be specified multiple times, not with commas
+* Metatags are declared at the top of head
+* Only one link to mathjax script is generated
+
 
 1.3 - 2014-04-21
 ================
