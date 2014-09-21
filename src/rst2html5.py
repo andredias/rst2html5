@@ -427,13 +427,6 @@ class HTML5Translator(nodes.NodeVisitor):
         values = self._get_template_values()
         return self.template.format(**values)
 
-    def set_next_elem_attr(self, name, value):
-        '''
-        The given attribute will be inserted into the attributes of the
-        next element.
-        '''
-        self.next_elem_attr = {name: value}
-
     def parse(self, node):
         '''
         Get tag name, indentantion and correct attributes of a node according
@@ -466,9 +459,6 @@ class HTML5Translator(nodes.NodeVisitor):
                 v = ' '.join(v)
             attributes[k] = v
 
-        if getattr(self, 'next_elem_attr', None):
-            attributes.update(self.next_elem_attr)
-            del self.next_elem_attr
         return tag_name, indent, attributes
 
     def _ordered_tag_attributes(self, tag, attributes):
