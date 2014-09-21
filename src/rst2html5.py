@@ -7,6 +7,7 @@ __docformat__ = 'reStructuredText'
 __version__ = '1.3'
 
 import re
+import sys
 from docutils import nodes, writers
 from docutils.transforms import Transform
 from collections import OrderedDict
@@ -18,6 +19,9 @@ except ImportError:
 from genshi.builder import tag
 from genshi.output import XHTMLSerializer
 from genshi.core import Markup
+
+if sys.version[0] == '3':
+    unicode = str
 
 
 class FooterToBottom(Transform):
@@ -368,7 +372,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
-        self.heading_level = 0
+        self.heading_level = int(getattr(self.document.settings, 'initial_header_level', 0))
         self.context = ElemStack(document.settings)
         self.template = self._get_template(document)
         self.docinfo = OrderedDict()
@@ -405,8 +409,8 @@ class HTML5Translator(nodes.NodeVisitor):
         html_attrs = self.document.settings.html_tag_attr
         html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
         self.head = self.metatags + self.stylesheets + self.scripts
-        for key, value in self.docinfo.iteritems():
-            self.head.append(tag.meta(name=key, content=value))
+        for key, value in self.docinfo.items():
+            self.head.append(tag.meta(content=value, name=key))
         self.indent_head()
         self.head = ''.join(XHTMLSerializer()(tag(*self.head)))
         self.body = ''.join(XHTMLSerializer()(tag(*self.context.stack)))
@@ -555,11 +559,6 @@ class HTML5Translator(nodes.NodeVisitor):
                 self.heading_level = 1
             if 'href' in attr:
                 # backref to toc entry
-                # anchor = tag.a(href=("#" + attr['href']), class_="toc-backref")
-                # self.context.commit_elem(anchor)
-                # anchor = self.context.pop()
-                # self.context.begin_elem()
-                # self.context.append(anchor, indent=False)
                 del attr['href']
             elem = getattr(tag, 'h' + unicode(self.heading_level))(**attr)
         self.context.commit_elem(elem, indent)
