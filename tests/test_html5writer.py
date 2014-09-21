@@ -5,13 +5,14 @@ from __future__ import unicode_literals
 
 import os
 import unittest
-
-from rst2html5 import HTML5Writer
-from docutils.core import publish_parts
-from nose.tools import assert_equals
-from tempfile import gettempdir
 from functools import partial
 from io import open
+from tempfile import gettempdir
+
+from docutils.core import publish_parts
+from nose.tools import assert_equals
+
+from rst2html5 import HTML5Writer
 
 tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None

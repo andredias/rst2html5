@@ -3,22 +3,24 @@
 
 from __future__ import unicode_literals
 
+import re
+import sys
+from collections import OrderedDict
+
+from docutils import nodes, writers
+from docutils.transforms import Transform
+from genshi.builder import tag
+from genshi.core import Markup
+from genshi.output import XHTMLSerializer
+
 __docformat__ = 'reStructuredText'
 __version__ = '1.4'
 
-import re
-import sys
-from docutils import nodes, writers
-from docutils.transforms import Transform
-from collections import OrderedDict
 try:
     # docutils >= 0.10
     from docutils.utils.math import pick_math_environment
 except ImportError:
     from docutils.math import pick_math_environment
-from genshi.builder import tag
-from genshi.output import XHTMLSerializer
-from genshi.core import Markup
 
 if sys.version[0] == '3':
     unicode = str
