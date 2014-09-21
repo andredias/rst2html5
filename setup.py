@@ -51,7 +51,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'rst2html5 = rst2html5.__main__:main',
+            'rst2html5 = rst2html5:main',
         ],
     },
 )
