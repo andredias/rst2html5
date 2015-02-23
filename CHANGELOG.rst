@@ -4,6 +4,12 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+1.5 - 2015-23-02
+================
+
+* rst2html5 generates html5 comments
+* A few documentation improvementss
+
 1.4 - 2014-09-21
 ================
 
