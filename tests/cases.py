@@ -1269,7 +1269,7 @@ docinfo4 = {
 }
 
 docinfo5 = {
-    'rst':  docinfo3['rst'],
+    'rst': docinfo3['rst'],
     'part': 'docinfo',
     'out': {'tags': 'oh, bar, yeah',
             'category': 'bar',
@@ -1361,16 +1361,6 @@ Another line
 </html>''',
 }
 
-comment = {
-    'rst': '''..
-    comment <comment> comment
-    comment
-
-    more text''',
-    'out': '',
-    'indent_output': False,
-    'part': 'body',
-}
 
 citation = {
     'rst': '''this is a citation [CIT2012]_
@@ -1936,4 +1926,28 @@ template_filename = {
 </html>''',
     'template': 'template.html',
     'part': 'whole',
+}
+
+
+comment_1 = {
+    'rst': '.. this is a comment',
+    'out': '''
+    <!-- this is a comment -->
+''',
+    'part': 'body',
+}
+
+comment_2 = {
+    'rst': '''
+..
+   this is a comment
+   which continues at a new line
+   and goes on
+''',
+    'out': '''
+    <!-- this is a comment
+which continues at a new line
+and goes on -->
+''',
+    'part': 'body',
 }

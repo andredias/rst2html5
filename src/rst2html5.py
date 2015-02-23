@@ -260,7 +260,7 @@ class HTML5Translator(nodes.NodeVisitor):
                                'depart_reference', True, False),
         'classifier': (None, 'visit_classifier', None),
         'colspec': (None, pass_, 'depart_colspec'),
-        'comment': (None, 'skip_node', None),
+        'comment': (None, 'visit_comment', None),
         'compound': ('div', dv, dp),
         'contact': (None, 'visit_bibliographic_field', None),
         'container': ('div', dv, dp),
@@ -922,6 +922,14 @@ class HTML5Translator(nodes.NodeVisitor):
                 child['ids'] = []
 
         self.default_visit(node)
+
+    def visit_comment(self, node):
+        text = node.astext()
+        if text:
+            self.context.begin_elem()
+            comment = tag(Markup('<!-- '), text, Markup(' -->'))
+            self.context.commit_elem(comment)
+        raise nodes.SkipNode
 
 
 def main():
