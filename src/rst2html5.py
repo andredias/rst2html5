@@ -14,7 +14,7 @@ from genshi.core import Markup
 from genshi.output import XHTMLSerializer
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.4'
+__version__ = '1.5'
 
 try:
     # docutils >= 0.10
