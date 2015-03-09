@@ -730,9 +730,9 @@ class HTML5Translator(nodes.NodeVisitor):
         if 'code' in node['classes']:
             code = node['classes'].index('code')
             node['classes'].pop(code)
-            code = tag.code(class_=' '.join(node['classes']))
+            language = node['classes'].pop(0)
+            code = tag.code(class_=language)
             self.context.commit_elem(code, indent=False)
-            del node['classes']
         self.default_departure(node)
         return
 

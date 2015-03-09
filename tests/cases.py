@@ -770,6 +770,20 @@ module</span><span class="p">,</span> <span class="n">v</span>\
     'part': 'body'
 }
 
+
+class_code_block = {
+    'rst': """.. code-block:: python
+    :class: small
+
+    print('Hello, world!')""",
+    'out': '''<pre class="small"><code class="python"><span class="k">print</span>\
+<span class="p">(</span><span class="s">'Hello, world!'</span><span class="p">)</span>\
+</code></pre>''',
+    'part': 'body',
+    'indent_output': False,
+}
+
+
 math = {
     'rst': r'''.. math::
 
