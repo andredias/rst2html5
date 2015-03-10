@@ -4,6 +4,13 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+1.6 - 2015-03-09
+================
+
+* code-block's :literal:`:class:` value should go to <pre> instead of <code>
+* Fix problem with no files uploaded to Pypi in 1.5 version
+
+
 1.5 - 2015-23-02
 ================
 
