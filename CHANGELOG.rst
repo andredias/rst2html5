@@ -4,6 +4,12 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+1.7 -
+================
+
+* Never a <p> tag in the first child of a <li>
+* Sublists are not under <blockquote> anymore
+
 1.6 - 2015-03-09
 ================
 

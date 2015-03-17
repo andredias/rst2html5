@@ -251,7 +251,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'attribution': ('p', dv, dp, True),
         'author': (None, 'visit_bibliographic_field', None),
         'authors': (None, 'visit_authors', None),
-        'block_quote': ('blockquote', dv, dp),
+        'block_quote': ('blockquote', 'visit_blockquote', dp),
         'bullet_list': ('ul', dv, dp, False),
         'caption': ('figcaption', dv, dp, False),
         'caution': ('aside', 'visit_aside', 'depart_aside', True),
@@ -529,6 +529,9 @@ class HTML5Translator(nodes.NodeVisitor):
             if child is node:
                 break
             return False
+        if isinstance(node.parent, nodes.list_item):
+            # first child of a list_item
+            return True
         parent_length = len([n for n in node.parent if not isinstance(
             n, (nodes.Invisible, nodes.label))])
         return parent_length == 1
@@ -930,6 +933,11 @@ class HTML5Translator(nodes.NodeVisitor):
             comment = tag(Markup('<!-- '), text, Markup(' -->'))
             self.context.commit_elem(comment)
         raise nodes.SkipNode
+
+    def visit_blockquote(self, node):
+        if isinstance(node.parent, nodes.list_item):
+            raise nodes.SkipDeparture
+        self.default_visit(node)
 
 
 def main():

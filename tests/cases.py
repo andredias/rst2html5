@@ -252,6 +252,33 @@ bullet_list = {
     'part': 'body',
 }
 
+sublist = {
+    'rst': '''* item 1
+* item 2
+
+    * subitem 1
+    * subitem 2
+
+* item 3
+
+  Another paragraph''',
+    'out': '''
+    <ul>
+        <li>item 1</li>
+        <li>item 2
+            <ul>
+                <li>subitem 1</li>
+                <li>subitem 2</li>
+            </ul>
+        </li>
+        <li>item 3
+            <p>Another paragraph</p>
+        </li>
+    </ul>
+''',
+    'part': 'body',
+}
+
 transition = {
     'rst': '''Paragraph
 
