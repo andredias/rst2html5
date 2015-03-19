@@ -7,13 +7,13 @@ Here you can see the full list of changes between each rst2html5 releases.
 1.7 -
 ================
 
-* Never a <p> tag in the first child of a <li>
+* Never a <p> as a first child of a <li>
 * Sublists are not under <blockquote> anymore
 
 1.6 - 2015-03-09
 ================
 
-* code-block's :literal:`:class:` value should go to <pre> instead of <code>
+* code-block's :literal:`:class:` value should go to <pre class="value"> instead of <pre><code class="value">
 * Fix problem with no files uploaded to Pypi in 1.5 version
 
 
