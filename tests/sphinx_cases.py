@@ -15,15 +15,14 @@ sphinx_code_block = {
         return 2 * x
 ''',
     'out': '''
-    <div class="small" data-language="python"><table class="highlighttable"><tr>\
-<td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">def</span> \
+    <table class="small" data-language="python"><tr><td><pre>1
+2</pre></td><td><pre><span class="k">def</span> \
 <span class="nf">double</span><span class="p">(</span><span class="n">x</span>\
 <span class="p">):</span>
     <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> \
 <span class="n">x</span>
-</pre></div>
-</td></tr></table></div>
+</pre>
+</td></tr></table>
 ''',
     'part': 'body',
 }

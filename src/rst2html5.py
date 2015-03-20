@@ -724,14 +724,35 @@ class HTML5Translator(nodes.NodeVisitor):
         return
 
     def visit_literal_block(self, node):
+        '''
+        Translates a code-block/sourcecode or a parsed-literal block.
+
+        Pygments is used for code-blocks.
+        However, its highlight output is cluttered and thus
+        rst2html5 cleans it up to a more HTML5 style.
+
+        rst2html5 does not apply a class attribute such as class="sourcecode"
+        to code-block elements. Instead, these elements should be addressed in CSS3 using
+        '[data-language]', 'pre [data-language]' or 'table [data-language]' selectors.
+        '''
+
         if 'language' in node:
+            # code-block
             language = node['language']
             linenos = node['linenos']
             highlight_args = node.get('highlight_args', {})
             highlighted = pygmentize(node.rawsource, language, linenos=linenos, **highlight_args)
+            # Raw pygmentize highlighting should be cleaned up
+            strip_pattern = '(^<div class="highlight"><pre>|(\n)*</pre></div>(\n)*$|' \
+                            '<div class=".*?">|</div>|' \
+                            '^<table class="highlighttable">|</table>$)'
+            highlighted = re.sub(strip_pattern, '', highlighted)
+            highlighted = re.sub('<div class="highlight"><pre>', '<pre>', highlighted)
+            highlighted = re.sub('</div></pre>', '</pre>', highlighted)
+            highlighted = re.sub('<td class=".*?">', '<td>', highlighted)
             self.context.begin_elem()
             classes = ' '.join(node['classes']) or None
-            tag_name = 'div' if linenos else 'pre'
+            tag_name = 'table' if linenos else 'pre'
             codeblock = getattr(tag, tag_name)(Markup(highlighted), class_=classes,
                                                data_language=language)
             self.context.commit_elem(codeblock)
