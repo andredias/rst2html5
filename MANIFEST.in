@@ -16,4 +16,4 @@ include requirements.txt
 
 include tox.ini
 
-global-exclude *.py[co] __pycache__
+global-exclude *.py[co] __pycache__ *.orig

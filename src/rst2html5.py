@@ -12,11 +12,11 @@ from docutils.transforms import Transform
 from genshi.builder import tag
 from genshi.core import Markup
 from genshi.output import XHTMLSerializer
-from directives import CodeBlock
-from utils import pygmentize
+from modules.directives import CodeBlock
+from modules.utils import pygmentize
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.7.1'
+__version__ = '1.7.2'
 
 try:
     # docutils >= 0.10

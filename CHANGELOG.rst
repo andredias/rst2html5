@@ -4,6 +4,11 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+1.7.2 - 2015-03-31
+==================
+
+* Another small bugfix related to imports
+
 1.7.1 - 2015-03-31
 ==================
 
