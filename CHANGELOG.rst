@@ -4,11 +4,15 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
-1.7 -
+1.7 - 2015-03-31
 ================
 
-* Never a <p> as a first child of a <li>
+* Small bufix in setup.py
+* LICENSE file added to the project
 * Sublists are not under <blockquote> anymore
+* Never a <p> as a <li> first child
+* New CodeBlock directive merges docutils and sphinx CodeBlock directives
+* Generated codeblock cleaned up to a more HTML5 style: <pre data-language="...">...</pre>
 
 1.6 - 2015-03-09
 ================
