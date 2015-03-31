@@ -47,7 +47,7 @@ setup(
     zip_safe=False,
     packages=find_packages("src"),
     package_dir={"": "src"},
-    py_modules=[splitext(basename(i))[0] for i in glob.glob("src/*.py")],
+    py_modules=['rst2html5'],
     include_package_data=True,
     entry_points={
         'console_scripts': [
