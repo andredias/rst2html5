@@ -29,7 +29,7 @@ setup(
     long_description="%s\n%s" % (read("README.rst"),
                                  re.sub(":obj:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst"))),
     platforms='any',
-    install_requires=['docutils', 'Genshi', 'Pygments'],
+    install_requires=read('requirements.txt').split(),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
@@ -47,7 +47,7 @@ setup(
     zip_safe=False,
     packages=find_packages("src"),
     package_dir={"": "src"},
-    py_modules=[splitext(basename(i))[0] for i in glob.glob("src/*.py")],
+    py_modules=['rst2html5'],
     include_package_data=True,
     entry_points={
         'console_scripts': [

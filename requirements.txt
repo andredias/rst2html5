@@ -1,3 +1,4 @@
 docutils
 Genshi
 Pygments
+Sphinx

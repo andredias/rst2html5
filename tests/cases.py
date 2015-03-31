@@ -742,14 +742,14 @@ parsed_literal_as_code_block = {
 
 """,
     'out': """
-    <pre><code class="language-python">def extract_variables(module):
+    <pre data-language="python">def extract_variables(module):
     '''
     Extract variables of a test data module.
     Variables should be a dict().
     For example, {'rst': rst, 'out':out, ...}
     '''
     return ((v, getattr(module, v)) for v in dir(module)
-        if not v.startswith('__') and isinstance(getattr(module, v), dict))</code></pre>
+        if not v.startswith('__') and isinstance(getattr(module, v), dict))</pre>
 """,
     'part': 'body',
 }
@@ -767,14 +767,14 @@ code_block = {
             if not v.startswith('__') and isinstance(getattr(module, v), dict))
 """,
     'out': """
-    <pre><code class="python"><span class="k">def</span> \
+    <pre data-language="python"><span class="k">def</span> \
 <span class="nf">extract_variables</span>\
 <span class="p">(</span><span class="n">module</span><span class="p">):</span>
-    <span class="sd">'''
-    Extract variables of a test data module.
-    Variables should be a dict().
-    For example, {'rst': rst, 'out':out, ...}
-    '''</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Extract variables of a test data module.</span>
+<span class="sd">    Variables should be a dict().</span>
+<span class="sd">    For example, {&#39;rst&#39;: rst, &#39;out&#39;:out, ...}</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="p">((</span>\
 <span class="n">v</span><span class="p">,</span> \
 <span class="nb">getattr</span><span class="p">(</span>\
@@ -787,12 +787,12 @@ dir</span><span class="p">\
         <span class="k">if</span> <span class="ow">not</span> \
 <span class="n">v</span><span class="o">.</span>\
 <span class="n">startswith</span><span class="p">(</span><span class="s">\
-'__'</span><span class="p">)</span> <span class="ow">and</span> \
+&#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> \
 <span class="nb">isinstance</span><span class="p">(</span>\
 <span class="nb">getattr</span><span class="p">(</span><span class="n">\
 module</span><span class="p">,</span> <span class="n">v</span>\
 <span class="p">),</span> <span class="nb">dict</span>\
-<span class="p">))</span></code></pre>
+<span class="p">))</span></pre>
 """,
     'part': 'body'
 }
@@ -803,9 +803,9 @@ class_code_block = {
     :class: small
 
     print('Hello, world!')""",
-    'out': '''<pre class="small"><code class="python"><span class="k">print</span>\
-<span class="p">(</span><span class="s">'Hello, world!'</span><span class="p">)</span>\
-</code></pre>''',
+    'out': '''<pre class="small" data-language="python"><span class="k">print</span>\
+<span class="p">(</span><span class="s">&#39;Hello, world!&#39;</span><span class="p">)</span>\
+</pre>''',
     'part': 'body',
     'indent_output': False,
 }
