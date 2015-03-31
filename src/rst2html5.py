@@ -16,7 +16,7 @@ from directives import CodeBlock
 from utils import pygmentize
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.6'
+__version__ = '1.7'
 
 try:
     # docutils >= 0.10
