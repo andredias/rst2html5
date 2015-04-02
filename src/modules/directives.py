@@ -147,7 +147,3 @@ class CodeBlock(Directive):
             codeblock = container_wrapper(self, codeblock, caption)
 
         return [codeblock]
-
-
-directives.register_directive('code-block', CodeBlock)
-directives.register_directive('sourcecode', CodeBlock)
