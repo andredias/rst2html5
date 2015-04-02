@@ -3,8 +3,78 @@
 from __future__ import unicode_literals
 
 from docutils import nodes
+from docutils.statemachine import ViewList
 from docutils.parsers.rst import Directive, directives
-from sphinx.directives.code import dedent_lines, container_wrapper, parselinenos, set_source_info
+
+#
+# The functions below were borrowed from Sphinx to avoid direct dependency to its code
+#
+
+
+def parselinenos(spec, total):
+    """
+    Parse a line number spec (such as "1,2,4-6") and return a list of wanted line numbers.
+
+    copied from sphinx.util import parselinenos
+    """
+    items = list()
+    parts = spec.split(',')
+    for part in parts:
+        try:
+            begend = part.strip().split('-')
+            if len(begend) > 2:
+                raise ValueError
+            if len(begend) == 1:
+                items.append(int(begend[0]) - 1)
+            else:
+                start = (begend[0] == '') and 0 or int(begend[0]) - 1
+                end = (begend[1] == '') and total or int(begend[1])
+                items.extend(range(start, end))
+        except Exception:
+            raise ValueError('invalid line number spec: %r' % spec)
+    return items
+
+
+def dedent_lines(lines, dedent):
+    '''
+    copied from sphinx.code.dedent_lines
+    '''
+    if not dedent:
+        return lines
+
+    new_lines = []
+    for line in lines:
+        new_line = line[dedent:]
+        if line.endswith('\n') and not new_line:
+            new_line = '\n'  # keep CRLF
+        new_lines.append(new_line)
+
+    return new_lines
+
+
+def container_wrapper(directive, literal_node, caption):
+    '''
+    copied from sphinx.code.container_wrapper
+    '''
+    container_node = nodes.container('', literal_block=True,
+                                     classes=['literal-block-wrapper'])
+    parsed = nodes.Element()
+    directive.state.nested_parse(ViewList([caption], source=''),
+                                 directive.content_offset, parsed)
+    caption_node = nodes.caption(parsed[0].rawsource, '',
+                                 *parsed[0].children)
+    caption_node.source = parsed[0].source
+    caption_node.line = parsed[0].line
+    container_node += caption_node
+    container_node += literal_node
+    return container_node
+
+
+def set_source_info(directive, node):
+    '''
+    copied from sphinx.util.nodes import set_source_info
+    '''
+    node.source, node.line = directive.state_machine.get_source_and_line(directive.lineno)
 
 
 class CodeBlock(Directive):
@@ -58,7 +128,7 @@ class CodeBlock(Directive):
         if linespec:
             try:
                 nlines = len(self.content)
-                hl_lines = [x+1 for x in parselinenos(linespec, nlines)]
+                hl_lines = [x + 1 for x in parselinenos(linespec, nlines)]
             except ValueError as err:
                 document = self.state.document
                 return [document.reporter.warning(str(err), line=self.lineno)]

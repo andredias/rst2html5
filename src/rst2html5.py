@@ -12,7 +12,6 @@ from docutils.transforms import Transform
 from genshi.builder import tag
 from genshi.core import Markup
 from genshi.output import XHTMLSerializer
-from modules.directives import CodeBlock
 from modules.utils import pygmentize
 
 __docformat__ = 'reStructuredText'

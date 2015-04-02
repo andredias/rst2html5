@@ -1992,3 +1992,39 @@ and goes on -->
 ''',
     'part': 'body',
 }
+
+sphinx_code_block = {
+    'rst': '''.. code-block:: python
+    :class: small
+    :linenos:
+
+    def double(x):
+        return 2 * x
+''',
+    'out': '''
+    <table class="small" data-language="python"><tr><td><pre>1
+2</pre></td><td><pre><span class="k">def</span> \
+<span class="nf">double</span><span class="p">(</span><span class="n">x</span>\
+<span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> \
+<span class="n">x</span>
+</pre>
+</td></tr></table>
+''',
+    'part': 'body',
+}
+
+
+include = {
+    'rst': '''Test the inclusion of an external file:
+
+.. include:: include_file.rst''',
+    'out': '''
+    <p>Test the inclusion of an external file:</p>
+    <section id="hello-world">
+        <h1>Hello, world!</h1>
+        <p>Nothing else to say</p>
+    </section>
+''',
+    'part': 'body',
+}

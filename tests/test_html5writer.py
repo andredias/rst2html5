@@ -52,16 +52,6 @@ def test():
         yield func, test_name, case
 
 
-def test_sphinx():
-    # do not use docstrings
-    # see http://code.google.com/p/python-nose/issues/detail?id=244#c1
-    from . import sphinx_cases
-    for test_name, case in extract_variables(sphinx_cases):
-        func = partial(check_part)
-        func.description = test_name
-        yield func, test_name, case
-
-
 def check_part(test_name, case):
     result = rst_to_html5_part(case)
     if result != case['out']:
