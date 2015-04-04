@@ -1,11 +1,4 @@
-graft conf
 graft src
-graft tests
-
-include .bumpversion.cfg
-include .coveragerc
-include .isort.cfg
-include .pylintrc
 
 include AUTHORS.rst
 include CHANGELOG.rst
@@ -13,7 +6,5 @@ include CONTRIBUTING.rst
 include LICENSE
 include README.rst
 include requirements.txt
-
-include tox.ini
 
 global-exclude *.py[co] __pycache__ *.orig
