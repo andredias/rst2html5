@@ -15,7 +15,7 @@ from genshi.output import XHTMLSerializer
 from modules.utils import pygmentize
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.7.2'
+__version__ = '1.7.3'
 
 try:
     # docutils >= 0.10
@@ -138,6 +138,9 @@ class HTML5Writer(writers.Writer):
         return
 
     def translate(self):
+        self.parts['pseudoxml'] = self.document.pformat()  # get pseudoxml before HTML5.translate
+        self.document.reporter.debug('%s pseudoxml:\n %s' %
+                                     (self.__class__.__name__, self.parts['pseudoxml']))
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.output

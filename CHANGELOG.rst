@@ -4,6 +4,12 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+1.7.3 - 2015-04-04
+==================
+
+* fix some imports
+* Sphinx dependency removed
+
 1.7.2 - 2015-03-31
 ==================
 
