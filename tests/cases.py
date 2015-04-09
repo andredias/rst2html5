@@ -202,8 +202,8 @@ target paragraph
 
 ''',
     'out': '<p id="target">target paragraph</p><a href="#target">'
-           '<img alt="alternate text" class="top" height="100px" '
-           'src="images/biohazard.png" width="50px" /></a>',
+           '<img width="50px" alt="alternate text" src="images/biohazard.png" '
+           'class="top" height="100px" /></a>',
     'indent_output': False,
     'part': 'body',
 }
@@ -306,7 +306,7 @@ ordered_list_decimal_autonumerated = {
 
 ordered_list_lower_alpha = {
     'rst': '(a) item 1\n(#) item 2\n(#) item 3',
-    'out': '<ol prefix="(" suffix=")" type="a"><li>item 1</li><li>item 2</li>'
+    'out': '<ol suffix=")" type="a" prefix="("><li>item 1</li><li>item 2</li>'
            '<li>item 3</li></ol>',
     'indent_output': False,
     'part': 'body',
@@ -805,7 +805,7 @@ class_code_block = {
     :class: small
 
     print('Hello, world!')""",
-    'out': '''<pre class="small" data-language="python"><span class="k">print</span>\
+    'out': '''<pre data-language="python" class="small"><span class="k">print</span>\
 <span class="p">(</span><span class="s">&#39;Hello, world!&#39;</span><span class="p">)</span>\
 </pre>''',
     'part': 'body',
@@ -886,7 +886,7 @@ paragraph with some text
 Section Title
 =============''',
     'out': '<p class="nav special">paragraph with some text</p>'
-           '<section class="heading top" id="section-title">'
+           '<section id="section-title" class="heading top">'
            '<h1>Section Title</h1></section>',
     'indent_output': False,
     'part': 'body',
@@ -1154,7 +1154,7 @@ Basic Usage
 
 To start using subrepositories, you need two repositories, a main repo and a nested repo''',
     'out': '''
-    <aside class="topic contents" id="table-of-contents">
+    <aside id="table-of-contents" class="topic contents">
         <h1>Table of Contents</h1>
         <ul>
             <li><a href="#basic-usage">Basic Usage</a></li>
@@ -1413,9 +1413,9 @@ Another [TEST2]_.
 .. [CIT2012] A citation
 .. [TEST2] Test text''',
     'out': '''
-    <p>this is a citation <a class="citation_reference" id="id1" href="#cit2012">CIT2012</a></p>
-    <p>Another <a class="citation_reference" id="id2" href="#test2">TEST2</a>.</p>
-    <table class="citation" id="cit2012">
+    <p>this is a citation <a id="id1" href="#cit2012" class="citation_reference">CIT2012</a></p>
+    <p>Another <a id="id2" href="#test2" class="citation_reference">TEST2</a>.</p>
+    <table id="cit2012" class="citation">
         <tbody>
             <tr>
                 <th>CIT2012</th>
@@ -1423,7 +1423,7 @@ Another [TEST2]_.
             </tr>
         </tbody>
     </table>
-    <table class="citation" id="test2">
+    <table id="test2" class="citation">
         <tbody>
             <tr>
                 <th>TEST2</th>
@@ -1571,12 +1571,12 @@ footnote = {
 .. [#] This footnote will be labeled "3".  It is the second
    auto-numbered footnote, but footnote label "2" is already used.''',
     'out': '''
-    <p><a class="footnote_reference" id="id1" href="#id4">2</a> \
-will be "2" (manually numbered), <a class="footnote_reference" id="id2" \
-href="#id5">3</a> will be "3" (anonymous auto-numbered), \
-and <a class="footnote_reference" id="id3" href="#label">1</a> will be "1" \
+    <p><a id="id1" href="#id4" class="footnote_reference">2</a> \
+will be "2" (manually numbered), <a id="id2" href="#id5" \
+class="footnote_reference">3</a> will be "3" (anonymous auto-numbered), \
+and <a id="id3" href="#label" class="footnote_reference">1</a> will be "1" \
 (labeled auto-numbered).</p>
-    <table class="footnote" id="label">
+    <table id="label" class="footnote">
         <tbody>
             <tr>
                 <th>1</th>
@@ -1590,7 +1590,7 @@ numbering, not the order of the footnote references.</p>
             </tr>
         </tbody>
     </table>
-    <table class="footnote" id="id4">
+    <table id="id4" class="footnote">
         <tbody>
             <tr>
                 <th>2</th>
@@ -1598,7 +1598,7 @@ numbering, not the order of the footnote references.</p>
             </tr>
         </tbody>
     </table>
-    <table class="footnote" id="id5">
+    <table id="id5" class="footnote">
         <tbody>
             <tr>
                 <th>3</th>
@@ -1755,7 +1755,7 @@ legend_more = {
         <div class="legend">
             <p>The legend consists of all elements after the \
 caption. In this case, the legend consists of this paragraph.</p>
-            <img alt="image of x mark" id="xmark" src="x-mark.png" />
+            <img alt="image of x mark" src="x-mark.png" id="xmark" />
         </div>
     </figure>
 ''',
@@ -1771,7 +1771,7 @@ system_message = {
     <meta charset="utf-8" />
 </head>
 <body>
-    <p><a class="problematic" id="id2" href="#id1">target_</a></p>
+    <p><a id="id2" href="#id1" class="problematic">target_</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
         <div id="id1">
@@ -1792,8 +1792,8 @@ Target2__
 .. __: http://opensource.org/licenses/MIT
 ''',
     'out': '''
-    <p><a class="problematic" id="id3" href="#id2">Target1__</a> <a class="problematic" id="id4" \
-href="#id2">Target2__</a></p>
+    <p><a id="id3" href="#id2" class="problematic">Target1__</a> <a id="id4" href="#id2" \
+class="problematic">Target2__</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
         <div id="id2">
@@ -1812,8 +1812,8 @@ problematic = {
 
 .. [#] footnote''',
     'out': '''
-    <p><a class="problematic" id="id4" href="#id3">[2]_</a></p>
-    <table class="footnote" id="id2">
+    <p><a id="id4" href="#id3" class="problematic">[2]_</a></p>
+    <table id="id2" class="footnote">
         <tbody>
             <tr>
                 <th>1</th>
@@ -2008,7 +2008,7 @@ sphinx_code_block = {
         return 2 * x
 ''',
     'out': '''
-    <table class="small" data-language="python"><tr><td><pre>1
+    <table data-language="python" class="small"><tr><td><pre>1
 2
 3
 4
