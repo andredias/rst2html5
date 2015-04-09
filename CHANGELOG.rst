@@ -4,9 +4,10 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
-1.7.4 -
+1.7.4 - 2015-04-09
 ==================
 
+* fixes deleted blank lines in <table><pre> during Genshi rendering
 * Testing does not depend on ordered tag attributes anymore
 
 1.7.3 - 2015-04-04

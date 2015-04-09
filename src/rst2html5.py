@@ -15,7 +15,7 @@ from genshi.output import XHTMLSerializer
 from modules.utils import pygmentize_to_tag
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.7.3'
+__version__ = '1.7.4'
 
 try:
     # docutils >= 0.10
