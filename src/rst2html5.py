@@ -735,7 +735,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
         rst2html5 does not apply a class attribute such as class="sourcecode"
         to code-block elements. Instead, these elements should be addressed in CSS3 using
-        '[data-language]', 'pre [data-language]' or 'table [data-language]' selectors.
+        '[data-language]', 'pre[data-language]' or 'table[data-language]' selectors.
         '''
 
         if 'language' in node:
