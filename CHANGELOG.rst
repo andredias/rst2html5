@@ -7,8 +7,7 @@ Here you can see the full list of changes between each rst2html5 releases.
 1.7.4 -
 ==================
 
-* Tag attributes are not ordered anymore. Use 'PYTHONHASHSEED=0 nosetests' from now on
-  for tests pass
+* Testing does not depend on ordered tag attributes anymore
 
 1.7.3 - 2015-04-04
 ==================

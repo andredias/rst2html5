@@ -8,6 +8,7 @@ import unittest
 from functools import partial
 from io import open
 from tempfile import gettempdir
+from bs4 import BeautifulSoup
 
 from docutils.core import publish_parts
 from nose.tools import assert_equals
@@ -54,7 +55,11 @@ def test():
 
 def check_part(test_name, case):
     result = rst_to_html5_part(case)
-    if result != case['out']:
+    expected = case['out']
+    if case['part'] in ('header', 'body', 'whole'):
+        result = BeautifulSoup(result).string
+        expected = BeautifulSoup(expected).string
+    if result != expected:
         filename = os.path.join(tmpdir, test_name)
         with open(filename + '.rst', encoding='utf-8', mode='w') as f:
             f.write(case['rst'])
@@ -62,4 +67,4 @@ def check_part(test_name, case):
             f.write(result)
         with open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
-    assert_equals(case['out'], result)  # better diff visualization
+    assert_equals(expected, result)  # better diff visualization
