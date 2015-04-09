@@ -763,6 +763,7 @@ code_block = {
         Variables should be a dict().
         For example, {'rst': rst, 'out':out, ...}
         '''
+
         return ((v, getattr(module, v)) for v in dir(module)
             if not v.startswith('__') and isinstance(getattr(module, v), dict))
 """,
@@ -775,6 +776,7 @@ code_block = {
 <span class="sd">    Variables should be a dict().</span>
 <span class="sd">    For example, {&#39;rst&#39;: rst, &#39;out&#39;:out, ...}</span>
 <span class="sd">    &#39;&#39;&#39;</span>
+
     <span class="k">return</span> <span class="p">((</span>\
 <span class="n">v</span><span class="p">,</span> \
 <span class="nb">getattr</span><span class="p">(</span>\
@@ -1999,17 +2001,26 @@ sphinx_code_block = {
     :linenos:
 
     def double(x):
+        """
+        useless comment
+        """
+
         return 2 * x
 ''',
     'out': '''
     <table class="small" data-language="python"><tr><td><pre>1
-2</pre></td><td><pre><span class="k">def</span> \
-<span class="nf">double</span><span class="p">(</span><span class="n">x</span>\
-<span class="p">):</span>
+2
+3
+4
+5
+6</pre></td><td><pre><span class="k">def</span> <span class="nf">double</span><span class="p">\
+(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    useless comment</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> \
-<span class="n">x</span>
-</pre>
-</td></tr></table>
+<span class="n">x</span></pre></td></tr></table>
 ''',
     'part': 'body',
 }

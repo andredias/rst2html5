@@ -12,7 +12,7 @@ from docutils.transforms import Transform
 from genshi.builder import tag
 from genshi.core import Markup
 from genshi.output import XHTMLSerializer
-from modules.utils import pygmentize
+from modules.utils import pygmentize_to_tag
 
 __docformat__ = 'reStructuredText'
 __version__ = '1.7.3'
@@ -743,21 +743,10 @@ class HTML5Translator(nodes.NodeVisitor):
             language = node['language']
             linenos = node['linenos']
             highlight_args = node.get('highlight_args', {})
-            highlighted = pygmentize(node.rawsource, language, linenos=linenos, **highlight_args)
-            # Raw pygmentize highlighting should be cleaned up
-            strip_pattern = '(^<div class="highlight"><pre>|(\n)*</pre></div>(\n)*$|' \
-                            '<div class=".*?">|</div>|' \
-                            '^<table class="highlighttable">|</table>$)'
-            highlighted = re.sub(strip_pattern, '', highlighted)
-            highlighted = re.sub('<div class="highlight"><pre>', '<pre>', highlighted)
-            highlighted = re.sub('</div></pre>', '</pre>', highlighted)
-            highlighted = re.sub('<td class=".*?">', '<td>', highlighted)
-            self.context.begin_elem()
             classes = ' '.join(node['classes']) or None
-            tag_name = 'table' if linenos else 'pre'
-            codeblock = getattr(tag, tag_name)(Markup(highlighted), class_=classes,
-                                               data_language=language)
-            self.context.commit_elem(codeblock)
+            codeblock = pygmentize_to_tag(node.rawsource, language, linenos=linenos, **highlight_args)
+            codeblock(class_=classes)
+            self.context.append(codeblock)
             raise nodes.SkipNode
 
         # see case parsed_literal_as_code_block
