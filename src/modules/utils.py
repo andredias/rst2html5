@@ -9,7 +9,7 @@ from genshi.core import Markup
 
 
 def pygmentize(code, language, linenos=False, **kwargs):
-    lexer = get_lexer_by_name(language, stripall=True)
+    lexer = get_lexer_by_name(language)
     formatter = HtmlFormatter(linenos=(linenos and 'table'), **kwargs)
     return highlight(code, lexer, formatter)
 

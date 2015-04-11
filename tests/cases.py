@@ -813,6 +813,29 @@ class_code_block = {
 }
 
 
+code_block_indented_first_line = {
+    'rst': '''
+.. code-block:: java
+    :number-lines: 21
+
+            // walk over the characters in question, looking for mismatches.
+            int j = prefix.length() + offset;
+        }
+    }''',
+    'out': '''<table data-language="java"><tr><td><pre>21
+22
+23
+24</pre></td><td><pre>        <span class="c1">// walk over the characters in question, looking for mismatches.</span>
+        <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> \
+<span class="n">prefix</span><span class="o">.</span><span class="na">length</span>\
+<span class="o">()</span> <span class="o">+</span> <span class="n">offset</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span></pre></td></tr></table>''',
+    'part': 'body',
+    'indent_output': False,
+}
+
+
 math = {
     'rst': r'''.. math::
 
