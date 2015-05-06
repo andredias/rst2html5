@@ -28,6 +28,7 @@ if sys.version[0] == '3':
 
 
 class FooterToBottom(Transform):
+
     '''
     The doctree must be adjusted before translation begins
     since in-place tree modifications doesn't work.
@@ -163,9 +164,11 @@ class HTML5Writer(writers.Writer):
 
 
 class ElemStack(object):
+
     '''
     Helper class to handle nested contexts and indentation
     '''
+
     def __init__(self, settings):
         self.stack = []
         self.indent_level = 0
@@ -364,23 +367,10 @@ class HTML5Translator(nodes.NodeVisitor):
                 setattr(self, 'depart_' + term, depart_func)
         return
 
-    def _get_template(self, document):
-        template = document.settings.template
-        if not template:
-            return self.default_template
-        import os
-        if os.path.isfile(template):
-            from io import open
-            with open(template, 'r', encoding='utf-8') as template_file:
-                return template_file.read()
-        else:
-            return template
-
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = int(getattr(self.document.settings, 'initial_header_level', 0))
         self.context = ElemStack(document.settings)
-        self.template = self._get_template(document)
         self.docinfo = OrderedDict()
         self._parse_params()
         self._map_terms_to_functions()
@@ -411,6 +401,18 @@ class HTML5Translator(nodes.NodeVisitor):
             self.head = result
         return
 
+    def _get_template(self):
+        template = self.document.settings.template
+        if not template:
+            return self.default_template
+        import os
+        if os.path.isfile(template):
+            from io import open
+            with open(template, 'r', encoding='utf-8') as template_file:
+                return template_file.read()
+        else:
+            return template
+
     def _get_template_values(self):
         html_attrs = self.document.settings.html_tag_attr
         html_attrs = html_attrs and ' ' + ' '.join(html_attrs) or ''
@@ -428,8 +430,9 @@ class HTML5Translator(nodes.NodeVisitor):
 
     @property
     def output(self):
+        template = self._get_template()
         values = self._get_template_values()
-        return self.template.format(**values)
+        return template.format(**values)
 
     def parse(self, node):
         '''
@@ -505,6 +508,7 @@ class HTML5Translator(nodes.NodeVisitor):
         Determine if the <p> tags around paragraph ``node`` can be omitted.
         Based on :func:`docutils.writers.html4css1.HTMLTranslator.should_be_compact_paragraph`
         """
+
         # extra parenthesis for pep8 alignment conformity
         if ((isinstance(node.parent, (nodes.document, nodes.compound,
                         nodes.block_quote, nodes.system_message, )) or
