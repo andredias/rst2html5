@@ -202,7 +202,7 @@ target paragraph
 
 ''',
     'out': '<p id="target">target paragraph</p><a href="#target">'
-           '<img width="50px" alt="alternate text" src="images/biohazard.png" '
+           '<img src="images/biohazard.png" alt="alternate text" width="50px" '
            'class="top" height="100px" /></a>',
     'indent_output': False,
     'part': 'body',
@@ -218,7 +218,7 @@ figure = {
    This is the caption of the figure (a simple paragraph).''',
     'out': '''
     <figure id="buried-treasure">
-        <img alt="map to buried treasure" scale="50" src="picture.png" />
+        <img src="picture.png" alt="map to buried treasure" scale="50" />
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
     </figure>
 ''',
@@ -306,7 +306,7 @@ ordered_list_decimal_autonumerated = {
 
 ordered_list_lower_alpha = {
     'rst': '(a) item 1\n(#) item 2\n(#) item 3',
-    'out': '<ol suffix=")" type="a" prefix="("><li>item 1</li><li>item 2</li>'
+    'out': '<ol prefix="(" type="a" suffix=")"><li>item 1</li><li>item 2</li>'
            '<li>item 3</li></ol>',
     'indent_output': False,
     'part': 'body',
@@ -314,7 +314,7 @@ ordered_list_lower_alpha = {
 
 ordered_list_upper_alpha = {
     'rst': 'A) item 1\n#) item 2\n#) item 3',
-    'out': '<ol suffix=")" type="A"><li>item 1</li><li>item 2</li><li>item 3'
+    'out': '<ol type="A" suffix=")"><li>item 1</li><li>item 2</li><li>item 3'
            '</li></ol>',
     'indent_output': False,
     'part': 'body',
@@ -909,7 +909,7 @@ paragraph with some text
 Section Title
 =============''',
     'out': '<p class="nav special">paragraph with some text</p>'
-           '<section id="section-title" class="heading top">'
+           '<section class="heading top" id="section-title">'
            '<h1>Section Title</h1></section>',
     'indent_output': False,
     'part': 'body',
@@ -1177,7 +1177,7 @@ Basic Usage
 
 To start using subrepositories, you need two repositories, a main repo and a nested repo''',
     'out': '''
-    <aside id="table-of-contents" class="topic contents">
+    <aside class="topic contents" id="table-of-contents">
         <h1>Table of Contents</h1>
         <ul>
             <li><a href="#basic-usage">Basic Usage</a></li>
@@ -1436,9 +1436,9 @@ Another [TEST2]_.
 .. [CIT2012] A citation
 .. [TEST2] Test text''',
     'out': '''
-    <p>this is a citation <a id="id1" href="#cit2012" class="citation_reference">CIT2012</a></p>
-    <p>Another <a id="id2" href="#test2" class="citation_reference">TEST2</a>.</p>
-    <table id="cit2012" class="citation">
+    <p>this is a citation <a href="#cit2012" id="id1" class="citation_reference">CIT2012</a></p>
+    <p>Another <a href="#test2" id="id2" class="citation_reference">TEST2</a>.</p>
+    <table class="citation" id="cit2012">
         <tbody>
             <tr>
                 <th>CIT2012</th>
@@ -1446,7 +1446,7 @@ Another [TEST2]_.
             </tr>
         </tbody>
     </table>
-    <table id="test2" class="citation">
+    <table class="citation" id="test2">
         <tbody>
             <tr>
                 <th>TEST2</th>
@@ -1594,10 +1594,10 @@ footnote = {
 .. [#] This footnote will be labeled "3".  It is the second
    auto-numbered footnote, but footnote label "2" is already used.''',
     'out': '''
-    <p><a id="id1" href="#id4" class="footnote_reference">2</a> \
-will be "2" (manually numbered), <a id="id2" href="#id5" \
+    <p><a href="#id4" id="id1" class="footnote_reference">2</a> \
+will be "2" (manually numbered), <a href="#id5" id="id2" \
 class="footnote_reference">3</a> will be "3" (anonymous auto-numbered), \
-and <a id="id3" href="#label" class="footnote_reference">1</a> will be "1" \
+and <a href="#label" id="id3" class="footnote_reference">1</a> will be "1" \
 (labeled auto-numbered).</p>
     <table id="label" class="footnote">
         <tbody>
@@ -1748,7 +1748,7 @@ legend = {
 ''',
     'out': '''
     <figure>
-        <img alt="map to buried treasure" scale="50" src="picture.png" />
+        <img src="picture.png" alt="map to buried treasure" scale="50" />
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
         <div class="legend">The legend consists of all elements after the \
 caption. In this case, the legend consists of this paragraph.</div>
@@ -1773,12 +1773,12 @@ legend_more = {
 ''',
     'out': '''
     <figure>
-        <img alt="map to buried treasure" scale="50" src="picture.png" />
+        <img src="picture.png" alt="map to buried treasure" scale="50" />
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
         <div class="legend">
             <p>The legend consists of all elements after the \
 caption. In this case, the legend consists of this paragraph.</p>
-            <img alt="image of x mark" src="x-mark.png" id="xmark" />
+            <img src="x-mark.png" alt="image of x mark" id="xmark" />
         </div>
     </figure>
 ''',
@@ -1794,7 +1794,7 @@ system_message = {
     <meta charset="utf-8" />
 </head>
 <body>
-    <p><a id="id2" href="#id1" class="problematic">target_</a></p>
+    <p><a href="#id1" id="id2" class="problematic">target_</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
         <div id="id1">
@@ -1815,7 +1815,7 @@ Target2__
 .. __: http://opensource.org/licenses/MIT
 ''',
     'out': '''
-    <p><a id="id3" href="#id2" class="problematic">Target1__</a> <a id="id4" href="#id2" \
+    <p><a href="#id2" id="id3" class="problematic">Target1__</a> <a href="#id2" id="id4" \
 class="problematic">Target2__</a></p>
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
@@ -1835,7 +1835,7 @@ problematic = {
 
 .. [#] footnote''',
     'out': '''
-    <p><a id="id4" href="#id3" class="problematic">[2]_</a></p>
+    <p><a href="#id3" id="id4" class="problematic">[2]_</a></p>
     <table id="id2" class="footnote">
         <tbody>
             <tr>
