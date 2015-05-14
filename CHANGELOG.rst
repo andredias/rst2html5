@@ -4,6 +4,11 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+1.7.5 - 2015-05-14
+==================
+
+* fixes the stripping of leading whitespace from the highlighted code
+
 1.7.4 - 2015-04-09
 ==================
 
