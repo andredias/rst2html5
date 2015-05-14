@@ -15,7 +15,7 @@ def read(*names, **kwargs):
 
 setup(
     name='rst2html5',
-    version='1.7.4',
+    version='1.7.5',
     license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
