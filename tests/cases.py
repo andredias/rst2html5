@@ -1805,6 +1805,7 @@ system_message = {
 </body>
 </html>''',
     'part': 'whole',
+    'error': '<string>:1: (ERROR/3) Unknown target name: "target".\n',
 }
 
 
@@ -1828,6 +1829,8 @@ See "backrefs" attribute for IDs.</p>
     </section>
 ''',
     'part': 'body',
+    'error': '<string>:: (ERROR/3) Anonymous hyperlink mismatch: 2 references but 1 targets.\n'
+             'See "backrefs" attribute for IDs.\n',
 }
 
 problematic = {
@@ -1853,6 +1856,7 @@ problematic = {
     </section>
 ''',
     'part': 'body',
+    'error': '<string>:1: (ERROR/3) Unknown target name: "2".\n',
 }
 
 paragraph_h = {

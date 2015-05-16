@@ -14,6 +14,10 @@ from docutils.core import publish_parts
 from nose.tools import assert_equals
 
 from rst2html5 import HTML5Writer
+try:
+    from io import StringIO
+except ImportError:  # Python 2.x
+    from StringIO import StringIO
 
 tmpdir = gettempdir()
 unittest.TestCase.maxDiff = None
@@ -27,10 +31,12 @@ def rst_to_html5_part(case):
     overrides = case.copy()
     rst = overrides.pop('rst')
     part = overrides.pop('part')
+    error = StringIO()
     overrides.pop('out')
     overrides.setdefault('indent_output', True)
+    overrides['warning_stream'] = error
     return publish_parts(writer=HTML5Writer(), source=rst,
-                         settings_overrides=overrides)[part]
+                         settings_overrides=overrides)[part], error.getvalue()
 
 
 def extract_variables(module):
@@ -54,7 +60,8 @@ def test():
 
 
 def check_part(test_name, case):
-    result = result_ = rst_to_html5_part(case)
+    result, error = rst_to_html5_part(case)
+    result_ = result
     expected = case['out']
     if case['part'] in ('header', 'body', 'whole'):
         result = BeautifulSoup(result).decode()
@@ -68,3 +75,4 @@ def check_part(test_name, case):
         with open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
     assert_equals(expected, result)  # better diff visualization
+    assert_equals(case.get('error', ''), error)
