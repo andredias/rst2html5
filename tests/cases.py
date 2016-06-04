@@ -861,11 +861,19 @@ math_one_script_only = {
 ''',
 }
 
-math_role = {
+math_role_body = {
     'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
     'out': '<p><span class="math">\(\sqrt{3x-1}+(1+x)^2\)</span></p>',
     'indent_output': False,
     'part': 'body',
+}
+
+math_role_head = {
+    'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
+    'out': '''<meta charset="utf-8" />\
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>''',
+    'indent_output': False,
+    'part': 'head',
 }
 
 raw_html = {
@@ -1865,15 +1873,6 @@ paragraph_h = {
     'part': 'head',
 }
 
-math_role = {
-    'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
-    'out': '<meta charset="utf-8" />\
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js'
-           '?config=TeX-AMS-MML_HTMLorMML"></script>',
-    'indent_output': False,
-    'part': 'head',
-}
-
 metadata = {
     'rst': '.. title:: Foo Bar',
     'out': '<title>Foo Bar</title><meta charset="utf-8" />',
@@ -1915,7 +1914,7 @@ javascript = {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 ''',
     'script': [('https://ajax.googleapis.com/ajax/libs/jquery/'
-               '1.7.2/jquery.min.js', None)],
+                '1.7.2/jquery.min.js', None)],
     'part': 'head',
 }
 
