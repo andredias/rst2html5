@@ -147,3 +147,119 @@ class CodeBlock(Directive):
             codeblock = container_wrapper(self, codeblock, caption)
 
         return [codeblock]
+
+
+class Define(Directive):
+    '''
+    Defines an identifier to be checked by directive ifdef and ifndef.
+    Identifiers are case insensitive.
+    More than one identifier can be defined at once. Example::
+
+        .. define:: one
+        .. define:: two three four
+
+    '''
+
+    has_content = False
+    required_arguments = 1
+    final_argument_whitespace = True
+
+    def run(self):
+        if not self.state.document.settings.identifiers:
+            identifiers = self.state.document.settings.identifiers = []
+        else:
+            identifiers = self.state.document.settings.identifiers
+        arguments = self.arguments[0].lower().split()
+        for identifier in arguments:
+            identifier = identifier.lower()
+            if identifier not in identifiers:
+                identifiers.append(identifier)
+        return []
+
+
+class Undefine(Directive):
+    '''
+    Undefine an identifier. Example::
+
+        .. undef:: one
+        .. undef:: one two three four
+
+    '''
+
+    has_content = False
+    required_arguments = 1
+    final_argument_whitespace = True
+
+    def run(self):
+        identifiers = self.state.document.settings.identifiers or []
+        arguments = self.arguments[0].lower().split()
+        for identifier in arguments:
+            identifier = identifier.lower()
+            if identifier in identifiers:
+                identifiers.remove(identifier)
+        return []
+
+
+class IfDef(Directive):
+    '''
+    Include content only if the identifier passed as argument is defined.
+    If more than one identified is passed,
+    there must be an option to identify which logical operation is to be used:
+    'and' or 'or'.  Example::
+
+        .. ifdef:: x y z
+            :operator: or
+
+            some content...
+
+    'some content...' only will be included if x or y or z is defined.
+    '''
+
+    def logical_operator(argument):
+        return directives.choice(argument, ['and', 'or'])
+
+    has_content = True
+    required_arguments = 1
+    final_argument_whitespace = True
+    option_spec = {
+        'operator': logical_operator,
+    }
+
+    def check(self):
+        self.assert_has_content()
+        identifiers = self.state.document.settings.identifiers or []
+        arguments = self.arguments[0].lower().split()
+        if len(arguments) == 1:
+            identifier = arguments[0]
+            show_content = identifier in identifiers
+        else:
+            if 'operator' not in self.options:
+                raise self.error('You must define an operator when more than one '
+                                 'identifier is passed as argument.')
+            operator = self.options['operator']
+            operation = {
+                'and': (lambda x, y: x and y),
+                'or': (lambda x, y: x or y)
+            }
+            show_content = operator == 'and'
+            for identifier in arguments:
+                show_content = operation[operator](show_content, identifier in identifiers)
+        return show_content
+
+    def run(self):
+        if self.check():
+            # see Include Directive at docutils/parsers/rst/directives/misc.py
+            lines = self.content.data
+            source = self.content.source(0)
+            self.state_machine.insert_input(lines, source)
+        return []
+
+
+class IfNDef(IfDef):
+    '''
+    Include content only if the identifier passed as argument is not defined.
+    See IfDef directive for options
+    '''
+
+    def check(self):
+        return not IfDef.check(self)

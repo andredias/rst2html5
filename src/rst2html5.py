@@ -15,7 +15,7 @@ from genshi.output import XHTMLSerializer
 from modules.utils import pygmentize_to_tag
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.7.5'
+__version__ = '1.8.0'
 
 try:
     # docutils >= 0.10
@@ -123,6 +123,14 @@ class HTML5Writer(writers.Writer):
                  'dest': 'template',
                  'type': 'string',
                  'action': 'store', }),
+            ('Define a case insensitive identifier to be used with ifdef and ifndef directives. '
+                'There is no value associated with an identifier. Example: --define X '
+                '(This option can be used multiple times)',
+                ['--define'],
+                {'metavar': '<identifier>',
+                 'dest': 'identifiers',
+                 'default': None,
+                 'action': 'append', }),
         )
     )
 

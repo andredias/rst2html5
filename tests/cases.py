@@ -2065,3 +2065,234 @@ include = {
 ''',
     'part': 'body',
 }
+
+
+define_directive_1 = {
+    'rst': '''
+.. define:: x
+.. define:: y
+
+.. ifdef:: x
+
+    * x is defined
+
+.. ifndef:: x
+
+    x is not defined
+
+.. undef:: y
+
+.. ifndef:: y
+
+    y is not defined''',
+    'out': '''
+    <ul>
+        <li>x is defined</li>
+    </ul>
+    <p>y is not defined</p>
+''',
+    'part': 'body',
+}
+
+
+define_directive_2 = {
+    'rst': '''
+.. define:: x y
+
+Some text
+
+.. ifdef:: x
+
+    x is defined
+
+.. ifndef:: x
+
+    x is not defined
+
+.. ifdef:: y
+
+    y is defined
+
+.. ifndef:: y
+
+    y is not defined
+
+.. ifndef:: z
+
+    z is not defined
+''',
+    'out': '''
+    <p>Some text</p>
+    <p>x is defined</p>
+    <p>y is defined</p>
+    <p>z is not defined</p>
+''',
+    'part': 'body',
+}
+
+
+ifdef_operator_missing = {
+    'rst': '''
+.. define:: x
+.. define:: y
+.. ifdef:: x y
+
+    Error expected! Logical operator must be declared.
+''',
+    'out': '''
+    <div>
+        <h1>System Message: ERROR/3 (&lt;string&gt; line 4)</h1>
+        <p>You must define an operator when more than one identifier is passed as argument.</p>
+        <pre>.. ifdef:: x y
+
+    Error expected! Logical operator must be declared.</pre>
+    </div>
+''',
+    'part': 'body',
+    'error': '<string>:4: (ERROR/3) You must define an operator when more than one identifier is passed as argument.\n',
+}
+
+
+ifndef_operator_missing = {
+    'rst': '''
+.. ifndef:: x y
+
+    Error expected! Logical operator must be declared.''',
+    'out': '''
+    <div>
+        <h1>System Message: ERROR/3 (&lt;string&gt; line 2)</h1>
+        <p>You must define an operator when more than one identifier is passed as argument.</p>
+        <pre>.. ifndef:: x y
+
+    Error expected! Logical operator must be declared.</pre>
+    </div>
+''',
+    'part': 'body',
+    'error': '<string>:2: (ERROR/3) You must define an operator when more than one identifier is passed as argument.\n',
+}
+
+
+ifdef_operator_and_1 = {
+    'rst': '''
+.. define:: x
+.. define:: y
+.. ifdef:: x y
+    :operator: and
+
+    x and y defined!
+
+.. ifndef:: x y
+    :operator: and
+
+    Error expected!''',
+    'out': '''
+    <p>x and y defined!</p>
+''',
+    'part': 'body',
+}
+
+
+ifdef_operator_and_2 = {
+    'rst': '''
+.. define:: x
+.. ifdef:: x y
+    :operator: and
+
+    This line should not be shown.
+
+.. ifndef:: x y
+    :operator: and
+
+    x defined but y is not.''',
+    'out': '''
+    <p>x defined but y is not.</p>
+''',
+    'part': 'body',
+}
+
+
+ifdef_operator_or_1 = {
+    'rst': '''
+.. define:: y
+.. ifdef:: x y
+    :operator: or
+
+    y defined!
+
+.. ifndef:: x y
+    :operator: or
+
+    Error expected since nor x nor y should be undefined.''',
+    'out': '''
+    <p>y defined!</p>
+''',
+    'part': 'body',
+}
+
+
+ifdef_operator_or_2 = {
+    'rst': '''
+.. ifdef:: x y
+    :operator: or
+
+    This line should not be shown.
+
+.. ifndef:: x y
+    :operator: or
+
+    Ok. nor x nor y are defined.''',
+    'out': '''
+    <p>Ok. nor x nor y are defined.</p>
+''',
+    'part': 'body',
+}
+
+
+ifdef_include = {
+    'rst': '''
+.. define:: mercurial
+.. ifdef:: mercurial
+
+    .. include:: include_file.rst
+''',
+    'out': '''
+    <h1>Hello, world!</h1>
+    <p>Nothing else to say</p>
+''',
+    'part': 'body',
+}
+
+
+define_undefine_multiple_times = {
+    'rst': '''
+.. define:: x
+.. define:: x
+.. define:: y
+
+.. undef:: x
+.. undefine:: x
+
+.. ifdef:: x y
+    :operator: or
+
+    x or y defined
+''',
+    'out': '''
+    <p>x or y defined</p>
+''',
+    'part': 'body',
+}
+
+
+define_via_params = {
+    'rst': '''
+.. ifdef:: x
+
+    x is defined
+''',
+    'out': '''
+    <p>x is defined</p>
+''',
+    'part': 'body',
+    'identifiers': ['x'],
+}

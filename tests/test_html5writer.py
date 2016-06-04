@@ -26,7 +26,7 @@ unittest.TestCase.maxDiff = None
 def rst_to_html5_part(case):
     '''
     The main parts of a test case dict are rst, part and out.
-    Everything else is a configuration setting.
+    Everything else are configuration settings.
     '''
     overrides = case.copy()
     rst = overrides.pop('rst')
@@ -64,8 +64,8 @@ def check_part(test_name, case):
     result_ = result
     expected = case['out']
     if case['part'] in ('header', 'body', 'whole'):
-        result = BeautifulSoup(result).decode()
-        expected = BeautifulSoup(expected).decode()
+        result = BeautifulSoup(result, 'html.parser').decode()
+        expected = BeautifulSoup(expected, 'html.parser').decode()
     if result != expected:
         filename = os.path.join(tmpdir, test_name)
         with open(filename + '.rst', encoding='utf-8', mode='w') as f:
