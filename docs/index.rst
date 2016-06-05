@@ -7,6 +7,10 @@
 rst2html5 Project
 =================
 
+*rst2html5* generates (X)HTML5 documents from standalone reStructuredText sources.
+It is a complete rewrite of the docutils' *rst2html* and uses new HTML5 constructs such as
+:code:`<section>` and :code:`<aside>`.
+
 .. toctree::
    :maxdepth: 2
 
