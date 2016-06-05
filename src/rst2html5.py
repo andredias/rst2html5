@@ -124,7 +124,7 @@ class HTML5Writer(writers.Writer):
                  'type': 'string',
                  'action': 'store', }),
             ('Define a case insensitive identifier to be used with ifdef and ifndef directives. '
-                'There is no value associated with an identifier. Example: --define X '
+                'There is no value associated with an identifier. '
                 '(This option can be used multiple times)',
                 ['--define'],
                 {'metavar': '<identifier>',

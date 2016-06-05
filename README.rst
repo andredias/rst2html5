@@ -6,6 +6,15 @@ rst2html5 generates (X)HTML5 documents from standalone reStructuredText sources.
 It is a complete rewrite of the docutils' rst2html and uses new HTML5 constructs such as
 <section> and <aside>.
 
+
+Installation
+============
+
+.. code-block:: bash
+
+    $ pip install rst2html5
+
+
 Usage
 =====
 
@@ -37,9 +46,15 @@ Options:
                         output template. The template must have the {head} and
                         {body} placeholders. The "<html{html_attr}>"
                         placeholder is recommended.
+--define=<identifier>   Define a case insensitive identifier to be used with
+                        ifdef and ifndef directives. There is no value
+                        associated with an identifier. (This option can be
+                        used multiple times)
 
-Examples
-========
+
+
+Example
+-------
 
 Consider the following rst snippet:
 
@@ -90,141 +105,133 @@ The html5 produced is clean and tidy:
     </body>
     </html>
 
-No stylesheets or classes are spread over the html5 by default. However:
 
-#. Stylesheets and javascripts URLs or paths can be included through ``stylesheet`` and
-   ``script`` options.
+Stylesheets and Scripts
+-----------------------
 
-    .. parsed-literal::
+No stylesheets or classes are spread over the html5 by default.
+However stylesheets and javascripts URLs or paths can be included through ``stylesheet`` and ``script`` options:
 
-        $ rst2html5 example.rst \\
-        **--stylesheet** css/default.css \\
-        **--stylesheet** css/special.css \\
-        **--script** ``https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js``
+.. parsed-literal::
 
-    .. code-block:: html
-
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8" />
-            <link href="css/default.css" rel="stylesheet" />
-            <link href="css/special.css" rel="stylesheet" />
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        ...
+    $ rst2html5 example.rst \\
+    **--stylesheet** css/default.css \\
+    **--stylesheet** css/special.css \\
+    **--script** ``https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js``
 
 
-#. Script attributes ``defer`` and ``async``:
+.. code-block:: html
 
-    .. parsed-literal::
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="css/default.css" rel="stylesheet" />
+        <link href="css/special.css" rel="stylesheet" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    ...
 
-        $ rst2html5 example.rst \\
+Additional scripts can be included in the result
+using options ``--script``, ``--script-defer`` or ``--script-async``:
+
+.. parsed-literal::
+
+    $ rst2html5 example.rst \\
         **--script** js/test1.js \\
         **--script-defer** js/test2.js \\
         **--script-async** js/test3.js
 
-    .. code-block:: html
+.. code-block:: html
 
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8" />
-            <script src="js/test1.js"></script>
-            <script src="js/test2.js" defer="defer"></script>
-            <script src="js/test3.js" async="async"></script>
-        ...
-
-
-#. Html tag attributes can be included through ``html-tag-attr`` option:
-
-    .. parsed-literal::
-
-        $ rst2html5 **--html-tag-attr** 'lang="pt-BR"' example.rst
-
-    .. code-block:: html
-
-        <!DOCTYPE html>
-        <html lang="pt-BR">
-        ...
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <script src="js/test1.js"></script>
+        <script src="js/test2.js" defer="defer"></script>
+        <script src="js/test3.js" async="async"></script>
+    ...
 
 
+Html tag attributes can be included through ``html-tag-attr`` option:
 
-#. Classes can be explicitly associated to rst elements (see ref__):
+.. parsed-literal::
 
-   .. code-block:: rst
+    $ rst2html5 **--html-tag-attr** 'lang="pt-BR"' example.rst
 
-        .. class:: special
+.. code-block:: html
 
-        This is a "special" paragraph.
-
-        .. class:: exceptional remarkable
-
-        An Exceptional Section
-        ======================
-
-        This is an ordinary paragraph.
-
-   which results in:
-
-   .. parsed-literal::
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    ...
 
 
-        <p **class="special"**>This is a "special" paragraph.</p>
-        <section **class="exceptional remarkable"** id="an-exceptional-section">
-            <h1>An Exceptional Section</h1>
-            <p>This is an ordinary paragraph.</p>
-        </section>
+Templates
+---------
 
-#. Custom html5 template via the :literal:`--template` option. Example:
+Custom html5 template via the :literal:`--template` option. Example:
 
-    .. parsed-literal::
+.. parsed-literal::
 
-        $ template='<!DOCTYPE html>
-        <html{html_attr}>
-        <head>{head}    <!-- custom links and scripts -->
-            <link href="css/default.css" rel="stylesheet" />
-            <link href="css/pygments.css" rel="stylesheet" />
-            <script src="http\://code.jquery.com/jquery-latest.min.js"></script>
-        </head>
-        <body>{body}</body>
-        </html>'
+    $ template='<!DOCTYPE html>
+    <html{html_attr}>
+    <head>{head}    <!-- custom links and scripts -->
+        <link href="css/default.css" rel="stylesheet" />
+        <link href="css/pygments.css" rel="stylesheet" />
+        <script src="http\://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body>{body}</body>
+    </html>'
 
-        $ echo 'one line' > example.rst
+    $ echo 'one line' > example.rst
 
-        $ rst2html5 **--template "$template"** example.rst
+    $ rst2html5 **--template "$template"** example.rst
 
-    .. code-block:: html
+.. code-block:: html
 
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="utf-8" />
-            <!-- custom links and scripts -->
-            <link href="css/default.css" rel="stylesheet" />
-            <link href="css/pygments.css" rel="stylesheet" />
-            <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-        </head>
-        <body>
-            <p>one line</p>
-        </body>
-        </html>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <!-- custom links and scripts -->
+        <link href="css/default.css" rel="stylesheet" />
+        <link href="css/pygments.css" rel="stylesheet" />
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body>
+        <p>one line</p>
+    </body>
+    </html>
 
 
-Installation
-============
+New Directives
+--------------
 
-.. code-block:: bash
+:code:`rst2html5` provides some new directives: ``define``, ``undef``, ``ifdef`` and ``ifndef``,
+similar to those used in C++.
+They allow to conditionally include (or not) some rst snippets:
 
-    $ pip install rst2html5
+.. code-block:: rst
+
+    .. ifdef:: x
+
+        this line will be included if 'x' was previously defined
+
+
+In case of you check two or more identifiers,
+there must be an operator (``[and | or]``) defined:
+
+.. code-block:: rst
+
+    .. ifdef:: x y z
+        :operator: or
+
+        This line will be included only if 'x', 'y' or 'z' is defined.
+
 
 
 Links
 =====
 
-* `Documentation`__
-* `Project page at BitBucket`__
-
-
-.. __: http://docutils.sourceforge.net/docs/ref/rst/directives.html#class
-.. __: https://rst2html5.readthedocs.org/
-.. __: https://bitbucket.org/andre_felipe_dias/rst2html5
+* `Documentation <https://rst2html5.readthedocs.org/>`_
+* `Project page at BitBucket <https://bitbucket.org/andre_felipe_dias/rst2html5>`_

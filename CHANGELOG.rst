@@ -4,6 +4,13 @@ rst2html5 Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+
+1.8 - 2016-06-04
+================
+
+* New directives :code:`define`, :code:`undef`, :code:`ifdef` and :code:`ifndef`
+  to conditionally include (or not) a rst snippet.
+
 1.7.5 - 2015-05-14
 ==================
 
