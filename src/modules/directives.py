@@ -121,8 +121,8 @@ class CodeBlock(Directive):
         if 'source' in self.options:
             codeblock.attributes['source'] = self.options['source']
         codeblock['language'] = self.arguments[0]
-        codeblock['linenos'] = 'linenos' in self.options or \
-                               'lineno-start' in self.options
+        codeblock['linenos'] = ('linenos' in self.options or
+                                'lineno-start' in self.options) and 'table'
 
         linespec = self.options.get('emphasize-lines')
         if linespec:

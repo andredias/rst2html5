@@ -8,20 +8,20 @@ from genshi.builder import tag
 from genshi.core import Markup
 
 
-def pygmentize(code, language, linenos=False, **kwargs):
+def pygmentize(code, language, **kwargs):
     lexer = get_lexer_by_name(language)
-    formatter = HtmlFormatter(linenos=(linenos and 'table'), **kwargs)
+    formatter = HtmlFormatter(**kwargs)
     return highlight(code, lexer, formatter)
 
 
-def pygmentize_to_tag(code, language, linenos=False, **kwargs):
+def pygmentize_to_tag(code, language, **kwargs):
     '''
     Rebuild a raw pygmentize highlighting as tag elements, avoiding Genshi to delete blank lines.
 
     See http://genshi.edgewall.org/wiki/GenshiFaq#WhatisGenshidoingwiththewhitespaceinmymarkuptemplate
     '''
 
-    codeblock = pygmentize(code, language, linenos, **kwargs)
+    codeblock = pygmentize(code, language, **kwargs)
     pre = re.findall('<pre>(.*?)\n*</pre>', codeblock, re.DOTALL)
     if len(pre) == 1:
         return tag.pre(Markup(pre[0]), data_language=language)

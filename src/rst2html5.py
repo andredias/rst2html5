@@ -737,10 +737,10 @@ class HTML5Translator(nodes.NodeVisitor):
         if 'language' in node:
             # code-block
             language = node['language']
-            linenos = node['linenos']
             highlight_args = node.get('highlight_args', {})
+            highlight_args['linenos'] = node['linenos']
             classes = ' '.join(node['classes']) or None
-            codeblock = pygmentize_to_tag(node.rawsource, language, linenos=linenos, **highlight_args)
+            codeblock = pygmentize_to_tag(node.rawsource, language, **highlight_args)
             codeblock(class_=classes)
             self.context.append(codeblock)
             raise nodes.SkipNode
