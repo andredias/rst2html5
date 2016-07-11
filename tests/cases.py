@@ -799,6 +799,17 @@ module</span><span class="p">,</span> <span class="n">v</span>\
     'part': 'body'
 }
 
+code = {
+    'rst': code_block['rst'].replace('.. code-block::', '.. code::'),
+    'out': code_block['out'],
+    'part': code_block['part'],
+}
+
+sourcecode = {
+    'rst': code_block['rst'].replace('.. code-block::', '.. sourcecode::'),
+    'out': code_block['out'],
+    'part': code_block['part'],
+}
 
 class_code_block = {
     'rst': """.. code-block:: python
