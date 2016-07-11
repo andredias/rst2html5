@@ -4,6 +4,10 @@ Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+* 1.8.1 - 2016-07-11
+
+    * Raw html shouldn't be indented
+    * ``CodeBlock`` directive also registered as ``code``
 
 * 1.8 - 2016-06-04
 
