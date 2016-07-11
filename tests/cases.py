@@ -894,6 +894,24 @@ more text''',
     'part': 'body'
 }
 
+raw_html_pre = {
+    'rst': '''some text
+
+.. raw:: html
+
+    <pre class="code bash"><span class="c"># this is at the beginning of the line
+    # this is indented by 4 spaces
+    # and this line is also indented by 4 spaces</span></pre>
+
+more text''',
+    'out': '\n    <p>some text</p>'
+           '\n<pre class="code bash"><span class="c"># this is at the beginning of the line'
+           '\n# this is indented by 4 spaces'
+           '\n# and this line is also indented by 4 spaces</span></pre>'
+           '\n    <p>more text</p>\n',
+    'part': 'body'
+}
+
 raw_latex = {
     'rst': '''some text
 
