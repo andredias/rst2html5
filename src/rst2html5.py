@@ -5,14 +5,13 @@ from __future__ import unicode_literals
 
 import re
 import sys
+import modules  # necessary to register directives
 from collections import OrderedDict
-
 from docutils import nodes, writers
 from docutils.transforms import Transform
 from genshi.builder import tag
 from genshi.core import Markup
 from genshi.output import XHTMLSerializer
-from modules.utils import pygmentize_to_tag
 
 __docformat__ = 'reStructuredText'
 __version__ = '1.8.1'
@@ -725,26 +724,9 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         Translates a code-block/sourcecode or a parsed-literal block.
 
-        Pygments is used for code-blocks.
-        However, its highlight output is cluttered and thus
-        rst2html5 cleans it up to a more HTML5 style.
-
-        rst2html5 does not apply a class attribute such as class="sourcecode"
-        to code-block elements. Instead, these elements should be addressed in CSS3 using
-        '[data-language]', 'pre[data-language]' or 'table[data-language]' selectors.
+        Pygments is used for highlighting by the code-block directive.
+        See CodeBlock directive source code for more information.
         '''
-
-        if 'language' in node:
-            # code-block
-            language = node['language']
-            highlight_args = node.get('highlight_args', {})
-            highlight_args['linenos'] = node['linenos']
-            classes = ' '.join(node['classes']) or None
-            codeblock = pygmentize_to_tag(node.rawsource, language, **highlight_args)
-            codeblock(class_=classes)
-            self.context.append(codeblock)
-            raise nodes.SkipNode
-
         # see case parsed_literal_as_code_block
         language = None
         if 'classes' in node and 'code' in node['classes']:

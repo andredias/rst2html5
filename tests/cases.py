@@ -833,17 +833,88 @@ code_block_indented_first_line = {
             int j = prefix.length() + offset;
         }
     }''',
-    'out': '''<table data-language="java"><tr><td><pre>21
-22
-23
-24</pre></td><td><pre>        <span class="c1">// walk over the characters in question, looking for mismatches.</span>
-        <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> \
-<span class="n">prefix</span><span class="o">.</span><span class="na">length</span>\
-<span class="o">()</span> <span class="o">+</span> <span class="n">offset</span><span class="o">;</span>
-    <span class="o">}</span>
-<span class="o">}</span></pre></td></tr></table>''',
+    'out': '''<table data-language="java"><tr>\
+<td class="linenos"><pre><a href="#cecef2ee60f8af4a07ef26740f2d318c-21">21</a>
+<a href="#cecef2ee60f8af4a07ef26740f2d318c-22">22</a>
+<a href="#cecef2ee60f8af4a07ef26740f2d318c-23">23</a>
+<a href="#cecef2ee60f8af4a07ef26740f2d318c-24">24</a></pre></td>\
+<td class="code"><pre><a name="cecef2ee60f8af4a07ef26740f2d318c-21"></a>        <span class="c1">\
+// walk over the characters in question, looking for mismatches.</span>
+<a name="cecef2ee60f8af4a07ef26740f2d318c-22"></a>        <span class="kt">int</span> \
+<span class="n">j</span> <span class="o">=</span> <span class="n">prefix</span><span class="o">.</span>\
+<span class="na">length</span><span class="o">()</span> <span class="o">+</span> \
+<span class="n">offset</span><span class="o">;</span>
+<a name="cecef2ee60f8af4a07ef26740f2d318c-23"></a>    <span class="o">}</span>
+<a name="cecef2ee60f8af4a07ef26740f2d318c-24"></a><span class="o">}</span></pre></td></tr></table>''',
     'part': 'body',
     'indent_output': False,
+}
+
+
+code_block_name = {
+    'rst': '''.. code-block:: python
+    :class: small
+    :name: double x
+
+    def double(x):
+        """
+        useless comment
+        """
+
+        return 2 * x
+''',
+    'out': '''
+    <pre id="double-x" data-language="python" class="small"><span class="k">def</span> \
+<span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    useless comment</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> \
+<span class="n">x</span></pre>
+''',
+    'part': 'body',
+}
+
+
+code_block_name_table = {
+    'rst': '''.. code-block:: python
+    :class: small
+    :name: double x
+    :number-lines:
+
+    def double(x):
+        """
+        useless comment
+        """
+
+        return 2 * x
+''',
+    'out': '''
+    <table id="double-x" data-language="python" class="small">
+        <tr>
+            <td class="linenos">
+                <pre><a href="#double-x-1">1</a>
+<a href="#double-x-2">2</a>
+<a href="#double-x-3">3</a>
+<a href="#double-x-4">4</a>
+<a href="#double-x-5">5</a>
+<a href="#double-x-6">6</a></pre>
+            </td>
+            <td class="code">
+                <pre><a name="double-x-1"></a><span class="k">def</span> \
+<span class="nf">double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a name="double-x-2"></a>    <span class="sd">&quot;&quot;&quot;</span>
+<a name="double-x-3"></a><span class="sd">    useless comment</span>
+<a name="double-x-4"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a name="double-x-5"></a>
+<a name="double-x-6"></a>    <span class="k">return</span> <span class="mi">2</span> \
+<span class="o">*</span> <span class="n">x</span></pre>
+            </td>
+        </tr>
+    </table>
+''',
+    'part': 'body',
 }
 
 
@@ -2046,36 +2117,6 @@ comment_2 = {
     <!-- this is a comment
 which continues at a new line
 and goes on -->
-''',
-    'part': 'body',
-}
-
-sphinx_code_block = {
-    'rst': '''.. code-block:: python
-    :class: small
-    :linenos:
-
-    def double(x):
-        """
-        useless comment
-        """
-
-        return 2 * x
-''',
-    'out': '''
-    <table data-language="python" class="small"><tr><td><pre>1
-2
-3
-4
-5
-6</pre></td><td><pre><span class="k">def</span> <span class="nf">double</span><span class="p">\
-(</span><span class="n">x</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    useless comment</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> \
-<span class="n">x</span></pre></td></tr></table>
 ''',
     'part': 'body',
 }

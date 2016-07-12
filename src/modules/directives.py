@@ -2,9 +2,19 @@
 
 from __future__ import unicode_literals
 
+import re
+from hashlib import md5
 from docutils import nodes
-from docutils.statemachine import ViewList
 from docutils.parsers.rst import Directive, directives
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
+
+
+def pygmentize(code, language, **kwargs):
+    lexer = get_lexer_by_name(language)
+    formatter = HtmlFormatter(**kwargs)
+    return highlight(code, lexer, formatter)
 
 #
 # The functions below were borrowed from Sphinx to avoid direct dependency to its code
@@ -35,41 +45,6 @@ def parselinenos(spec, total):
     return items
 
 
-def dedent_lines(lines, dedent):
-    '''
-    copied from sphinx.code.dedent_lines
-    '''
-    if not dedent:
-        return lines
-
-    new_lines = []
-    for line in lines:
-        new_line = line[dedent:]
-        if line.endswith('\n') and not new_line:
-            new_line = '\n'  # keep CRLF
-        new_lines.append(new_line)
-
-    return new_lines
-
-
-def container_wrapper(directive, literal_node, caption):
-    '''
-    copied from sphinx.code.container_wrapper
-    '''
-    container_node = nodes.container('', literal_block=True,
-                                     classes=['literal-block-wrapper'])
-    parsed = nodes.Element()
-    directive.state.nested_parse(ViewList([caption], source=''),
-                                 directive.content_offset, parsed)
-    caption_node = nodes.caption(parsed[0].rawsource, '',
-                                 *parsed[0].children)
-    caption_node.source = parsed[0].source
-    caption_node.line = parsed[0].line
-    container_node += caption_node
-    container_node += literal_node
-    return container_node
-
-
 def set_source_info(directive, node):
     '''
     copied from sphinx.util.nodes import set_source_info
@@ -82,7 +57,30 @@ class CodeBlock(Directive):
     Directive for a code block with special highlighting or line numbering
     settings.
 
-    This class mix docutils and Sphinx CodeBlock directives.
+    Pygments is used for highlighting.
+    However, its highlight output is cluttered and thus rst2html5 cleans it up to a more HTML5 style:
+
+    * It uses 'data-language' attributes instead of attributes such as class="sourcecode" or class="code language".
+      Thus, these code-block elements should be addressed in CSS3 using '[data-language]', 'pre[data-language]'
+      or 'table[data-language]' selectors.
+    * Whenever :number-lines: is used, the highlighting will use table and lineanchors.
+    * Lineanchors use :name: parameter if given or else a MD5 hash code.
+    * Highlighting without line numbering has the following structure::
+
+        <pre id="name" data-language="language">...</pre>
+
+    * Highlighting with line numbering has the following structure::
+
+        <table id="name_or_hash" data-language="language">
+            <tr>
+                <td class="linenos">
+                    <pre>...</pre>
+                </td>
+                <td class="code">
+                    <pre>...</pre>
+                </td>
+            </tr>
+        </table>
     '''
 
     has_content = True
@@ -90,63 +88,57 @@ class CodeBlock(Directive):
     optional_arguments = 0
     final_argument_whitespace = False
     option_spec = {
-        'linenos': directives.flag,
-        'dedent': int,
-        'lineno-start': int,
-        'emphasize-lines': directives.unchanged_required,
-        'caption': directives.unchanged_required,
-        # docutils CodeBlock options
         'class': directives.class_option,
+        'emphasize-lines': directives.unchanged_required,
         'name': directives.unchanged,
-        'number-lines': directives.unchanged  # integer or None
+        'number-lines': directives.unchanged,  # integer or None
     }
 
     def run(self):
         self.assert_has_content()
 
-        if 'number-lines' in self.options:
-            self.options['linenos'] = True
-            if self.options['number-lines']:
-                self.options['lineno-start'] = int(self.options['number-lines'])
-
+        language = self.arguments[0]
         code = '\n'.join(self.content)
-        if 'dedent' in self.options:
-            lines = code.split('\n')
-            lines = dedent_lines(lines, self.options['dedent'])
-            code = '\n'.join(lines)
-
-        codeblock = nodes.literal_block(code, code, classes=self.options.get('class', []))
-        self.add_name(codeblock)
+        pygmentize_args = {}
+        if self.options.get('number-lines', None):
+            pygmentize_args['linenostart'] = int(self.options['number-lines'])
+        pygmentize_args['linenos'] = 'number-lines' in self.options and 'table'
+        node = nodes.table() if pygmentize_args['linenos'] else nodes.literal_block()
+        node['classes'] = self.options.get('class', [])
+        node.attributes['data-language'] = language
+        self.add_name(node)
+        set_source_info(self, node)
         # if called from "include", set the source
         if 'source' in self.options:
-            codeblock.attributes['source'] = self.options['source']
-        codeblock['language'] = self.arguments[0]
-        codeblock['linenos'] = ('linenos' in self.options or
-                                'lineno-start' in self.options) and 'table'
-
+            node.attributes['source'] = self.options['source']
+        if pygmentize_args['linenos']:
+            anchor_id = node['ids'][-1] if node['ids'] else md5(code).hexdigest()
+            pygmentize_args['lineanchors'] = anchor_id
+            pygmentize_args['anchorlinenos'] = True
         linespec = self.options.get('emphasize-lines')
         if linespec:
             try:
                 nlines = len(self.content)
-                hl_lines = [x + 1 for x in parselinenos(linespec, nlines)]
+                pygmentize_args['hl_lines'] = [x + 1 for x in parselinenos(linespec, nlines)]
             except ValueError as err:
                 document = self.state.document
                 return [document.reporter.warning(str(err), line=self.lineno)]
-        else:
-            hl_lines = None
 
-        extra_args = codeblock['highlight_args'] = {}
-        if hl_lines is not None:
-            extra_args['hl_lines'] = hl_lines
-        if 'lineno-start' in self.options:
-            extra_args['linenostart'] = self.options['lineno-start']
-        set_source_info(self, codeblock)
+        output = pygmentize(code, language, **pygmentize_args)
+        pre = re.findall('<pre.*?>(.*?)\n*</pre>', output, re.DOTALL)
+        if len(pre) == 1:
+            node += nodes.raw(pre[0], pre[0], format='html')
+        else:  # pygments returned a table
+            row = nodes.row()
+            node += row
+            linenos_cell = nodes.entry(classes=['linenos'])
+            linenos_cell += nodes.literal_block('', '', nodes.raw(pre[0], pre[0], format='html'))
+            code_cell = nodes.entry(classes=['code'])
+            code_cell += nodes.literal_block('', '', nodes.raw(pre[1], pre[1], format='html'))
+            row += linenos_cell
+            row += code_cell
 
-        caption = self.options.get('caption')
-        if caption:
-            codeblock = container_wrapper(self, codeblock, caption)
-
-        return [codeblock]
+        return [node]
 
 
 class Define(Directive):
@@ -200,6 +192,10 @@ class Undefine(Directive):
         return []
 
 
+def _logical_operator(argument):
+    return directives.choice(argument, ['and', 'or'])
+
+
 class IfDef(Directive):
     '''
     Include content only if the identifier passed as argument is defined.
@@ -215,14 +211,11 @@ class IfDef(Directive):
     'some content...' only will be included if x or y or z is defined.
     '''
 
-    def logical_operator(argument):
-        return directives.choice(argument, ['and', 'or'])
-
     has_content = True
     required_arguments = 1
     final_argument_whitespace = True
     option_spec = {
-        'operator': logical_operator,
+        'operator': _logical_operator,
     }
 
     def check(self):
