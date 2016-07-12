@@ -5,13 +5,15 @@ from __future__ import unicode_literals
 
 import re
 import sys
-import modules  # necessary to register directives
 from collections import OrderedDict
 from docutils import nodes, writers
 from docutils.transforms import Transform
 from genshi.builder import tag
 from genshi.core import Markup
 from genshi.output import XHTMLSerializer
+from modules import register_directives
+
+register_directives()
 
 __docformat__ = 'reStructuredText'
 __version__ = '1.8.1'

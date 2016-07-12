@@ -112,7 +112,7 @@ class CodeBlock(Directive):
         if 'source' in self.options:
             node.attributes['source'] = self.options['source']
         if pygmentize_args['linenos']:
-            anchor_id = node['ids'][-1] if node['ids'] else md5(code).hexdigest()
+            anchor_id = node['ids'][-1] if node['ids'] else md5(code.encode('utf-8')).hexdigest()
             pygmentize_args['lineanchors'] = anchor_id
             pygmentize_args['anchorlinenos'] = True
         linespec = self.options.get('emphasize-lines')
