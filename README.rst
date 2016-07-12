@@ -6,6 +6,9 @@ rst2html5
 It is a complete rewrite of the docutils' *rst2html* and uses new HTML5 constructs such as
 :code:`<section>` and :code:`<aside>`.
 
+.. image:: https://drone.io/bitbucket.org/andre_felipe_dias/rst2html5/status.png
+    :target: https://drone.io/bitbucket.org/andre_felipe_dias/rst2html5/latest
+
 
 Installation
 ============
