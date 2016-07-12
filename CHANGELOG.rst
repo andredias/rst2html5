@@ -4,7 +4,7 @@ Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
-* 1.8.2 -
+* 1.8.2 - 2016-07-12
 
     * CodeBlock directive refactored
 
