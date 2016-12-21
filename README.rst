@@ -233,6 +233,57 @@ there must be an operator (``[and | or]``) defined:
 
 
 
+From rst2html5 1.9, you can include stylesheets and scripts via directives inside a reStructuredText text:
+
+.. code-block:: rst
+
+    Just an ordinary paragraph.
+
+    .. stylesheet:: css/default.css
+    .. stylesheet:: https://pronus.io/css/standard.css
+
+    .. script:: http://code.jquery.com/jquery-latest.min.js
+    .. script:: slide.js
+        :defer:
+
+    .. script:: test/animations.js
+        :async:
+
+    Another paragraph
+
+
+.. code-block:: html
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="css/default.css" rel="stylesheet" />
+        <link href="https://pronus.io/css/standard.css" rel="stylesheet" />
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="slide.js" defer="defer"></script>
+        <script src="test/animations.js" async="async"></script>
+    </head>
+    <body>
+        <p>Just an ordinary paragraph.</p>
+        <p>Another paragraph</p>
+    </body>
+    </html>
+
+
+There also is a :code:`template` directive. The usage is:
+
+.. code-block:: rst
+
+    .. template:: filename
+
+    or
+
+    .. template::
+
+        template content here.
+
+
 Links
 =====
 
