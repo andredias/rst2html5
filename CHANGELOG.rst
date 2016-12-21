@@ -4,6 +4,11 @@ Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+* 1.9 - 2016-12-21
+
+    * New directives :code:`stylesheet`, :code:`script` and :code:`template`
+      for declaring stylesheets, scripts and template inside a restructured text.
+
 * 1.8.2 - 2016-07-12
 
     * CodeBlock directive refactored
