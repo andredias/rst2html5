@@ -1354,7 +1354,7 @@ docinfo = {
           - Felipe
           - Dias
 :Organization: Pronus Engenharia de Software
-:Contact: andref.dias@pronus.eng.br
+:Contact: andre.dias@pronus.io
 :Address: Av. Ipê Amarelo
    Sumaré - São Paulo - Brasil
    13175-667
@@ -1389,7 +1389,7 @@ docinfo1 = {
     <meta content="1" name="version" />
     <meta content="André; Felipe; Dias" name="authors" />
     <meta content="Pronus Engenharia de Software" name="organization" />
-    <meta content="andref.dias@pronus.eng.br" name="contact" />
+    <meta content="andre.dias@pronus.io" name="contact" />
     <meta content="Av. Ipê Amarelo, Sumaré - São Paulo - Brasil, 13175-667" name="address" />
     <meta content="Alpha" name="status" />
     <meta content="2012-07-29" name="date" />
@@ -2000,22 +2000,22 @@ stylesheet = {
     'out': '''
     <meta charset="utf-8" />
     <link href="http://test.com/css/default.css" rel="stylesheet" />
-    <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
+    <link href="https://pronus.io/css/standard.css" rel="stylesheet" />
 ''',
     'part': 'head',
     'stylesheet': ['http://test.com/css/default.css',
-                   'http://www.pronus.eng.br/css/standard.css']
+                   'https://pronus.io/css/standard.css']
 }
 
 stylesheet_2 = {
     'rst': '''ordinary paragraph
 
 .. stylesheet:: http://test.com/css/default.css
-.. stylesheet:: http://www.pronus.eng.br/css/standard.css''',
+.. stylesheet:: https://pronus.io/css/standard.css''',
     'out': '''
     <meta charset="utf-8" />
     <link href="http://test.com/css/default.css" rel="stylesheet" />
-    <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
+    <link href="https://pronus.io/css/standard.css" rel="stylesheet" />
 ''',
     'part': 'head',
 }
