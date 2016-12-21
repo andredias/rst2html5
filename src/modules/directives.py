@@ -256,3 +256,64 @@ class IfNDef(IfDef):
 
     def check(self):
         return not IfDef.check(self)
+
+
+class StyleSheet(Directive):
+    '''
+    Specify in a restructured text a stylesheet URL or path to be included in the output HTML file.
+    '''
+
+    has_content = False
+    required_arguments = 1
+
+    def run(self):
+        settings = self.state.document.settings
+        settings.stylesheet = settings.stylesheet or []
+        settings.stylesheet.append(self.arguments[0])
+        return []
+
+
+class Script(Directive):
+    '''
+    Specify in a restructured text a script URL or path to be included in the output HTML file.
+    '''
+
+    has_content = False
+    required_arguments = 1
+    option_spec = {
+        'defer': directives.unchanged,
+        'async': directives.unchanged,
+    }
+
+    def run(self):
+        attr = 'defer' in self.options and 'defer' or \
+               'async' in self.options and 'async' or \
+               None
+        settings = self.state.document.settings
+        settings.script = settings.script or []
+        settings.script.append((self.arguments[0], attr))
+        return []
+
+
+class Template(Directive):
+    '''
+    Specify in a restructured text a template URL or path to be included in the output HTML file.
+
+    Usage:
+
+    .. template:: <filename>
+
+    or
+
+    .. template::
+
+        <content>
+
+    '''
+
+    has_content = True
+
+    def run(self):
+        settings = self.state.document.settings
+        settings.template = len(self.arguments) and self.arguments[0] or '\n'.join(self.content)
+        return []

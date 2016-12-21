@@ -2007,6 +2007,19 @@ stylesheet = {
                    'http://www.pronus.eng.br/css/standard.css']
 }
 
+stylesheet_2 = {
+    'rst': '''ordinary paragraph
+
+.. stylesheet:: http://test.com/css/default.css
+.. stylesheet:: http://www.pronus.eng.br/css/standard.css''',
+    'out': '''
+    <meta charset="utf-8" />
+    <link href="http://test.com/css/default.css" rel="stylesheet" />
+    <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
+''',
+    'part': 'head',
+}
+
 javascript = {
     'rst': 'ordinary paragraph',
     'out': '''
@@ -2029,6 +2042,25 @@ javascript_2 = {
     'script': [('js/test1.js', 'defer'),
                ('js/test2.js', 'async'),
                ('js/test3.js', None), ],
+    'part': 'head',
+}
+
+script_directive = {
+    'rst': '''ordinary paragraph
+
+.. script:: js/test1.js
+    :defer:
+
+.. script:: js/test2.js
+    :async:
+
+.. script:: js/test3.js''',
+    'out': '''
+    <meta charset="utf-8" />
+    <script src="js/test1.js" defer="defer"></script>
+    <script src="js/test2.js" async="async"></script>
+    <script src="js/test3.js"></script>
+''',
     'part': 'head',
 }
 
@@ -2097,6 +2129,54 @@ template_filename = {
     'part': 'whole',
 }
 
+template_directive_1 = {
+    'rst': '''ordinary paragraph
+
+.. template::
+
+    <!DOCTYPE html>
+    <html>
+    <head>{head}    <link href="css/default.css" rel="stylesheet" />
+        <link href="css/pygments.css" rel="stylesheet" />
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    </head>
+    <body>{body}</body>
+    </html>
+''',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="css/default.css" rel="stylesheet" />
+    <link href="css/pygments.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+    <p>ordinary paragraph</p>
+</body>
+</html>''',
+    'part': 'whole',
+}
+
+template_directive_2 = {
+    'rst': '''ordinary paragraph
+
+.. template:: template.html
+''',
+    'out': '''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="css/default.css" rel="stylesheet" />
+    <link href="css/pygments.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<body>
+    <p>ordinary paragraph</p>
+</body>
+</html>''',
+    'part': 'whole',
+}
 
 comment_1 = {
     'rst': '.. this is a comment',
@@ -2105,6 +2185,7 @@ comment_1 = {
 ''',
     'part': 'body',
 }
+
 
 comment_2 = {
     'rst': '''
