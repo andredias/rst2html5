@@ -25,7 +25,11 @@ setup(
     long_description="%s\n%s" % (read("README.rst"),
                                  re.sub(":obj:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst"))),
     platforms='any',
-    install_requires=read('requirements.txt').split(),
+    install_requires=[
+        'docutils>=0.12',
+        'Genshi>=0.7',
+        'Pygments>=2.0.2',
+    ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
