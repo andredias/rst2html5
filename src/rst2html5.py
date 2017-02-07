@@ -16,7 +16,7 @@ from modules import register_directives
 register_directives()
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.9'
+__version__ = '1.9.1'
 
 try:
     # docutils >= 0.10

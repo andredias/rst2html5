@@ -4,6 +4,11 @@ Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+* 1.9.1 - 2017-02-07
+
+    * Fix install_requires in setup.py
+    * Update list of authors
+
 * 1.9 - 2016-12-21
 
     * New directives :code:`stylesheet`, :code:`script` and :code:`template`
