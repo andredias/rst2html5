@@ -47,11 +47,11 @@ setup(
     zip_safe=False,
     packages=find_packages("src"),
     package_dir={"": "src"},
-    py_modules=['rst2html5'],
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'rst2html5 = rst2html5:main',
+            'rst2html5 = rst2html5_:main',
+            'rst2html5.py = rst2html5_:main',  # overrides docutils' rst2html5.py
         ],
     },
 )

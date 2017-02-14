@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 from docutils.core import publish_parts
 from nose.tools import assert_equals
 
-from rst2html5 import HTML5Writer
+from rst2html5_ import HTML5Writer
 try:
     from io import StringIO
 except ImportError:  # Python 2.x
