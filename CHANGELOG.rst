@@ -4,6 +4,10 @@ Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+* 1.9.2 - 2017-02-14
+
+    * Fix conflict with docutils==0.13.1 rst2html5.py
+
 * 1.9.1 - 2017-02-07
 
     * Fix install_requires in setup.py
