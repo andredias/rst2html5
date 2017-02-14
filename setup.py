@@ -15,7 +15,7 @@ def read(*names, **kwargs):
 
 setup(
     name='rst2html5',
-    version='1.9.2',
+    version='1.9.3',
     license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
@@ -47,6 +47,7 @@ setup(
     zip_safe=False,
     packages=find_packages("src"),
     package_dir={"": "src"},
+    py_modules=['rst2html5_'],
     include_package_data=True,
     entry_points={
         'console_scripts': [
