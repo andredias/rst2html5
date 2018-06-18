@@ -945,7 +945,7 @@ math_one_script_only = {
 
 math_role_body = {
     'rst': r':math:`\sqrt{3x-1}+(1+x)^2`',
-    'out': '<p><span class="math">\(\sqrt{3x-1}+(1+x)^2\)</span></p>',
+    'out': r'<p><span class="math">\(\sqrt{3x-1}+(1+x)^2\)</span></p>',
     'indent_output': False,
     'part': 'body',
 }
@@ -957,6 +957,17 @@ math_role_head = {
     'indent_output': False,
     'part': 'head',
 }
+
+math_block_class_in_div = {
+    'rst': r'''.. math::
+    :class: centered-equation
+
+    \sqrt{x}''',
+    'indent_output': False,
+    'out': r'''<div class="math centered-equation">\(\sqrt{x}\)</div>''',
+    'part': 'body',
+}
+
 
 raw_html = {
     'rst': '''some text

@@ -755,14 +755,19 @@ class HTML5Translator(nodes.NodeVisitor):
         Only MathJax support
         '''
         math_code = node.astext()
-        math_env = pick_math_environment(math_code)
-        if 'align' in math_env:
-            template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code, math_env)
-            elem = tag.div(template)
-        else:  # equation
+        if isinstance(node, nodes.math):
             template = '\(%s\)' % math_code
             elem = tag.span(template)
-        elem(class_='math')
+        else:
+            math_env = pick_math_environment(math_code)
+            if 'align' in math_env:
+                template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code, math_env)
+            else:  # equation
+                template = '\(%s\)' % math_code
+            elem = tag.div(template)
+        node['classes'].insert(0, 'math')
+        waste, waste_, attr = self.parse(node)
+        elem(**attr)
         self.context.append(elem)
         if not getattr(self, 'already_has_math_script', None):
             src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
