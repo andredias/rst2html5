@@ -956,5 +956,6 @@ def main():
                   'reStructuredText sources.' + default_description
     publish_cmdline(writer=HTML5Writer(), description=description)
 
+
 if __name__ == '__main__':
     main()

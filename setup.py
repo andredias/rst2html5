@@ -13,6 +13,7 @@ def read(*names, **kwargs):
         encoding=kwargs.get("encoding", "utf8")
     ).read()
 
+
 setup(
     name='rst2html5',
     version='1.9.3',
