@@ -756,14 +756,14 @@ class HTML5Translator(nodes.NodeVisitor):
         '''
         math_code = node.astext()
         if isinstance(node, nodes.math):
-            template = '\(%s\)' % math_code
+            template = r'\(%s\)' % math_code
             elem = tag.span(template)
         else:
             math_env = pick_math_environment(math_code)
             if 'align' in math_env:
                 template = '\\begin{%s}\n%s\n\\end{%s}' % (math_env, math_code, math_env)
             else:  # equation
-                template = '\(%s\)' % math_code
+                template = r'\(%s\)' % math_code
             elem = tag.div(template)
         node['classes'].insert(0, 'math')
         waste, waste_, attr = self.parse(node)
