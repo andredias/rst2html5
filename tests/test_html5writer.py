@@ -63,9 +63,9 @@ def check_part(test_name, case):
     result, error = rst_to_html5_part(case)
     result_ = result
     expected = case['out']
-    if case['part'] in ('header', 'body', 'whole'):
-        result = BeautifulSoup(result, 'html.parser').decode()
-        expected = BeautifulSoup(expected, 'html.parser').decode()
+    if case['part'] in ('head', 'body', 'whole'):
+        result = BeautifulSoup(result, 'html.parser').find_all()
+        expected = BeautifulSoup(expected, 'html.parser').find_all()
     if result != expected:
         filename = os.path.join(tmpdir, test_name)
         with open(filename + '.rst', encoding='utf-8', mode='w') as f:
