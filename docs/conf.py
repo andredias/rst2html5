@@ -42,7 +42,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'rst2hml5'
-copyright = u'2017, André Felipe Dias'
+copyright = u'2018, André Felipe Dias'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -92,9 +92,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-html_theme = 'default' if on_rtd else 'nature'
+html_theme = 'sphinx_rtd_theme'
 
 
 # Theme options are theme-specific and customize the look and feel of a theme

@@ -2,9 +2,14 @@
 rst2html5 Design Notes
 ======================
 
-The following documentation describes the knowledge collected durint rst2html5 implementation.
+The following documentation describes the knowledge collected during **rst2html5** implementation.
 Probably, it isn't complete or even exact,
 but it might be helpful to other people who want to create another rst converter.
+
+.. note::
+
+    **rst2html5** had to be renamed to **rst2html5_**
+    due to a conflict with **docutils**' **rst2html5**.
 
 
 Docutils
@@ -37,11 +42,11 @@ Doctree
 -------
 
 The doctree_ is a hierarchical structure of the elements of a rst document.
-It is defined at :mod:`docutils.nodes` and is used internally by Docutils components.
+It is defined at **docutils.nodes** and is used internally by Docutils components.
 
-The command ``rst2pseudoxml.py`` produces a textual representation of a doctree
+The command :command:`rst2pseudoxml.py` produces a textual representation of a doctree
 that is very useful to visualize the nesting of the elements of a rst document.
-This information was of great help to both :mod:`rst2html5` design and tests.
+This information was of great help for both **rst2html5** design and tests.
 
 Given the following rst snippet:
 
@@ -52,7 +57,7 @@ Given the following rst snippet:
 
     Text and more text
 
-The textual representation produced by ``rst2pseudoxml`` is:
+The textual representation produced by :command:`rst2pseudoxml.py` is:
 
 .. code-block:: xml
 
@@ -63,19 +68,19 @@ The textual representation produced by ``rst2pseudoxml`` is:
             Text and more text
 
 
-Translator, Writer e NodeVisitor
---------------------------------
+Translator, Writer and NodeVisitor
+----------------------------------
 
 A translator is comprised of two parts: a |Writer| and a |NodeVisitor|.
 The |Writer| is responsible to prepare
 and to coordinate the translation made by the |NodeVisitor|.
-The |NodeVisitor| is used when visiting each doctree node and
+The |NodeVisitor| is used for visiting each doctree node and
 it performs all actions needed to translate the node to the desired format
 according to its type and content.
 
 .. important::
 
-    To develop a new docutils translator, one needs to specialize these two classes.
+    To develop a new docutils translator, you need to specialize these two classes.
 
 .. note::
 
@@ -140,27 +145,28 @@ The former is called early in the node visitation.
 Then, all children nodes :func:`~docutils.nodes.Node.walkabout` are visited and
 lastly the latter dispatch method is called.
 Each dispatch method calls another method whose name follows the pattern
-``visit_NODE_TYPE`` or ``depart_NODE_TYPE``
-such as ``visit_paragraph`` or ``depart_title``,
+*visit_NODE_TYPE* or *depart_NODE_TYPE*
+such as *visit_paragraph* or *depart_title*,
 that should be implemented by the |NodeVisitor| subclass object.
+
 
 
 rst2html5
 =========
 
-In :mod:`rst2html5`,
+In :mod:`rst2html5_`,
 |Writer| and |NodeVisitor| are specialized through
-:class:`~rst2html5.HTML5Writer` and :class:`~rst2html5.HTML5Translator` classes.
+:class:`~rst2html5_.HTML5Writer` and :class:`~rst2html5_.HTML5Translator` classes.
 
-:class:`rst2html5.HTML5Translator` is a |NodeVisitor| subclass
-that implements all ``visit_NODE_TYPE`` and ``depart_NODE_TYPE`` methods
+:class:`rst2html5_.HTML5Translator` is a |NodeVisitor| subclass
+that implements all *visit_NODE_TYPE* and *depart_NODE_TYPE* methods
 needed to translate a doctree to its HTML5 content.
-The :class:`rst2html5.HTML5Translator` uses
-an object of the:class:`~rst2html5.ElemStack` helper class that controls a context stack
+The :class:`rst2html5_.HTML5Translator` uses
+an object of the :class:`~rst2html5_.ElemStack` helper class that controls a context stack
 to handle indentation and the nesting of the doctree traversal::
 
 
-                        rst2html5
+                        rst2html5_
                 +-----------------------+
                 |    +-------------+    |
      doctree ---|--->| HTML5Writer |----|-->  HTML5
@@ -177,31 +183,28 @@ to handle indentation and the nesting of the doctree traversal::
                 |     +-----------+     |
                 +-----------------------+
 
-The standard ``visit_NODE_TYPE`` action is initiate a new node context:
+The standard *visit_NODE_TYPE* action initiates a new node context:
 
-.. literalinclude:: ../src/rst2html5.py
+.. literalinclude:: ../src/rst2html5_.py
     :pyobject: HTML5Translator.default_visit
-    :linenos:
-    :emphasize-lines: 15
+    :emphasize-lines: 12
 
-The standard ``depart_NODE_TYPE`` action is to create the HTML5 element
+The standard *depart_NODE_TYPE* action creates the HTML5 element
 according to the saved context:
 
-.. literalinclude:: ../src/rst2html5.py
+.. literalinclude:: ../src/rst2html5_.py
     :pyobject: HTML5Translator.default_departure
-    :linenos:
     :emphasize-lines: 6-8
 
 Not all rst elements follow this procedure.
-The ``Text`` element, for example, is a leaf-node and thus doesn't need a specific context.
-Other elements have a common processing and can share the same ``visit_`` and/or ``depart_`` method.
+The *Text* element, for example, is a leaf-node and thus doesn't need a specific context.
+Other elements have a common processing and can share the same *visit_* and/or *depart_* method.
 To take advantage of theses similarities,
-the ``rst_terms`` dict maps a node type to a ``visit_`` and ``depart_`` methods:
+the *rst_terms* dict maps a node type to a *visit_* and *depart_* methods:
 
-.. literalinclude:: ../src/rst2html5.py
-    :language: python
-    :linenos:
-    :lines: 207-326
+.. literalinclude:: ../src/rst2html5_.py
+    :pyobject: HTML5Translator
+    :lines: 3-108
 
 
 HTML5 Tag Construction
@@ -209,16 +212,13 @@ HTML5 Tag Construction
 
 HTML5 Tags are constructed by the :class:`genshi.builder.tag` object.
 
-.. topic:: Genshi Builder
-
-    .. automodule:: genshi.builder
 
 
 ElemStack
 ---------
 
 For the previous doctree example,
-the sequence of ``visit_...`` and ``depart_...`` calls is::
+the sequence of *visit_...* and *depart_...* calls is this::
 
     1. visit_document
         2. visit_title
@@ -240,14 +240,14 @@ the behavior of a ElemStack context object is:
     context = []
 
 
-1. **visit_document**. A new context for ``document`` is reserved::
+1. **visit_document**. A new context for *document* is reserved::
 
     context = [ [] ]
                  \
                   document
                   context
 
-2. **visit_title**. A new context for ``title`` is pushed into the context stack::
+2. **visit_title**. A new context for *title* is pushed into the context stack::
 
                     title
                     context
@@ -258,7 +258,7 @@ the behavior of a ElemStack context object is:
                   context
 
 
-3. **visit_Text**. A ``Text`` node doesn't need a new context because it is a leaf-node.
+3. **visit_Text**. A *Text* node doesn't need a new context because it is a leaf-node.
 Its text is simply added to the context of its parent node::
 
                       title
@@ -272,8 +272,8 @@ Its text is simply added to the context of its parent node::
 4. **depart_Text**. No action performed. The context stack remains the same.
 
 5. **depart_title**. This is the end of the title processing.
-   The title context is popped from the context stack to form an ``h1`` tag
-   that is then inserted into the context of the title parent node (``document context``)::
+   The title context is popped from the context stack to form an *h1* tag
+   that is then inserted into the context of the title parent node (*document context*)::
 
     context = [ [tag.h1('Title')] ]
                  \
@@ -322,27 +322,27 @@ Its text is simply added to the context of its parent node::
 rst2html5 Tests
 ===============
 
-The tests executed in :mod:`rst2html5.tests.test_html5writer` are bases on generators
-(veja http://nose.readthedocs.org/en/latest/writing_tests.html#test-generators).
-The test cases are in :file:`tests/cases.py`.
-Each test case is a dictionary whose main keys are:
+The tests executed in :mod:`rst2html5_.tests.test_html5writer` are bases on `generators
+<http://nose.readthedocs.org/en/latest/writing_tests.html#test-generators>`_.
+The test cases are located at :file:`tests/cases.py` and
+each test case is a dictionary whose main keys are:
 
 :rst: text snippet in rst format
 :out: expected output
-:part: specifies which part of ``rst2html5`` output will be compared to ``out``.
-       Possible values are ``head``,  ``body`` or ``whole``.
+:part: specifies which part of **rst2html5_** output will be compared to **out**.
+       Possible values are **head**,  **body** or **whole**.
 
-All other keys are ``rst2html5`` configuration settings such as
-``indent_output``, ``script``, ``script-defer``, ``html-tag-attr`` or ``stylesheet``.
+Other possible keys are **rst2html5_** configuration settings such as
+*indent_output*, *script*, *script-defer*, *html-tag-attr* or *stylesheet*.
 
-When test fails,
-three auxiliary files are saved on the temporary directory (:file:`/tmp`):
+When a test fails,
+three auxiliary files are created on the temporary directory (:file:`/tmp`):
 
-#. :file:`TEST_CASE.rst` com o trecho de texto rst do caso de teste;
-#. :file:`TEST_CASE.result` com resultado produzido pelo ``rst2html5`` e
-#. :file:`TEST_CASE.expected` com o resultado esperado pelo caso de teste.
+#. :file:`TEST_CASE_NAME.rst`  contains the rst snippet of the test case.;
+#. :file:`TEST_CASE_NAME.result` contais the result produced by **rst2html5_** and
+#. :file:`TEST_CASE_NAME.expected` contains the expected result.
 
-Their differences can be easily visualized::
+Their differences can be easily visualized by a diff tool::
 
-    $ kdiff3 /tmp/TEST_CASE.result /tmp/TEST_CASE.expected
+    $ kdiff3 /tmp/TEST_CASE_NAME.result /tmp/TEST_CASE_NAME.expected
 

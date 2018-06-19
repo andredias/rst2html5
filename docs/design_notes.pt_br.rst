@@ -7,6 +7,11 @@ Certamente não está completo e talvez nem esteja exato,
 mas pode ser de grande utilidade para outras pessoas
 que desejem criar um novo tradutor de rst para algum outro formato.
 
+.. note::
+
+    O módulo ``rst2html5`` teve de ser renomeado para ``rst2html5_``
+    devido a um conflito com o módulo de mesmo nome do ``docutils``.
+
 
 Docutils
 ========
@@ -43,7 +48,7 @@ Está definida no módulo :mod:`docutils.nodes`.
 
 O comando/aplicativo ``rst2pseudoxml.py`` gera uma representação textual da *doctree*
 que é muito útil para visualizar o aninhamento dos elementos de um documento rst.
-Essa informação foi de grande ajuda tanto para o *design* quanto para os testes do :mod:`rst2html5`.
+Essa informação foi de grande ajuda tanto para o *design* quanto para os testes do :mod:`rst2html5_`.
 
 Dado o trecho de texto rst abaixo:
 
@@ -74,9 +79,6 @@ O |NodeVisitor| é responsável por visitar cada nó da doctree e
 executar a ação necessária de tradução para o formato desejado
 de acordo com o tipo e conteúdo do nó.
 
-.. note::
-
-    A classe |NodeVisitor| corresponde à superclasse abstrata do padrão de projeto "Visitor" [GoF95]_.
 
 .. note::
 
@@ -182,12 +184,12 @@ a sequência de chamadas ``visit_...`` e ``depart_...`` seria::
 rst2html5
 =========
 
-O módulo :mod:`rst2html5` segue as recomendações originais e especializa as classes |Writer| e |NodeVisitor| através das classes
-:class:`~rst2html5.HTML5Writer` e :class:`~rst2html5.HTML5Translator`.
-:class:`rst2html5.HTML5Translator` é a subclasse de |NodeVisitor|
+O módulo :mod:`rst2html5_` segue as recomendações originais e especializa as classes |Writer| e |NodeVisitor| através das classes
+:class:`~rst2html5_.HTML5Writer` e :class:`~rst2html5_.HTML5Translator`.
+:class:`rst2html5_.HTML5Translator` é a subclasse de |NodeVisitor|
 criada para implementar todos os métodos ``visit_TIPO_NÓ`` e ``depart_TIPO_NÓ``
 necessários para traduzir uma doctree em seu correspondente HTML5.
-Isto é feito com ajuda de um outro objeto da classe auxiliar :class:`~rst2html5.ElemStack`
+Isto é feito com ajuda de um outro objeto da classe auxiliar :class:`~rst2html5_.ElemStack`
 que controla uma pilha de contextos para lidar com o aninhamento da visitação dos nós
 da doctree e com a endentação::
 
@@ -213,15 +215,15 @@ da doctree e com a endentação::
 A ação padrão de um método ``visit_TIPO_NÓ``
 é iniciar um novo contexto para o nó sendo tratado:
 
-.. literalinclude:: ../src/rst2html5.py
+.. literalinclude:: ../src/rst2html5_.py
     :pyobject: HTML5Translator.default_visit
     :linenos:
-    :emphasize-lines: 15
+    :emphasize-lines: 12
 
 A ação padrão no ``depart_TIPO_NÓ``
 é criar o elemento HTML5 de acordo com o contexto salvo:
 
-.. literalinclude:: ../src/rst2html5.py
+.. literalinclude:: ../src/rst2html5_.py
     :pyobject: HTML5Translator.default_departure
     :linenos:
     :emphasize-lines: 6-8
@@ -237,7 +239,7 @@ e podem compartilhar o mesmo método ``visit_`` e/ou ``depart_``.
 Para aproveitar essas similaridades,
 é feito um mapeamento entre o nó rst e os métodos correspondentes pelo dicionário ``rst_terms``:
 
-.. literalinclude:: ../src/rst2html5.py
+.. literalinclude:: ../src/rst2html5_.py
     :language: python
     :linenos:
     :lines: 207-326
@@ -260,7 +262,7 @@ ElemStack
 
 Como a travessia da *doctree* não é feita por recursão,
 é necessária uma estrutura auxiliar de pilha para armazenar os contextos prévios.
-A classe auxiliar :class:`~rst2html5.ElemStack` é uma pilha que registra os contextos
+A classe auxiliar :class:`~rst2html5_.ElemStack` é uma pilha que registra os contextos
 e controla o nível de endentação.
 
 O comportamento do objeto ElemStack é ilustrado a seguir,
@@ -374,24 +376,24 @@ As chamadas ``visit_...`` e ``depart_...`` acontecerão na seguinte ordem::
 Testes
 ======
 
-Os testes executados no módulo :mod:`rst2html5.tests.test_html5writer` são baseados em geradores
+Os testes executados no módulo :mod:`rst2html5_.tests.test_html5writer` são baseados em geradores
 (veja http://nose.readthedocs.org/en/latest/writing_tests.html#test-generators).
 Os casos de teste são registrados no arquivo :file:`tests/cases.py`.
 Cada caso de teste fica registrado em uma variável do tipo dicionário cujas entradas principais são:
 
 :rst: Trecho de texto rst a ser transformado
 :out: Saída esperada
-:part: A qual parte da saída produzida pelo ``rst2html5`` será usada na comparação com ``out``.
+:part: A qual parte da saída produzida pelo ``rst2html5_`` será usada na comparação com ``out``.
        As partes possíveis são: ``head``,  ``body`` e ``whole``.
 
-Todas as demais entradas são consideradas opções de configuração do ``rst2html5``.
+Todas as demais entradas são consideradas opções de configuração do ``rst2html5_``.
 Exemplos: ``indent_output``, ``script``, ``script-defer``, ``html-tag-attr`` e ``stylesheet``.
 
 Em caso de falha no teste,
 três arquivos auxiliares são gravados no diretório temporário (:file:`/tmp` no Linux):
 
 #. :file:`NOME_CASO_TESTE.rst` com o trecho de texto rst do caso de teste;
-#. :file:`NOME_CASO_TESTE.result` com resultado produzido pelo ``rst2html5`` e
+#. :file:`NOME_CASO_TESTE.result` com resultado produzido pelo ``rst2html5_`` e
 #. :file:`NOME_CASO_TESTE.expected` com o resultado esperado pelo caso de teste.
 
 Em que ``NOME_CASO_TESTE`` é o nome da variável que contém o dicionário do caso de teste.
