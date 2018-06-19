@@ -14,14 +14,14 @@ indentation = {
 
 title = {
     'rst': 'Title\n=====',
-    'out': '<h1>Title</h1>',
+    'out': '<section id="title"><h1>Title</h1></section>',
     'indent_output': False,
     'part': 'body',
 }
 
-title_with_initial_header = {
+title_with_initial_header_level = {
     'rst': 'Title\n=====\n\nhello\n-------',
-    'out': '<h2>Title</h2><h3>hello</h3>',
+    'out': '<section id="title"><h2>Title</h2><h3>hello</h3></section>',
     'indent_output': False,
     'part': 'body',
     'initial_header_level': 2
@@ -48,7 +48,7 @@ AbCdE fGhIjK
 title_accented_chars = {
     'rst': 'Título com Acentuação\n'
            '=====================',
-    'out': '<h1>Título com Acentuação</h1>',
+    'out': '<section id="titulo-com-acentuacao"><h1>Título com Acentuação</h1></section>',
     'indent_output': False,
     'part': 'body',
 }
@@ -73,6 +73,7 @@ Level 3
 
 link to `section 2`_''',
     'out': '''
+<section id="level-1">
     <h1>Level 1</h1>
     <p>some text. Link to <a href="#level-3">Level 3</a></p>
     <a id="section-2"></a>
@@ -84,6 +85,7 @@ link to `section 2`_''',
             <p>link to <a href="#section-2">section 2</a></p>
         </section>
     </section>
+</section>
 ''',
     'part': 'body',
 }
@@ -142,9 +144,11 @@ Section Title
 =============
 
 ...''',
-    'out': '<h1>Document Title</h1><h2>Subtitle</h2>'
+    'out': '<section id="document-title">'
+           '<h1>Document Title</h1><h2>Subtitle</h2>'
            '<section id="section-title"><h1>Section Title</h1>'
-           '<p>...</p></section>',
+           '<p>...</p></section>'
+           '</section',
     'indent_output': False,
     'part': 'body',
 }
@@ -536,6 +540,26 @@ The hyperlink target above points to this paragraph.''',
     'part': 'body'
 }
 
+internal_link_2 = {
+    'rst': '''.. _outer_target:
+.. _inner_target:
+
+Title 1
+=======
+
+The targets outer_target_ and inner_target_ point both to Title 1.''',
+    'out': '''
+    <a id="inner-target"></a>
+    <a id="outer-target"></a>
+    <section id="title-1">
+        <h1>Title 1</h1>
+        <p>The targets <a href="#outer-target">outer_target</a> and \
+<a href="#inner-target">inner_target</a> point both to Title 1.</p>
+    </section>
+''',
+    'part': 'body'
+}
+
 chained_internal_links_1 = {
     'rst': '''Links to outer_target_ and inner_target_.
 
@@ -552,7 +576,6 @@ they both point to this paragraph.</p>
 ''',
     'part': 'body'
 }
-
 
 chained_internal_links_2 = {
     'rst': '''Links to outer_target_ and inner_target_.
@@ -1065,6 +1088,7 @@ more text
 Another Subtitle
 ----------------''',
     'out': '''
+<section id="title-1">
     <h1>Title 1</h1>
     <p>text</p>
     <section id="subtitle">
@@ -1079,6 +1103,7 @@ and are interpreted as body elements.</p>
     <section id="another-subtitle">
         <h2>Another Subtitle</h2>
     </section>
+</section>
 ''',
     'part': 'body',
 }
@@ -1118,6 +1143,7 @@ admonitions = {
 
    .. _Docutils: http://docutils.sourceforge.net/''',
     'out': '''
+<section id="admonitions">
     <h1>Admonitions</h1>
     <aside class="attention">Directives at large.</aside>
     <aside class="caution">Don't take any wooden nickels.</aside>
@@ -1140,6 +1166,7 @@ Reader discretion is strongly advised.</aside>
         <h1>And, by the way...</h1>
         <p>You can make up your own admonition too.</p>
     </aside>
+</section>
 ''',
     'part': 'body',
 }
@@ -1169,6 +1196,7 @@ more text
 Another Subtitle
 ----------------''',
     'out': '''
+<section id="title">
     <h1>Title</h1>
     <p>text</p>
     <section id="subtitle">
@@ -1186,6 +1214,7 @@ Another Subtitle
     <section id="another-subtitle">
         <h2>Another Subtitle</h2>
     </section>
+</section>
 ''',
     'part': 'body',
 }
@@ -1215,6 +1244,7 @@ Another Subtitle
 ----------------
 ''',
     'out': '''
+<section id="title">
     <h1>Title</h1>
     <p>text</p>
     <section id="subtitle">
@@ -1233,6 +1263,7 @@ Another Subtitle
     <section id="another-subtitle">
         <h2>Another Subtitle</h2>
     </section>
+</section>
 ''',
     'part': 'body',
 }
@@ -1337,11 +1368,13 @@ more text
 
 .. footer:: this is a footer''',
     'out': '''
+<section id="title">
     <h1>Title</h1>
     <header>this is a header</header>
     <p>some text</p>
     <p>more text</p>
     <footer>this is a footer</footer>
+</section>
 ''',
     'indent_output': True,
     'part': 'body',
@@ -2418,8 +2451,10 @@ ifdef_include = {
     .. include:: include_file.rst
 ''',
     'out': '''
+<section id="hello-world">
     <h1>Hello, world!</h1>
     <p>Nothing else to say</p>
+</section>
 ''',
     'part': 'body',
 }

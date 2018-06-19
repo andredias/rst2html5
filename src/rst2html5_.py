@@ -54,6 +54,78 @@ class FooterToBottom(Transform):
                 break
 
 
+class WrapTopTitle(Transform):
+    '''
+    If the top element of a document is a title,
+    wrap all the document's children within a section.
+
+    For example:
+
+    .. code:: rst
+
+        .. _outer_target:
+        .. _inner_target:
+
+        Title 1
+        =======
+
+        The targets outer_target_ and inner_target_ point both to Title 1
+
+    The previous snippet should be transformed from:
+
+    .. code:: xml
+
+        <document ids="title-1 inner-target outer-target" \
+        names="title\ 1 inner_target outer_target" source="internal_link_2.rst" \
+        title="Title 1">
+        <title>
+            Title 1
+        <target refid="outer-target">
+        <target refid="inner-target">
+        <paragraph>
+            The targets
+            <reference name="outer_target" refid="outer-target">
+                outer_target
+             and
+            <reference name="inner_target" refid="inner-target">
+                inner_target
+             point both to Title 1
+
+    into:
+
+    .. code:: xml
+
+        <document source="internal_link_2.rst">
+        <section ids="title-1 inner-target outer-target" names="title\ 1 inner_target outer_target">
+            <title>
+                Title 1
+            <paragraph>
+                The targets
+                <reference name="outer_target" refid="outer-target">
+                    outer_target
+                 and
+                <reference name="inner_target" refid="inner-target">
+                    inner_target
+                 point both to Title 1
+    '''
+
+    default_priority = 850
+
+    def apply(self):
+        if 'title' not in self.document:
+            return
+        section = nodes.section()
+        section['ids'] = self.document['ids']
+        section['names'] = self.document['names']
+        del self.document['ids']
+        del self.document['names']
+        for child in self.document.children:
+            if not(isinstance(child, nodes.target) and child['refid'] in section['ids']):
+                section.children.append(child)
+        self.document.children = [section]
+        return
+
+
 def _script_callback_option_parser(option, opt_str, value, parser):
     '''
     Store a script's URL or path along to its attribute 'defer', 'async' or None
@@ -169,7 +241,7 @@ class HTML5Writer(writers.Writer):
         return
 
     def get_transforms(self):
-        return writers.Writer.get_transforms(self) + [FooterToBottom]
+        return writers.Writer.get_transforms(self) + [FooterToBottom, WrapTopTitle]
 
 
 class ElemStack(object):
@@ -379,6 +451,8 @@ class HTML5Translator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.heading_level = int(getattr(self.document.settings, 'initial_header_level', 0))
+        if self.heading_level > 0:
+            self.heading_level -= 1
         self.context = ElemStack(document.settings)
         self.docinfo = OrderedDict()
         self._parse_params()
@@ -493,8 +567,8 @@ class HTML5Translator(nodes.NodeVisitor):
         Initiate a new context to store inner HTML5 elements.
         '''
         if 'ids' in node and self.once_attr('expand_id_to_anchor', default=True):
-            # create an anchor <a id=id></a> for each id found before the
-            # current element.
+            # create an anchor <a id=id></a> on top of the current element
+            # for each id found.
             for id in node['ids'][1:]:
                 self.context.begin_elem()
                 self.context.commit_elem(tag.a(id=id))
@@ -781,7 +855,6 @@ class HTML5Translator(nodes.NodeVisitor):
             self.title = node['title']
         else:
             self.title = ''
-        self.expand_id_to_anchor = False
         self.default_visit(node)
 
     def depart_document(self, node):
