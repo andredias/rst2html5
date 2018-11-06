@@ -4,6 +4,10 @@ Changelog
 
 Here you can see the full list of changes between each rst2html5 releases.
 
+* 1.9.5 - 2018-10-06
+
+    * Fix version exhibition
+
 * 1.9.4 - 2018-06-19
 
     * Documentation update

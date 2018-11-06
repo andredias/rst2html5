@@ -1990,7 +1990,8 @@ problematic = {
 
 .. [#] footnote''',
     'out': '''
-    <p><a id="id4" href="#id3" class="problematic">[2]_</a></p>
+
+    <p><a id="id1" class="problematic" href="#id3">[2]_</a></p>
     <table id="id2" class="footnote">
         <tbody>
             <tr>
@@ -2002,7 +2003,7 @@ problematic = {
     <section class="system-messages">
         <h1>Docutils System Messages</h1>
         <div id="id3">
-            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id4">id4</a></h1>
+            <h1>System Message: ERROR/3 (&lt;string&gt; line 1) <a href="#id1">id1</a></h1>
             <p>Unknown target name: "2".</p>
         </div>
     </section>

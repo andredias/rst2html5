@@ -1,35 +1,32 @@
 # -*- encoding: utf-8 -*-
-import io
-import re
-from os.path import dirname
-from os.path import join
+from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
 
 
-def read(*names, **kwargs):
-    return io.open(
-        join(dirname(__file__), *names),
-        encoding=kwargs.get("encoding", "utf8")
-    ).read()
+basedir = Path(__file__).parent
+with (basedir / 'README.rst').open(encoding='utf-8') as f:
+    readme = f.read()
+with (basedir / 'CHANGELOG.rst').open(encoding='utf-8') as f:
+    changelog = f.read()
+long_description = '\n'.join([readme, changelog])
 
 
 setup(
     name='rst2html5',
-    version='1.9.4',
+    version='1.9.5',
     license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
     url='https://bitbucket.org/andre_felipe_dias/rst2html5',
     keywords=["restructuredtext", "rst", "html5", "doctutils"],
     description='Generates (X)HTML5 documents from standalone reStructuredText sources',
-    long_description="%s\n%s" % (read("README.rst"),
-                                 re.sub(":obj:`~?(.*?)`", r"``\1``", read("CHANGELOG.rst"))),
+    long_description=long_description,
     platforms='any',
     install_requires=[
-        'docutils>=0.12',
-        'Genshi>=0.7',
-        'Pygments>=2.0.2',
+        'docutils==0.14',
+        'genshi==0.7',
+        'pygments==2.0.2',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',

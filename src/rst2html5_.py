@@ -5,8 +5,10 @@ from __future__ import unicode_literals
 
 import re
 import sys
+import docutils
 from collections import OrderedDict
 from docutils import nodes, writers
+from docutils.frontend import OptionParser
 from docutils.transforms import Transform
 from genshi.builder import tag
 from genshi.core import Markup
@@ -16,7 +18,14 @@ from modules import register_directives
 register_directives()
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.9.4'
+__version__ = '1.9.5'
+
+# monkeypatch OptionParser to set 'version'
+OptionParser.version_template = '%%prog %s (Docutils %s%s, Python %s, on %s)' % (
+    __version__, docutils.__version__,
+    docutils.__version_details__ and ' [%s]' % docutils.__version_details__ or '',
+    sys.version.split()[0], sys.platform
+)
 
 try:
     # docutils >= 0.10
