@@ -2,7 +2,9 @@
 Changelog
 =========
 
-Here you can see the full list of changes between each rst2html5 releases.
+* 1.10 - 2018-11-29
+
+    * Support --stylesheet-inline
 
 * 1.9.5 - 2018-10-06
 
