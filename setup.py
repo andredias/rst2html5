@@ -24,8 +24,8 @@ setup(
     long_description=long_description,
     platforms='any',
     install_requires=[
-        'docutils==0.14',
-        'genshi==0.7',
+        'docutils>=0.14',
+        'genshi>=0.7',
         'pygments==2.0.2',
     ],
     classifiers=[
