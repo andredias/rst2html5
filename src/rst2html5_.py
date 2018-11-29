@@ -165,6 +165,11 @@ class HTML5Writer(writers.Writer):
                 ['--stylesheet'],
                 {'metavar': '<URL or path>', 'default': None,
                     'action': 'append', }),
+            ('Specify a stylesheet file whose contents will be included into the output HTML file. '
+                '(This option can be used multiple times)',
+                ['--stylesheet-inline'],
+                {'metavar': '<path>', 'default': None,
+                    'action': 'append', }),
             ('Specify a script URL to be included in the output HTML file. '
                 '(This option can be used multiple times)',
                 ['--script'],
@@ -474,6 +479,12 @@ class HTML5Translator(nodes.NodeVisitor):
         stylesheets = self.document.settings.stylesheet or []
         for href in stylesheets:
             self.stylesheets.append(tag.link(rel='stylesheet', href=href))
+        stylesheets_inline = []
+        for path in (self.document.settings.stylesheet_inline or []):
+            with open(path) as f:
+                stylesheets_inline.append(f.read())
+        if stylesheets_inline:
+            self.stylesheets.append(tag.style(''.join(stylesheets_inline)))
         self.scripts = []
         scripts = self.document.settings.script or []
         for src, attributes in scripts:

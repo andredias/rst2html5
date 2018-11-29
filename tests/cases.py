@@ -5,6 +5,7 @@
 # case = {'rst': rst_text, 'out': expected_output, ...}
 
 from __future__ import unicode_literals
+from os.path import join, dirname
 
 indentation = {
     'rst': 'Paragraph',
@@ -2063,6 +2064,23 @@ stylesheet_2 = {
     <link href="https://pronus.io/css/standard.css" rel="stylesheet" />
 ''',
     'part': 'head',
+}
+
+stylesheet_inline = {
+    'rst': 'ordinary paragraph',
+    'out': '''
+    <meta charset="utf-8" />
+    <link href="http://test.com/css/default.css" rel="stylesheet" />
+    <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
+    <style>h1 {font-size: 20em}
+h2 {color: red}
+</style>
+''',
+    'part': 'head',
+    'stylesheet': ['http://test.com/css/default.css',
+                   'http://www.pronus.eng.br/css/standard.css'],
+    'stylesheet_inline': [join(dirname(__file__), 'stylesheet1.css'),
+                          join(dirname(__file__), 'stylesheet2.css')],
 }
 
 javascript = {

@@ -35,3 +35,4 @@ pip-log.txt
 nosetests.xml
 htmlcov
 .vscode
+*.rej
