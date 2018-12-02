@@ -149,7 +149,7 @@ Section Title
            '<h1>Document Title</h1><h2>Subtitle</h2>'
            '<section id="section-title"><h1>Section Title</h1>'
            '<p>...</p></section>'
-           '</section',
+           '</section>',
     'indent_output': False,
     'part': 'body',
 }
@@ -706,8 +706,10 @@ Is it okay to use :htmlcode:`<input type="tel"/>` now?
 Yes, any unsupported type will revert to the ``type=text`` format.
 ''',
     'out': '''
-    <p>Is it okay to use <code class="html"><span class="nt">&lt;input</span> <span class="na">type=</span>\
-<span class="s">"tel"</span><span class="nt">/&gt;</span></code> now?</p>
+    <p>Is it okay to use <code class="html"><span class="p">&lt;</span>\
+<span class="nt">input</span> <span class="na">type</span>\
+<span class="o">=</span><span class="s">"tel"</span><span class="p">/&gt;</span>\
+</code> now?</p>
     <p>Yes, any unsupported type will revert to the <code>type=text</code> format.</p>
 ''',
     'part': 'body',
@@ -812,7 +814,7 @@ dir</span><span class="p">\
 (</span><span class="n">module</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> \
 <span class="n">v</span><span class="o">.</span>\
-<span class="n">startswith</span><span class="p">(</span><span class="s">\
+<span class="n">startswith</span><span class="p">(</span><span class="s1">\
 &#39;__&#39;</span><span class="p">)</span> <span class="ow">and</span> \
 <span class="nb">isinstance</span><span class="p">(</span>\
 <span class="nb">getattr</span><span class="p">(</span><span class="n">\
@@ -840,8 +842,8 @@ class_code_block = {
     :class: small
 
     print('Hello, world!')""",
-    'out': '''<pre data-language="python" class="small"><span class="k">print</span>\
-<span class="p">(</span><span class="s">&#39;Hello, world!&#39;</span><span class="p">)</span>\
+    'out': '''<pre class="small" data-language="python"><span class="k">print</span>\
+<span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">)</span>\
 </pre>''',
     'part': 'body',
     'indent_output': False,

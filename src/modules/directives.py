@@ -125,6 +125,10 @@ class CodeBlock(Directive):
                 return [document.reporter.warning(str(err), line=self.lineno)]
 
         output = pygmentize(code, language, **pygmentize_args)
+        # remove empty span included by Pygments
+        # See:
+        # https://bitbucket.org/birkenfeld/pygments-main/issues/1254/empty-at-the-begining-of-the-highlight
+        output = output.replace('<span></span>', '')
         pre = re.findall('<pre.*?>(.*?)\n*</pre>', output, re.DOTALL)
         if len(pre) == 1:
             node += nodes.raw(pre[0], pre[0], format='html')
