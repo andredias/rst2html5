@@ -2,6 +2,11 @@
 Changelog
 =========
 
+* 1.10.1 - 2018-12-2
+
+    * fix: --stylesheet-inline must not escape html characters
+    * Update package dependency to Pygments >= 2.3.0
+
 * 1.10 - 2018-11-29
 
     * Support --stylesheet-inline
