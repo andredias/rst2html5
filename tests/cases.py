@@ -2070,15 +2070,22 @@ stylesheet_inline = {
     'rst': 'ordinary paragraph',
     'out': '''
     <meta charset="utf-8" />
-    <link href="http://test.com/css/default.css" rel="stylesheet" />
-    <link href="http://www.pronus.eng.br/css/standard.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://test.com/css/default.css" />
+    <link rel="stylesheet" href="https://pronus.io/css/standard.css" />
     <style>h1 {font-size: 20em}
+img.icon {
+    width: 48px;
+    height: 48px;
+}
 h2 {color: red}
+table td > * {
+    vertical-align: middle;
+}
 </style>
 ''',
     'part': 'head',
     'stylesheet': ['http://test.com/css/default.css',
-                   'http://www.pronus.eng.br/css/standard.css'],
+                   'https://pronus.io/css/standard.css'],
     'stylesheet_inline': [join(dirname(__file__), 'stylesheet1.css'),
                           join(dirname(__file__), 'stylesheet2.css')],
 }

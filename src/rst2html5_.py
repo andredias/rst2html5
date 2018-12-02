@@ -484,7 +484,7 @@ class HTML5Translator(nodes.NodeVisitor):
             with open(path) as f:
                 stylesheets_inline.append(f.read())
         if stylesheets_inline:
-            self.stylesheets.append(tag.style(''.join(stylesheets_inline)))
+            self.stylesheets.append(tag.style(Markup(''.join(stylesheets_inline))))
         self.scripts = []
         scripts = self.document.settings.script or []
         for src, attributes in scripts:
