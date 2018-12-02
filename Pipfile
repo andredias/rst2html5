@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-docutils = ">=0.13.1"
-Genshi = "==0.7"
+docutils = ">=0.14"
+Genshi = ">=0.7"
 Pygments = "==2.0.2"
 
 [dev-packages]
