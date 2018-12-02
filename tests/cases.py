@@ -1030,7 +1030,7 @@ more text''',
 }
 
 raw_latex = {
-    'rst': '''some text
+    'rst': r'''some text
 
 .. raw:: latex
 

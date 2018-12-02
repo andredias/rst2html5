@@ -64,7 +64,7 @@ class FooterToBottom(Transform):
 
 
 class WrapTopTitle(Transform):
-    '''
+    r'''
     If the top element of a document is a title,
     wrap all the document's children within a section.
 
