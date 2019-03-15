@@ -2092,6 +2092,36 @@ table td > * {
                           join(dirname(__file__), 'stylesheet2.css')],
 }
 
+stylesheet_inline_2 = {
+    'rst': '''ordinary paragraph
+
+.. stylesheet:: http://test.com/css/default.css
+.. stylesheet:: https://pronus.io/css/standard.css
+.. stylesheet:: stylesheet1.css
+    :inline:
+
+.. stylesheet:: stylesheet2.css
+    :inline:
+''',
+    'out': '''
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://test.com/css/default.css" />
+    <link rel="stylesheet" href="https://pronus.io/css/standard.css" />
+    <style>h1 {font-size: 20em}
+img.icon {
+    width: 48px;
+    height: 48px;
+}
+h2 {color: red}
+table td > * {
+    vertical-align: middle;
+}
+</style>
+''',
+    'part': 'head',
+}
+
+
 javascript = {
     'rst': 'ordinary paragraph',
     'out': '''

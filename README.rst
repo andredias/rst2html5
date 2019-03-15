@@ -109,15 +109,17 @@ The html5 produced is clean and tidy:
 Stylesheets and Scripts
 -----------------------
 
-No stylesheets or classes are spread over the html5 by default.
+No stylesheets or scripts are spread over the html5 by default.
 However stylesheets and javascripts URLs or paths can be included through ``stylesheet`` and ``script`` options:
 
 .. parsed-literal::
 
     $ rst2html5 example.rst \\
-    **--stylesheet** css/default.css \\
-    **--stylesheet** css/special.css \\
+    **--stylesheet** https://example.com/css/default.css \\
+    **--stylesheet-inline** css/simple.css \\
     **--script** ``https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js``
+    **--script-defer** ``js/test1.js``
+    **--script-async** ``js/test2.js``
 
 
 .. code-block:: html
@@ -126,30 +128,35 @@ However stylesheets and javascripts URLs or paths can be included through ``styl
     <html>
     <head>
         <meta charset="utf-8" />
-        <link href="css/default.css" rel="stylesheet" />
-        <link href="css/special.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://example.com/css/default.css" />
+        <style>h1 {font-size: 20em}
+    img.icon {
+        width: 48px;
+        height: 48px;
+    }
+    h2 {color: red}
+    </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="js/test1.js" defer="defer"></script>
+        <script src="js/test2.js" async="async"></script>
+    </head>
     ...
 
-Additional scripts can be included in the result
-using options ``--script``, ``--script-defer`` or ``--script-async``:
+Alternatively, you could specify stylesheets and scripts using directives in the rst:
 
-.. parsed-literal::
+.. code:: rst
 
-    $ rst2html5 example.rst \\
-        **--script** js/test1.js \\
-        **--script-defer** js/test2.js \\
-        **--script-async** js/test3.js
+    .. stylesheet:: https://example.com/css/default.css
+    .. stylesheet:: css/simple.css
+        :inline:
+    .. script:: https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
+    .. script:: js/test1.js
+        :defer:
+    .. script:: js/test2.js
+        :async:
 
-.. code-block:: html
-
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8" />
-        <script src="js/test1.js"></script>
-        <script src="js/test2.js" defer="defer"></script>
-        <script src="js/test3.js" async="async"></script>
+    Title
+    =====
     ...
 
 

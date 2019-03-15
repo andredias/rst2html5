@@ -269,11 +269,17 @@ class StyleSheet(Directive):
 
     has_content = False
     required_arguments = 1
+    option_spec = {
+        'inline': directives.unchanged,
+    }
 
     def run(self):
         settings = self.state.document.settings
-        settings.stylesheet = settings.stylesheet or []
-        settings.stylesheet.append(self.arguments[0])
+        if 'inline' not in self.options:
+            stylesheet = settings.stylesheet = settings.stylesheet or []
+        else:
+            stylesheet = settings.stylesheet_inline = settings.stylesheet_inline or []
+        stylesheet.append(self.arguments[0])
         return []
 
 
