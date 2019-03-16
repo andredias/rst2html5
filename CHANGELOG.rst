@@ -2,7 +2,11 @@
 Changelog
 =========
 
-* 1.10.1 - 2018-12-2
+* 1.10.2 - 2019-03-16
+
+    * Add missing 'inline' option for stylesheet directive
+
+* 1.10.1 - 2018-12-02
 
     * fix: --stylesheet-inline must not escape html characters
     * Update package dependency to Pygments >= 2.3.0

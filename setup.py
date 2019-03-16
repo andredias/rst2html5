@@ -14,7 +14,7 @@ long_description = '\n'.join([readme, changelog])
 
 setup(
     name='rst2html5',
-    version='1.10.1',
+    version='1.10.2',
     license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
