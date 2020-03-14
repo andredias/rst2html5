@@ -842,7 +842,7 @@ class_code_block = {
     :class: small
 
     print('Hello, world!')""",
-    'out': '''<pre class="small" data-language="python"><span class="k">print</span>\
+    'out': '''<pre class="small" data-language="python"><span class="nb">print</span>\
 <span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">)</span>\
 </pre>''',
     'part': 'body',
@@ -867,11 +867,11 @@ code_block_indented_first_line = {
 <td class="code"><pre><a name="cecef2ee60f8af4a07ef26740f2d318c-21"></a>        <span class="c1">\
 // walk over the characters in question, looking for mismatches.</span>
 <a name="cecef2ee60f8af4a07ef26740f2d318c-22"></a>        <span class="kt">int</span> \
-<span class="n">j</span> <span class="o">=</span> <span class="n">prefix</span><span class="o">.</span>\
-<span class="na">length</span><span class="o">()</span> <span class="o">+</span> \
-<span class="n">offset</span><span class="o">;</span>
-<a name="cecef2ee60f8af4a07ef26740f2d318c-23"></a>    <span class="o">}</span>
-<a name="cecef2ee60f8af4a07ef26740f2d318c-24"></a><span class="o">}</span></pre></td></tr></table>''',
+<span class="n">j</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">.</span>\
+<span class="na">length</span><span class="p">()</span> <span class="o">+</span> \
+<span class="n">offset</span><span class="p">;</span>
+<a name="cecef2ee60f8af4a07ef26740f2d318c-23"></a>    <span class="p">}</span>
+<a name="cecef2ee60f8af4a07ef26740f2d318c-24"></a><span class="p">}</span></pre></td></tr></table>''',
     'part': 'body',
     'indent_output': False,
 }
