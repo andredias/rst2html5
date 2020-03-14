@@ -18,7 +18,7 @@ from modules import register_directives
 register_directives()
 
 __docformat__ = 'reStructuredText'
-__version__ = '1.10.2'
+__version__ = '1.10.3'
 
 # monkeypatch OptionParser to set 'version'
 OptionParser.version_template = '%%prog %s (Docutils %s%s, Python %s, on %s)' % (

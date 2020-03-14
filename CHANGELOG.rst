@@ -2,6 +2,10 @@
 Changelog
 =========
 
+* 1.10.3 - 2020-03-14
+
+    * Fix KeyError: 'refid'
+
 * 1.10.2 - 2019-03-16
 
     * Add missing 'inline' option for stylesheet directive
