@@ -129,7 +129,7 @@ class WrapTopTitle(Transform):
         del self.document['ids']
         del self.document['names']
         for child in self.document.children:
-            if not(isinstance(child, nodes.target) and child['refid'] in section['ids']):
+            if not(isinstance(child, nodes.target) and child.get('refid') in section['ids']):
                 section.children.append(child)
         self.document.children = [section]
         return

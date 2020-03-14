@@ -2551,3 +2551,21 @@ define_via_params = {
     'part': 'body',
     'identifiers': ['x'],
 }
+
+
+key_error_refid = {
+    'rst': '''
+====
+Test
+====
+
+External hyperlinks, like Python_.
+
+.. _Python: http://www.python.org/
+''',
+    'out': '''<section id="test">
+        <h1>Test</h1>
+        <p>External hyperlinks, like <a href="http://www.python.org/">Python</a>.</p>
+    </section>''',
+    'part': 'body',
+}
