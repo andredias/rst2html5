@@ -2,6 +2,10 @@
 Changelog
 =========
 
+* 1.10.4 - 2020-03-25
+
+    * Fix Pygments dependency
+
 * 1.10.3 - 2020-03-14
 
     * Fix KeyError: 'refid'

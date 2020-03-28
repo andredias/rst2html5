@@ -14,7 +14,7 @@ long_description = '\n'.join([readme, changelog])
 
 setup(
     name='rst2html5',
-    version='1.10.3',
+    version='1.10.4',
     license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
@@ -26,7 +26,7 @@ setup(
     install_requires=[
         'docutils>=0.14',
         'genshi>=0.7',
-        'pygments==2.0.2',
+        'pygments>=2.0.2',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
