@@ -1450,14 +1450,14 @@ the field name marker, and they must line up with each other." name="Indentation
 }
 
 docinfo2 = {
-    'rst': ''':Info: See https://bitbucket.org/andre_felipe_dias/rst2html5
+    'rst': ''':Info: See https://foss.heptapod.net/doc-utils/rst2html5
 :Author: André Felipe Dias <andref.dias@gmail.com>
 :Date: 2012-07-30
 :Revision: 38
 :Description: This is a "docinfo block", or bibliographic field list''',
     'out': '''
     <meta charset="utf-8" />
-    <meta content="See https://bitbucket.org/andre_felipe_dias/rst2html5" name="Info" />
+    <meta content="See https://foss.heptapod.net/doc-utils/rst2html5" name="Info" />
     <meta content="André Felipe Dias &lt;andref.dias@gmail.com&gt;" name="author" />
     <meta content="2012-07-30" name="date" />
     <meta content="38" name="revision" />

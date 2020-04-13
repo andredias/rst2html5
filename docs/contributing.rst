@@ -7,7 +7,7 @@ So don't be afraid to contribute with anything that you think will be helpful.
 Help with maintaining the English documentation are particularly appreciated.
 
 The bugtracker, wiki and Mercurial repository can be found at the
-`rst2html5 projects's page <https://bitbucket.org/andre_felipe_dias/rst2html5>`_ on BitBucket.
+`rst2html5 projects's page <https://foss.heptapod.net/doc-utils/rst2html5>`_ on BitBucket.
 
 
 How to contribute
@@ -123,7 +123,7 @@ When creating a bug issue, try to provide the following information at least:
 
 .. tip::
 
-    See https://bitbucket.org/andre_felipe_dias/rst2html5/issue/1 as a reference.
+    See https://foss.heptapod.net/doc-utils/rst2html5/issue/1 as a reference.
 
 For proposals or enhancements,
 you should provide input and output examples.
@@ -155,7 +155,7 @@ You can reach me at `google plus`_ or twitter_.
 .. _virtualenv: https://virtualenv.pypa.io/en/latest/
 .. _Mercurial: http://mercurial.selenic.com/
 .. _Virtualenvwrapper command reference: http://virtualenvwrapper.readthedocs.org/en/latest/command_ref.html
-.. _rst2html5 project: https://bitbucket.org/andre_felipe_dias/rst2html5
+.. _rst2html5 project: https://foss.heptapod.net/doc-utils/rst2html5
 .. _Sphinx: http://sphinx-doc.org/
 .. _issue tracker: http://www.bitbucket.org/andre_felipe_dias/rst2html5/issues
 .. _twitter: https://twitter.com/andref_dias

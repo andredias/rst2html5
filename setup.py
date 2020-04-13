@@ -14,11 +14,11 @@ long_description = '\n'.join([readme, changelog])
 
 setup(
     name='rst2html5',
-    version='1.10.4',
+    version='1.10.5',
     license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
-    url='https://bitbucket.org/andre_felipe_dias/rst2html5',
+    url='https://foss.heptapod.net/doc-utils/rst2html5',
     keywords=["restructuredtext", "rst", "html5", "doctutils"],
     description='Generates (X)HTML5 documents from standalone reStructuredText sources',
     long_description=long_description,

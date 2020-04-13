@@ -2,6 +2,10 @@
 Changelog
 =========
 
+* 1.10.5 - 2020-04-13
+
+    * rst2html5 is now hosted at https://foss.heptapod.net/doc-utils/rst2html5
+
 * 1.10.4 - 2020-03-25
 
     * Fix Pygments dependency
