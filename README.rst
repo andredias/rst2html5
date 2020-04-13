@@ -292,4 +292,4 @@ Links
 =====
 
 * `Documentation <https://rst2html5.readthedocs.org/>`_
-* `Project page at BitBucket <https://foss.heptapod.net/doc-utils/rst2html5>`_
+* `Project page at Heptapod <https://foss.heptapod.net/doc-utils/rst2html5>`_
