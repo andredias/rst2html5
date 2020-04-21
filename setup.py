@@ -3,7 +3,6 @@ from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
 
-
 basedir = Path(__file__).parent
 with (basedir / 'README.rst').open(encoding='utf-8') as f:
     readme = f.read()
@@ -11,10 +10,9 @@ with (basedir / 'CHANGELOG.rst').open(encoding='utf-8') as f:
     changelog = f.read()
 long_description = '\n'.join([readme, changelog])
 
-
 setup(
     name='rst2html5',
-    version='1.10.5',
+    version='1.10.6',
     license='MIT License',
     author='André Felipe Dias',
     author_email='andref.dias@gmail.com',
