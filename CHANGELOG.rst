@@ -2,9 +2,13 @@
 Changelog
 =========
 
+* 1.10.6 - 2020-04-21
+
+    * Contributing instructions updated.
+
 * 1.10.5 - 2020-04-13
 
-    * rst2html5 is now hosted at https://foss.heptapod.net/doc-utils/rst2html5
+    * rst2html5 is now hosted on Heptapod at https://foss.heptapod.net/doc-utils/rst2html5
 
 * 1.10.4 - 2020-03-25
 
