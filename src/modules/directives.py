@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import re
 from hashlib import md5
+
 from docutils import nodes
 from docutils.parsers.rst import Directive, directives
 from pygments import highlight

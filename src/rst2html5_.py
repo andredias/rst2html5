@@ -1,19 +1,17 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import re
 import sys
-import docutils
 from collections import OrderedDict
+
+import docutils
 from docutils import nodes, writers
 from docutils.frontend import OptionParser
 from docutils.transforms import Transform
+from docutils.utils.math import pick_math_environment
 from genshi.builder import tag
 from genshi.core import Markup
 from genshi.output import XHTMLSerializer
-from modules import register_directives
+
+from .modules import register_directives
 
 register_directives()
 
@@ -26,15 +24,6 @@ OptionParser.version_template = '%%prog %s (Docutils %s%s, Python %s, on %s)' % 
     docutils.__version_details__ and ' [%s]' % docutils.__version_details__ or '',
     sys.version.split()[0], sys.platform
 )
-
-try:
-    # docutils >= 0.10
-    from docutils.utils.math import pick_math_environment
-except ImportError:
-    from docutils.math import pick_math_environment
-
-if sys.version[0] == '3':
-    unicode = str
 
 
 class FooterToBottom(Transform):
@@ -666,12 +655,12 @@ class HTML5Translator(nodes.NodeVisitor):
             if 'href' in attr:
                 # backref to toc entry
                 del attr['href']
-            elem = getattr(tag, 'h' + unicode(self.heading_level))(**attr)
+            elem = getattr(tag, 'h' + str(self.heading_level))(**attr)
         self.context.commit_elem(elem, indent)
 
     def depart_subtitle(self, node):
         # mount the subtitle heading
-        subheading_level = getattr(tag, 'h' + unicode(self.heading_level + 1))
+        subheading_level = getattr(tag, 'h' + str(self.heading_level + 1))
         self.context.commit_elem(subheading_level)
         self.heading_level -= 1
 
@@ -1048,7 +1037,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
 
 def main():
-    from docutils.core import publish_cmdline, default_description
+    from docutils.core import default_description, publish_cmdline
 
     description = 'Generates (X)HTML5 documents from standalone ' \
                   'reStructuredText sources.' + default_description
