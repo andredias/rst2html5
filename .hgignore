@@ -37,3 +37,4 @@ htmlcov
 .vscode
 *.rej
 .venv
+.pytest_cache

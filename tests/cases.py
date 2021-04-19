@@ -1,11 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 # This file contains test data to rst2html5 in the form:
 # case = {'rst': rst_text, 'out': expected_output, ...}
 
-from __future__ import unicode_literals
-from os.path import join, dirname
 
 indentation = {
     'rst': 'Paragraph',
@@ -860,10 +855,10 @@ code_block_indented_first_line = {
         }
     }''',
     'out': '''<table data-language="java"><tr>\
-<td class="linenos"><pre><a href="#cecef2ee60f8af4a07ef26740f2d318c-21">21</a>
-<a href="#cecef2ee60f8af4a07ef26740f2d318c-22">22</a>
-<a href="#cecef2ee60f8af4a07ef26740f2d318c-23">23</a>
-<a href="#cecef2ee60f8af4a07ef26740f2d318c-24">24</a></pre></td>\
+<td class="linenos"><pre><span class="normal"><a href="#cecef2ee60f8af4a07ef26740f2d318c-21">21</a></span>
+<span class="normal"><a href="#cecef2ee60f8af4a07ef26740f2d318c-22">22</a></span>
+<span class="normal"><a href="#cecef2ee60f8af4a07ef26740f2d318c-23">23</a></span>
+<span class="normal"><a href="#cecef2ee60f8af4a07ef26740f2d318c-24">24</a></span></pre></td>\
 <td class="code"><pre><a name="cecef2ee60f8af4a07ef26740f2d318c-21"></a>        <span class="c1">\
 // walk over the characters in question, looking for mismatches.</span>
 <a name="cecef2ee60f8af4a07ef26740f2d318c-22"></a>        <span class="kt">int</span> \
@@ -920,12 +915,12 @@ code_block_name_table = {
     <table id="double-x" data-language="python" class="small">
         <tr>
             <td class="linenos">
-                <pre><a href="#double-x-1">1</a>
-<a href="#double-x-2">2</a>
-<a href="#double-x-3">3</a>
-<a href="#double-x-4">4</a>
-<a href="#double-x-5">5</a>
-<a href="#double-x-6">6</a></pre>
+                <pre><span class="normal"><a href="#double-x-1">1</a></span>
+<span class="normal"><a href="#double-x-2">2</a></span>
+<span class="normal"><a href="#double-x-3">3</a></span>
+<span class="normal"><a href="#double-x-4">4</a></span>
+<span class="normal"><a href="#double-x-5">5</a></span>
+<span class="normal"><a href="#double-x-6">6</a></span></pre>
             </td>
             <td class="code">
                 <pre><a name="double-x-1"></a><span class="k">def</span> \
@@ -2088,8 +2083,7 @@ table td > * {
     'part': 'head',
     'stylesheet': ['http://test.com/css/default.css',
                    'https://pronus.io/css/standard.css'],
-    'stylesheet_inline': [join(dirname(__file__), 'stylesheet1.css'),
-                          join(dirname(__file__), 'stylesheet2.css')],
+    'stylesheet_inline': ['stylesheet1.css', 'stylesheet2.css'],
 }
 
 stylesheet_inline_2 = {

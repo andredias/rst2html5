@@ -1,26 +1,15 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import os
-import unittest
-from functools import partial
 from io import open
 from tempfile import gettempdir
+
+import pytest
 from bs4 import BeautifulSoup
-
 from docutils.core import publish_parts
-from nose.tools import assert_equals
+from src.rst2html5_ import HTML5Writer
 
-from rst2html5_ import HTML5Writer
-try:
-    from io import StringIO
-except ImportError:  # Python 2.x
-    from StringIO import StringIO
+from io import StringIO
 
 tmpdir = gettempdir()
-unittest.TestCase.maxDiff = None
 
 
 def rst_to_html5_part(case):
@@ -39,27 +28,24 @@ def rst_to_html5_part(case):
                          settings_overrides=overrides)[part], error.getvalue()
 
 
-def extract_variables(module):
+def extract_test_cases():
     '''
     Extract variables of a test data module.
     Variables should be a dict().
     For example, {'rst': rst, 'out':out, ...}
     '''
-    return ((v, getattr(module, v)) for v in dir(module)
-            if not v.startswith('__') and isinstance(getattr(module, v), dict))
-
-
-def test():
-    # do not use docstrings
-    # see http://code.google.com/p/python-nose/issues/detail?id=244#c1
     from . import cases
-    for test_name, case in extract_variables(cases):
-        func = partial(check_part)
-        func.description = test_name
-        yield func, test_name, case
+    return ((v, getattr(cases, v)) for v in dir(cases)
+            if not v.startswith('__') and isinstance(getattr(cases, v), dict))
 
 
-def check_part(test_name, case):
+def idn_func(test_case):
+    return test_case[0]
+
+
+@pytest.mark.parametrize('test_case', extract_test_cases(), ids=idn_func)
+def test_rst_case(test_case):
+    test_name, case = test_case
     result, error = rst_to_html5_part(case)
     result_ = result
     expected = case['out']
@@ -74,5 +60,5 @@ def check_part(test_name, case):
             f.write(result_)
         with open(filename + '.expected', encoding='utf-8', mode='w') as f:
             f.write(case['out'])
-    assert_equals(expected, result)  # better diff visualization
-    assert_equals(case.get('error', ''), error)
+    assert expected == result  # better diff visualization
+    assert case.get('error', '') == error
