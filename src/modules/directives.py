@@ -13,6 +13,7 @@ def pygmentize(code, language, **kwargs):
     formatter = HtmlFormatter(**kwargs)
     return highlight(code, lexer, formatter)
 
+
 #
 # The functions below were borrowed from Sphinx to avoid direct dependency to its code
 #
@@ -43,14 +44,14 @@ def parselinenos(spec, total):
 
 
 def set_source_info(directive, node):
-    '''
+    """
     copied from sphinx.util.nodes import set_source_info
-    '''
+    """
     node.source, node.line = directive.state_machine.get_source_and_line(directive.lineno)
 
 
 class CodeBlock(Directive):
-    '''
+    """
     Directive for a code block with special highlighting or line numbering
     settings.
 
@@ -78,7 +79,7 @@ class CodeBlock(Directive):
                 </td>
             </tr>
         </table>
-    '''
+    """
 
     has_content = True
     required_arguments = 1
@@ -143,7 +144,7 @@ class CodeBlock(Directive):
 
 
 class Define(Directive):
-    '''
+    """
     Defines an identifier to be checked by directive ifdef and ifndef.
     Identifiers are case insensitive.
     More than one identifier can be defined at once. Example::
@@ -151,7 +152,7 @@ class Define(Directive):
         .. define:: one
         .. define:: two three four
 
-    '''
+    """
 
     has_content = False
     required_arguments = 1
@@ -171,13 +172,13 @@ class Define(Directive):
 
 
 class Undefine(Directive):
-    '''
+    """
     Undefine an identifier. Example::
 
         .. undef:: one
         .. undef:: one two three four
 
-    '''
+    """
 
     has_content = False
     required_arguments = 1
@@ -198,7 +199,7 @@ def _logical_operator(argument):
 
 
 class IfDef(Directive):
-    '''
+    """
     Include content only if the identifier passed as argument is defined.
     If more than one identified is passed,
     there must be an option to identify which logical operation is to be used:
@@ -210,7 +211,7 @@ class IfDef(Directive):
             some content...
 
     'some content...' only will be included if x or y or z is defined.
-    '''
+    """
 
     has_content = True
     required_arguments = 1
@@ -228,12 +229,11 @@ class IfDef(Directive):
             show_content = identifier in identifiers
         else:
             if 'operator' not in self.options:
-                raise self.error('You must define an operator when more than one '
-                                 'identifier is passed as argument.')
+                raise self.error('You must define an operator when more than one ' 'identifier is passed as argument.')
             operator = self.options['operator']
             operation = {
                 'and': (lambda x, y: x and y),
-                'or': (lambda x, y: x or y)
+                'or': (lambda x, y: x or y),
             }
             show_content = operator == 'and'
             for identifier in arguments:
@@ -250,19 +250,19 @@ class IfDef(Directive):
 
 
 class IfNDef(IfDef):
-    '''
+    """
     Include content only if the identifier passed as argument is not defined.
     See IfDef directive for options
-    '''
+    """
 
     def check(self):
         return not IfDef.check(self)
 
 
 class StyleSheet(Directive):
-    '''
+    """
     Specify in a restructured text a stylesheet URL or path to be included in the output HTML file.
-    '''
+    """
 
     has_content = False
     required_arguments = 1
@@ -281,9 +281,9 @@ class StyleSheet(Directive):
 
 
 class Script(Directive):
-    '''
+    """
     Specify in a restructured text a script URL or path to be included in the output HTML file.
-    '''
+    """
 
     has_content = False
     required_arguments = 1
@@ -293,9 +293,7 @@ class Script(Directive):
     }
 
     def run(self):
-        attr = 'defer' in self.options and 'defer' or \
-               'async' in self.options and 'async' or \
-               None
+        attr = 'defer' in self.options and 'defer' or 'async' in self.options and 'async' or None
         settings = self.state.document.settings
         settings.script = settings.script or []
         settings.script.append((self.arguments[0], attr))
@@ -303,7 +301,7 @@ class Script(Directive):
 
 
 class Template(Directive):
-    '''
+    """
     Specify in a restructured text a template URL or path to be included in the output HTML file.
 
     Usage:
@@ -316,7 +314,7 @@ class Template(Directive):
 
         <content>
 
-    '''
+    """
 
     has_content = True
 

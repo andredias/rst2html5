@@ -20,7 +20,7 @@ title_with_initial_header_level = {
     'out': '<section id="title"><h2>Title</h2><h3>hello</h3></section>',
     'indent_output': False,
     'part': 'body',
-    'initial_header_level': 2
+    'initial_header_level': 2,
 }
 
 
@@ -42,8 +42,7 @@ AbCdE fGhIjK
 }
 
 title_accented_chars = {
-    'rst': 'Título com Acentuação\n'
-           '=====================',
+    'rst': 'Título com Acentuação\n' '=====================',
     'out': '<section id="titulo-com-acentuacao"><h1>Título com Acentuação</h1></section>',
     'indent_output': False,
     'part': 'body',
@@ -141,10 +140,10 @@ Section Title
 
 ...''',
     'out': '<section id="document-title">'
-           '<h1>Document Title</h1><h2>Subtitle</h2>'
-           '<section id="section-title"><h1>Section Title</h1>'
-           '<p>...</p></section>'
-           '</section>',
+    '<h1>Document Title</h1><h2>Subtitle</h2>'
+    '<section id="section-title"><h1>Section Title</h1>'
+    '<p>...</p></section>'
+    '</section>',
     'indent_output': False,
     'part': 'body',
 }
@@ -152,20 +151,18 @@ Section Title
 
 paragraph = {
     'rst': 'Lorem    ipsum dolor sit amet,        consectetur '
-           'adipiscing          elit.\n'
-           'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.',
+    'adipiscing          elit.\n'
+    'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.',
     'out': '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-           'Vestibulum dignissim lacinia blandit. Suspendisse potenti.</p>',
+    'Vestibulum dignissim lacinia blandit. Suspendisse potenti.</p>',
     'indent_output': False,
     'part': 'body',
 }
 
 
 accented_paragraph = {
-    'rst': 'Não há ninguém que ame a dor por si só, que a busque e '
-           'queira tê-la, simplesmente por ser dor...',
-    'out': '<p>Não há ninguém que ame a dor por si só, que a busque e '
-           'queira tê-la, simplesmente por ser dor...</p>',
+    'rst': 'Não há ninguém que ame a dor por si só, que a busque e ' 'queira tê-la, simplesmente por ser dor...',
+    'out': '<p>Não há ninguém que ame a dor por si só, que a busque e ' 'queira tê-la, simplesmente por ser dor...</p>',
     'indent_output': False,
     'part': 'body',
 }
@@ -180,9 +177,9 @@ short.
 
 This is another one.''',
     'out': "<p>This is a paragraph. It's quite short.</p>"
-           "<blockquote><p>This paragraph will result in an indented "
-           "block of text, typically used for quoting other text."
-           "</p></blockquote><p>This is another one.</p>",
+    '<blockquote><p>This paragraph will result in an indented '
+    'block of text, typically used for quoting other text.'
+    '</p></blockquote><p>This is another one.</p>',
     'indent_output': False,
     'part': 'body',
 }
@@ -202,8 +199,8 @@ target paragraph
 
 ''',
     'out': '<p id="target">target paragraph</p><a href="#target">'
-           '<img width="50px" alt="alternate text" src="images/biohazard.png" '
-           'class="top" height="100px" /></a>',
+    '<img width="50px" alt="alternate text" src="images/biohazard.png" '
+    'class="top" height="100px" /></a>',
     'indent_output': False,
     'part': 'body',
 }
@@ -222,7 +219,7 @@ figure = {
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
     </figure>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 
@@ -241,7 +238,7 @@ inline_markup = {
 <em>interpreted text with role</em> <sub>subscript</sub> \
 <code>inline  &lt;pre&gt;   text</code></p>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 
@@ -306,16 +303,14 @@ ordered_list_decimal_autonumerated = {
 
 ordered_list_lower_alpha = {
     'rst': '(a) item 1\n(#) item 2\n(#) item 3',
-    'out': '<ol suffix=")" type="a" prefix="("><li>item 1</li><li>item 2</li>'
-           '<li>item 3</li></ol>',
+    'out': '<ol suffix=")" type="a" prefix="("><li>item 1</li><li>item 2</li>' '<li>item 3</li></ol>',
     'indent_output': False,
     'part': 'body',
 }
 
 ordered_list_upper_alpha = {
     'rst': 'A) item 1\n#) item 2\n#) item 3',
-    'out': '<ol suffix=")" type="A"><li>item 1</li><li>item 2</li><li>item 3'
-           '</li></ol>',
+    'out': '<ol suffix=")" type="A"><li>item 1</li><li>item 2</li><li>item 3' '</li></ol>',
     'indent_output': False,
     'part': 'body',
 }
@@ -366,7 +361,7 @@ class="classifier">classifier one</span> <span class="classifier-delimiter">\
         <dd>Definition 4.</dd>
     </dl>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 grid_table = {
@@ -389,7 +384,7 @@ grid_table = {
         </tbody>
     </table>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 grid_table_with_caption = {
@@ -415,7 +410,7 @@ grid_table_with_caption = {
         </tbody>
     </table>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 grid_table_with_head = {
@@ -440,7 +435,7 @@ grid_table_with_head = {
         </tbody>
     </table>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 csv_table = {
@@ -470,7 +465,7 @@ csv_table = {
         </tbody>
     </table>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 grid_table_span = {
@@ -505,7 +500,7 @@ grid_table_span = {
         </tbody>
     </table>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 
@@ -513,8 +508,7 @@ external_link = {
     'rst': '''This is a paragraph that contains `a link`_.
 
 .. _a link: http://example.com/''',
-    'out': '<p>This is a paragraph that contains '
-           '<a href="http://example.com/">a link</a>.</p>',
+    'out': '<p>This is a paragraph that contains ' '<a href="http://example.com/">a link</a>.</p>',
     'indent_output': False,
     'part': 'body',
 }
@@ -533,7 +527,7 @@ The hyperlink target above points to this paragraph.''',
 <a href="#target">target</a> below.</p>
     <p id="target">The hyperlink target above points to this paragraph.</p>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 internal_link_2 = {
@@ -553,7 +547,7 @@ The targets outer_target_ and inner_target_ point both to Title 1.''',
 <a href="#inner-target">inner_target</a> point both to Title 1.</p>
     </section>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 chained_internal_links_1 = {
@@ -570,7 +564,7 @@ point to this paragraph.''',
     <p id="inner-target">The targets "outer_target" and "inner_target" are synonyms; \
 they both point to this paragraph.</p>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 chained_internal_links_2 = {
@@ -592,7 +586,7 @@ The targets "outer_target" and "inner_target" point both to Title 1.''',
         <p>The targets "outer_target" and "inner_target" point both to Title 1.</p>
     </section>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 propagated_target = {
@@ -604,7 +598,7 @@ propagated_target = {
     'out': '''
     <p>Link to <a href="http://mail.python.org/pipermail/doc-sig/">archive</a>.</p>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 inline_and_indirect_target = {
@@ -620,7 +614,6 @@ Target paragraph.
 
 Referencing the  `inline hyperlink target`_.
 ''',
-
     'out': '''
     <p>This is a <a id="inline-hyperlink-target">inline hyperlink target</a> \
 that corresponds to a &lt;target&gt; in doctree.</p>
@@ -628,7 +621,7 @@ that corresponds to a &lt;target&gt; in doctree.</p>
     <p id="three">Target paragraph.</p>
     <p>Referencing the <a href="#inline-hyperlink-target">inline hyperlink target</a>.</p>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 anonymous_links = {
@@ -724,7 +717,7 @@ preformatted_text = {
 Lookie here, I've dropped an indentation level
 (but not far enough)</pre>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 parsed_literal_block = {
@@ -788,7 +781,7 @@ code_block = {
         return ((v, getattr(module, v)) for v in dir(module)
             if not v.startswith('__') and isinstance(getattr(module, v), dict))
 """,
-    'out': """
+    'out': '''
     <pre data-language="python"><span class="k">def</span> \
 <span class="nf">extract_variables</span>\
 <span class="p">(</span><span class="n">module</span><span class="p">):</span>
@@ -816,8 +809,8 @@ dir</span><span class="p">\
 module</span><span class="p">,</span> <span class="n">v</span>\
 <span class="p">),</span> <span class="nb">dict</span>\
 <span class="p">))</span></pre>
-""",
-    'part': 'body'
+''',
+    'part': 'body',
 }
 
 code = {
@@ -833,10 +826,10 @@ sourcecode = {
 }
 
 class_code_block = {
-    'rst': """.. code-block:: python
+    'rst': '''.. code-block:: python
     :class: small
 
-    print('Hello, world!')""",
+    print('Hello, world!')''',
     'out': '''<pre class="small" data-language="python"><span class="nb">print</span>\
 <span class="p">(</span><span class="s1">&#39;Hello, world!&#39;</span><span class="p">)</span>\
 </pre>''',
@@ -952,7 +945,7 @@ math = {
 \dot{z} &amp;amp; = -\beta z + xy
 \end{align*}</div>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 math_one_script_only = {
@@ -1001,11 +994,11 @@ raw_html = {
 
 more text''',
     'out': '\n    <p>some text</p>'
-           '\n    <div class="warning">'
-           '\n        <p>Warning!!!</p>'
-           '\n    </div>'
-           '\n    <p>more text</p>\n',
-    'part': 'body'
+    '\n    <div class="warning">'
+    '\n        <p>Warning!!!</p>'
+    '\n    </div>'
+    '\n    <p>more text</p>\n',
+    'part': 'body',
 }
 
 raw_html_pre = {
@@ -1019,11 +1012,11 @@ raw_html_pre = {
 
 more text''',
     'out': '\n    <p>some text</p>'
-           '\n<pre class="code bash"><span class="c"># this is at the beginning of the line'
-           '\n# this is indented by 4 spaces'
-           '\n# and this line is also indented by 4 spaces</span></pre>'
-           '\n    <p>more text</p>\n',
-    'part': 'body'
+    '\n<pre class="code bash"><span class="c"># this is at the beginning of the line'
+    '\n# this is indented by 4 spaces'
+    '\n# and this line is also indented by 4 spaces</span></pre>'
+    '\n    <p>more text</p>\n',
+    'part': 'body',
 }
 
 raw_latex = {
@@ -1034,9 +1027,8 @@ raw_latex = {
     \setlength{\parindent}{0pt}
 
 more text''',
-    'out': '\n    <p>some text</p>'
-           '\n    <p>more text</p>\n',
-    'part': 'body'
+    'out': '\n    <p>some text</p>' '\n    <p>more text</p>\n',
+    'part': 'body',
 }
 
 class_directive = {
@@ -1049,8 +1041,8 @@ paragraph with some text
 Section Title
 =============''',
     'out': '<p class="nav special">paragraph with some text</p>'
-           '<section id="section-title" class="heading top">'
-           '<h1>Section Title</h1></section>',
+    '<section id="section-title" class="heading top">'
+    '<h1>Section Title</h1></section>',
     'indent_output': False,
     'part': 'body',
 }
@@ -1267,8 +1259,7 @@ Another Subtitle
 }
 
 rubric = {
-    'rst': 'some text\n\n.. rubric:: RuBriC\n    :class: special heading'
-           '\n\nmore text',
+    'rst': 'some text\n\n.. rubric:: RuBriC\n    :class: special heading' '\n\nmore text',
     'out': '<p>some text</p><p class="rubric">RuBriC</p><p>more text</p>',
     'indent_output': False,
     'part': 'body',
@@ -1278,8 +1269,7 @@ epigraph = {
     'rst': '''.. epigraph::
 
    No matter where you go, there you are.''',
-    'out': '<blockquote class="epigraph"><p>No matter where you go, there you '
-           'are.</p></blockquote>',
+    'out': '<blockquote class="epigraph"><p>No matter where you go, there you ' 'are.</p></blockquote>',
     'indent_output': False,
     'part': 'body',
 }
@@ -1303,15 +1293,14 @@ rm -rf *</pre>
         <p>you will erase the entire contents of your file system.</p>
     </div>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 container = {
     'rst': '''.. container:: custom
 
    This paragraph might be rendered in a custom way.''',
-    'out': '<div class="custom">This paragraph might be rendered '
-           'in a custom way.</div>',
+    'out': '<div class="custom">This paragraph might be rendered ' 'in a custom way.</div>',
     'indent_output': False,
     'part': 'body',
 }
@@ -1384,8 +1373,7 @@ replace = {
 
 Yes, |reST| is a long word, so I can't blame anyone for wanting to
 abbreviate it.''',
-    'out': "<p>Yes, reStructuredText is a long word, so I can't blame "
-           "anyone for wanting to abbreviate it.</p>",
+    'out': "<p>Yes, reStructuredText is a long word, so I can't blame " 'anyone for wanting to abbreviate it.</p>',
     'indent_output': False,
     'part': 'body',
 }
@@ -1487,12 +1475,13 @@ docinfo4 = {
 docinfo5 = {
     'rst': docinfo3['rst'],
     'part': 'docinfo',
-    'out': {'tags': 'oh, bar, yeah',
-            'category': 'bar',
-            'slug': 'oh-yeah',
-            'license': 'WTFPL',
-            'test': '<tag>',
-            },
+    'out': {
+        'tags': 'oh, bar, yeah',
+        'category': 'bar',
+        'slug': 'oh-yeah',
+        'license': 'WTFPL',
+        'test': '<tag>',
+    },
 }
 
 field_list_1 = {
@@ -1605,7 +1594,7 @@ Another [TEST2]_.
         </tbody>
     </table>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 attribution = {
@@ -1621,7 +1610,7 @@ attribution = {
         <p class="attribution">Confucius</p>
     </blockquote>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 doctest_block = {
@@ -1634,7 +1623,7 @@ this is a Doctest block''',
     <pre class="doctest_block">&gt;&gt;&gt; print 'this is a Doctest block'
 this is a Doctest block</pre>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 option_list = {
@@ -1815,7 +1804,7 @@ def <strong>test_body</strong>():
     for test_name, case in extract_variables(test_data_body):
         yield _test_part, 'body', test_name, case</pre>
 """,
-    'part': 'body'
+    'part': 'body',
 }
 
 
@@ -1904,7 +1893,7 @@ legend = {
 caption. In this case, the legend consists of this paragraph.</div>
     </figure>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 legend_more = {
@@ -1932,7 +1921,7 @@ caption. In this case, the legend consists of this paragraph.</p>
         </div>
     </figure>
 ''',
-    'part': 'body'
+    'part': 'body',
 }
 
 # stderr should present: <string>:1: (ERROR/3) Unknown target name: "target"
@@ -1980,7 +1969,7 @@ See "backrefs" attribute for IDs.</p>
 ''',
     'part': 'body',
     'error': '<string>:: (ERROR/3) Anonymous hyperlink mismatch: 2 references but 1 targets.\n'
-             'See "backrefs" attribute for IDs.\n',
+    'See "backrefs" attribute for IDs.\n',
 }
 
 problematic = {
@@ -2035,7 +2024,9 @@ html_tag_attr = {
 </body>
 </html>''',
     'part': 'whole',
-    'html_tag_attr': ['lang="en"', ]
+    'html_tag_attr': [
+        'lang="en"',
+    ],
 }
 
 stylesheet = {
@@ -2046,8 +2037,10 @@ stylesheet = {
     <link href="https://pronus.io/css/standard.css" rel="stylesheet" />
 ''',
     'part': 'head',
-    'stylesheet': ['http://test.com/css/default.css',
-                   'https://pronus.io/css/standard.css']
+    'stylesheet': [
+        'http://test.com/css/default.css',
+        'https://pronus.io/css/standard.css',
+    ],
 }
 
 stylesheet_2 = {
@@ -2081,8 +2074,10 @@ table td > * {
 </style>
 ''',
     'part': 'head',
-    'stylesheet': ['http://test.com/css/default.css',
-                   'https://pronus.io/css/standard.css'],
+    'stylesheet': [
+        'http://test.com/css/default.css',
+        'https://pronus.io/css/standard.css',
+    ],
     'stylesheet_inline': ['stylesheet1.css', 'stylesheet2.css'],
 }
 
@@ -2122,8 +2117,12 @@ javascript = {
     <meta charset="utf-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 ''',
-    'script': [('https://ajax.googleapis.com/ajax/libs/jquery/'
-                '1.7.2/jquery.min.js', None)],
+    'script': [
+        (
+            'https://ajax.googleapis.com/ajax/libs/jquery/' '1.7.2/jquery.min.js',
+            None,
+        )
+    ],
     'part': 'head',
 }
 
@@ -2135,9 +2134,11 @@ javascript_2 = {
     <script src="js/test2.js" async="async"></script>
     <script src="js/test3.js"></script>
 ''',
-    'script': [('js/test1.js', 'defer'),
-               ('js/test2.js', 'async'),
-               ('js/test3.js', None), ],
+    'script': [
+        ('js/test1.js', 'defer'),
+        ('js/test2.js', 'async'),
+        ('js/test3.js', None),
+    ],
     'part': 'head',
 }
 

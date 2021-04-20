@@ -1,22 +1,21 @@
 import os
-from io import open
+from io import StringIO, open
 from tempfile import gettempdir
 
 import pytest
 from bs4 import BeautifulSoup
 from docutils.core import publish_parts
-from src.rst2html5_ import HTML5Writer
 
-from io import StringIO
+from src.rst2html5_ import HTML5Writer
 
 tmpdir = gettempdir()
 
 
 def rst_to_html5_part(case):
-    '''
+    """
     The main parts of a test case dict are rst, part and out.
     Everything else are configuration settings.
-    '''
+    """
     overrides = case.copy()
     rst = overrides.pop('rst')
     part = overrides.pop('part')
@@ -24,19 +23,23 @@ def rst_to_html5_part(case):
     overrides.pop('out')
     overrides.setdefault('indent_output', True)
     overrides['warning_stream'] = error
-    return publish_parts(writer=HTML5Writer(), source=rst,
-                         settings_overrides=overrides)[part], error.getvalue()
+    return (
+        publish_parts(writer=HTML5Writer(), source=rst, settings_overrides=overrides)[part],
+        error.getvalue(),
+    )
 
 
 def extract_test_cases():
-    '''
+    """
     Extract variables of a test data module.
     Variables should be a dict().
     For example, {'rst': rst, 'out':out, ...}
-    '''
+    """
     from . import cases
-    return ((v, getattr(cases, v)) for v in dir(cases)
-            if not v.startswith('__') and isinstance(getattr(cases, v), dict))
+
+    return (
+        (v, getattr(cases, v)) for v in dir(cases) if not v.startswith('__') and isinstance(getattr(cases, v), dict)
+    )
 
 
 def idn_func(test_case):

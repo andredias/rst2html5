@@ -1,5 +1,6 @@
 from docutils.parsers.rst.directives import register_directive
-from .directives import CodeBlock, Define, Undefine, IfDef, IfNDef, StyleSheet, Script, Template
+
+from .directives import CodeBlock, Define, IfDef, IfNDef, Script, StyleSheet, Template, Undefine
 
 
 def register_directives():

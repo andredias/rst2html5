@@ -29,7 +29,7 @@ rst2html5 = "src.rst2html5_:main"
 "rst2html5.py" = "src.rst2html5_:main"
 
 [tool.poetry.dependencies]
-python = ">3.4"
+python = ">=3.6, <4"
 docutils = "<0.17"
 Genshi = "^0.7.5"
 Pygments = "^2.8.1"
@@ -39,10 +39,22 @@ tox = "^3.23.0"
 beautifulsoup4 = "^4.9.3"
 Sphinx = "^3.5.4"
 sphinx-rtd-theme = "^0.5.2"
-twine = "^3.4.1"
-flake8 = "^3.9.1"
+flake8 = ">3.8"
 pytest = "<6"
+blue = "^0.6.0"
+isort = "^5.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 120
+
+[tool.blue]
+line-length = 120
