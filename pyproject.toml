@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rst2html5"
-version = "1.11.0"
+version = "1.10.8"
 description = "Generates (X)HTML5 documents from standalone reStructuredText sources"
 authors = ["André Felipe Dias <andref.dias@gmail.com>"]
 license = "MIT"
@@ -25,7 +25,8 @@ packages =[
 ]
 
 [tool.poetry.scripts]
-rst2html5 = "rst2html5_:main"
+rst2html5 = "src.rst2html5_:main"
+"rst2html5.py" = "src.rst2html5_:main"
 
 [tool.poetry.dependencies]
 python = ">3.4"
