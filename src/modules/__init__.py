@@ -3,7 +3,7 @@ from docutils.parsers.rst.directives import register_directive
 from .directives import CodeBlock, Define, IfDef, IfNDef, Script, StyleSheet, Template, Undefine
 
 
-def register_directives():
+def register_directives() -> None:
     register_directive('code-block', CodeBlock)
     register_directive('code', CodeBlock)
     register_directive('sourcecode', CodeBlock)

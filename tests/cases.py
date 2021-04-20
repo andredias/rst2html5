@@ -161,8 +161,8 @@ paragraph = {
 
 
 accented_paragraph = {
-    'rst': 'Não há ninguém que ame a dor por si só, que a busque e ' 'queira tê-la, simplesmente por ser dor...',
-    'out': '<p>Não há ninguém que ame a dor por si só, que a busque e ' 'queira tê-la, simplesmente por ser dor...</p>',
+    'rst': 'Não há ninguém que ame a dor por si só, que a busque e queira tê-la, simplesmente por ser dor...',
+    'out': '<p>Não há ninguém que ame a dor por si só, que a busque e queira tê-la, simplesmente por ser dor...</p>',
     'indent_output': False,
     'part': 'body',
 }

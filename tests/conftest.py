@@ -5,5 +5,5 @@ from pytest import fixture
 
 
 @fixture(autouse=True, scope='session')
-def chdir():
+def chdir() -> None:
     os.chdir(Path(__file__).parent)

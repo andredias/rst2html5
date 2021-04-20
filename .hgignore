@@ -39,3 +39,4 @@ htmlcov
 .venv
 .pytest_cache
 .python-version
+.mypy_cache

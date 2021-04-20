@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # rst2hml5 documentation build configuration file, created by
 # sphinx-quickstart on Fri Aug  3 20:16:10 2012.
 #
@@ -13,6 +11,7 @@
 
 import os
 import sys
+from typing import Dict
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -169,7 +168,7 @@ htmlhelp_basename = 'rst2hml5doc'
 
 # -- Options for LaTeX output --------------------------------------------------
 
-latex_elements = {
+latex_elements: Dict[str, str] = {
     # The paper size ('letterpaper' or 'a4paper').
     #'papersize': 'letterpaper',
     # The font size ('10pt', '11pt' or '12pt').

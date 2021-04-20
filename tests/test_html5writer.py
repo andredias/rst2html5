@@ -1,6 +1,7 @@
 import os
 from io import StringIO, open
 from tempfile import gettempdir
+from typing import Any, Dict, Iterable, Tuple
 
 import pytest
 from bs4 import BeautifulSoup
@@ -9,9 +10,10 @@ from docutils.core import publish_parts
 from src.rst2html5_ import HTML5Writer
 
 tmpdir = gettempdir()
+TestCase = Tuple[str, Dict[str, Any]]
 
 
-def rst_to_html5_part(case):
+def rst_to_html5_part(case: Dict[str, Any]) -> Tuple[str, Any]:
     """
     The main parts of a test case dict are rst, part and out.
     Everything else are configuration settings.
@@ -29,7 +31,7 @@ def rst_to_html5_part(case):
     )
 
 
-def extract_test_cases():
+def extract_test_cases() -> Iterable[TestCase]:
     """
     Extract variables of a test data module.
     Variables should be a dict().
@@ -42,12 +44,12 @@ def extract_test_cases():
     )
 
 
-def idn_func(test_case):
+def idn_func(test_case: TestCase) -> str:
     return test_case[0]
 
 
 @pytest.mark.parametrize('test_case', extract_test_cases(), ids=idn_func)
-def test_rst_case(test_case):
+def test_rst_case(test_case: TestCase) -> None:
     test_name, case = test_case
     result, error = rst_to_html5_part(case)
     result_ = result

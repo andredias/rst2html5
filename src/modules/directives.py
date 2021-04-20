@@ -1,14 +1,16 @@
 import re
 from hashlib import md5
+from typing import Any, Dict, List, Union
 
 from docutils import nodes
+from docutils.nodes import Element, literal_block, table
 from docutils.parsers.rst import Directive, directives
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
 
-def pygmentize(code, language, **kwargs):
+def pygmentize(code: str, language: str, **kwargs) -> str:
     lexer = get_lexer_by_name(language)
     formatter = HtmlFormatter(**kwargs)
     return highlight(code, lexer, formatter)
@@ -19,7 +21,7 @@ def pygmentize(code, language, **kwargs):
 #
 
 
-def parselinenos(spec, total):
+def parselinenos(spec: str, total: int) -> List[int]:
     """
     Parse a line number spec (such as "1,2,4-6") and return a list of wanted line numbers.
 
@@ -41,13 +43,6 @@ def parselinenos(spec, total):
         except Exception:
             raise ValueError('invalid line number spec: %r' % spec)
     return items
-
-
-def set_source_info(directive, node):
-    """
-    copied from sphinx.util.nodes import set_source_info
-    """
-    node.source, node.line = directive.state_machine.get_source_and_line(directive.lineno)
 
 
 class CodeBlock(Directive):
@@ -92,12 +87,12 @@ class CodeBlock(Directive):
         'number-lines': directives.unchanged,  # integer or None
     }
 
-    def run(self):
+    def run(self) -> List[Element]:
         self.assert_has_content()
 
         language = self.arguments[0]
         code = '\n'.join(self.content)
-        pygmentize_args = {}
+        pygmentize_args: Dict[str, Any] = {}
         if self.options.get('number-lines', None):
             pygmentize_args['linenostart'] = int(self.options['number-lines'])
         pygmentize_args['linenos'] = 'number-lines' in self.options and 'table'
@@ -140,6 +135,13 @@ class CodeBlock(Directive):
         return [node]
 
 
+def set_source_info(directive: CodeBlock, node: Union[literal_block, table]) -> None:
+    """
+    copied from sphinx.util.nodes import set_source_info
+    """
+    node.source, node.line = directive.state_machine.get_source_and_line(directive.lineno)
+
+
 class Define(Directive):
     """
     Defines an identifier to be checked by directive ifdef and ifndef.
@@ -155,7 +157,7 @@ class Define(Directive):
     required_arguments = 1
     final_argument_whitespace = True
 
-    def run(self):
+    def run(self) -> List[Element]:
         if not self.state.document.settings.identifiers:
             identifiers = self.state.document.settings.identifiers = []
         else:
@@ -181,7 +183,7 @@ class Undefine(Directive):
     required_arguments = 1
     final_argument_whitespace = True
 
-    def run(self):
+    def run(self) -> List[Element]:
         identifiers = self.state.document.settings.identifiers or []
         arguments = self.arguments[0].lower().split()
         for identifier in arguments:
@@ -191,7 +193,7 @@ class Undefine(Directive):
         return []
 
 
-def _logical_operator(argument):
+def _logical_operator(argument: str) -> str:
     return directives.choice(argument, ['and', 'or'])
 
 
@@ -217,7 +219,7 @@ class IfDef(Directive):
         'operator': _logical_operator,
     }
 
-    def check(self):
+    def check(self) -> bool:
         self.assert_has_content()
         identifiers = self.state.document.settings.identifiers or []
         arguments = self.arguments[0].lower().split()
@@ -237,7 +239,7 @@ class IfDef(Directive):
                 show_content = operation[operator](show_content, identifier in identifiers)
         return show_content
 
-    def run(self):
+    def run(self) -> List[Element]:
         if self.check():
             # see Include Directive at docutils/parsers/rst/directives/misc.py
             lines = self.content.data
@@ -252,7 +254,7 @@ class IfNDef(IfDef):
     See IfDef directive for options
     """
 
-    def check(self):
+    def check(self) -> bool:
         return not IfDef.check(self)
 
 
@@ -267,7 +269,7 @@ class StyleSheet(Directive):
         'inline': directives.unchanged,
     }
 
-    def run(self):
+    def run(self) -> List[Element]:
         settings = self.state.document.settings
         if 'inline' not in self.options:
             stylesheet = settings.stylesheet = settings.stylesheet or []
@@ -289,7 +291,7 @@ class Script(Directive):
         'async': directives.unchanged,
     }
 
-    def run(self):
+    def run(self) -> List[Element]:
         attr = 'defer' in self.options and 'defer' or 'async' in self.options and 'async' or None
         settings = self.state.document.settings
         settings.script = settings.script or []
@@ -315,7 +317,7 @@ class Template(Directive):
 
     has_content = True
 
-    def run(self):
+    def run(self) -> List[Element]:
         settings = self.state.document.settings
         settings.template = len(self.arguments) and self.arguments[0] or '\n'.join(self.content)
         return []
