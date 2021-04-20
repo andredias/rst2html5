@@ -932,6 +932,45 @@ code_block_name_table = {
 }
 
 
+code_block_emphasize_lines = {
+    'rst': '''.. code-block:: python
+    :emphasize-lines: 1-3, 6
+
+    from pygments import highlight
+    from pygments.formatters import HtmlFormatter
+    from pygments.lexers import get_lexer_by_name
+
+
+    def pygmentize(code, language, **kwargs):
+        lexer = get_lexer_by_name(language)
+        formatter = HtmlFormatter(**kwargs)
+        return highlight(code, lexer, formatter)
+''',
+    'out': '''<pre data-language="python"><span class="hll">\
+<span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">\
+import</span> <span class="n">highlight</span>
+</span><span class="hll"><span class="kn">from</span> <span class="nn">pygments.formatters\
+</span> <span class="kn">import</span> <span class="n">HtmlFormatter</span>
+</span><span class="hll"><span class="kn">from</span> <span class="nn">pygments.lexers\
+</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
+</span>
+
+<span class="hll"><span class="k">def</span> <span class="nf">pygmentize</span>\
+<span class="p">(</span><span class="n">code</span><span class="p">,\
+</span> <span class="n">language</span><span class="p">,</span> <span class="o">**</span>\
+<span class="n">kwargs</span><span class="p">):</span>
+</span>    <span class="n">lexer</span> <span class="o">=</span> <span class="n">\
+get_lexer_by_name</span><span class="p">(</span><span class="n">language</span><span class="p">)</span>
+    <span class="n">formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter\
+</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">highlight</span><span class="p">(</span>\
+<span class="n">code</span><span class="p">,</span> <span class="n">lexer</span><span class="p">\
+,</span> <span class="n">formatter</span><span class="p">)</span></pre>''',
+    'part': 'body',
+    'indent_output': False,
+}
+
+
 math = {
     'rst': r'''.. math::
 
