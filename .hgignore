@@ -38,3 +38,4 @@ htmlcov
 *.rej
 .venv
 .pytest_cache
+.python-version

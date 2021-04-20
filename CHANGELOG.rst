@@ -2,6 +2,12 @@
 Changelog
 =========
 
+* 1.11.0 -
+
+    * Replace nose with pytest
+    * Replace Pipenv with Poetry
+    * Replace setup.py with pyproject.toml
+
 * 1.10.6 - 2020-04-21
 
     * Contributing instructions updated.
