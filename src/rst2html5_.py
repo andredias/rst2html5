@@ -430,7 +430,7 @@ class HTML5Translator(nodes.NodeVisitor):
         # If not given, the default is False, True
         'Text': (None, 'visit_Text', None),
         'abbreviation': ('abbr', dv, dp),
-        'acronym': (None, dv, dp),
+        'acronym': ('abbr', dv, dp),
         'address': (None, 'visit_address', None),
         'admonition': ('aside', 'visit_aside', 'depart_aside', True),
         'attention': ('aside', 'visit_aside', 'depart_aside', True),

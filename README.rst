@@ -142,23 +142,6 @@ However stylesheets and javascripts URLs or paths can be included through ``styl
     </head>
     ...
 
-Alternatively, you could specify stylesheets and scripts using directives in the rst:
-
-.. code:: rst
-
-    .. stylesheet:: https://example.com/css/default.css
-    .. stylesheet:: css/simple.css
-        :inline:
-    .. script:: https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js
-    .. script:: js/test1.js
-        :defer:
-    .. script:: js/test2.js
-        :async:
-
-    Title
-    =====
-    ...
-
 
 Html tag attributes can be included through ``html-tag-attr`` option:
 
@@ -194,6 +177,7 @@ Custom html5 template via the :literal:`--template` option. Example:
 
     $ rst2html5 **--template "$template"** example.rst
 
+
 .. code-block:: html
 
     <!DOCTYPE html>
@@ -212,7 +196,10 @@ Custom html5 template via the :literal:`--template` option. Example:
 
 
 New Directives
---------------
+==============
+
+``define``, ``undef``, ``ifdef`` and ``ifndef``
+-----------------------------------------------
 
 :code:`rst2html5` provides some new directives: ``define``, ``undef``, ``ifdef`` and ``ifndef``,
 similar to those used in C++.
@@ -236,6 +223,8 @@ there must be an operator (``[and | or]``) defined:
         This line will be included only if 'x', 'y' or 'z' is defined.
 
 
+``stylesheet`` and ``script``
+-----------------------------
 
 From rst2html5 1.9, you can include stylesheets and scripts via directives inside a reStructuredText text:
 
@@ -275,6 +264,9 @@ From rst2html5 1.9, you can include stylesheets and scripts via directives insid
     </html>
 
 
+``template``
+------------
+
 There also is a :code:`template` directive. The usage is:
 
 .. code-block:: rst
@@ -286,6 +278,50 @@ There also is a :code:`template` directive. The usage is:
     .. template::
 
         template content here.
+
+
+New Roles
+=========
+
+``:abbr:``
+----------
+
+From `MDN Web Docs <https://developer.mozilla.org/en-US/docs/Web/HTML/Element/abbr>`_:
+
+    The HTML Abbreviation element (:code:`<abbr>`) represents an abbreviation or acronym;
+    the optional title attribute can provide an expansion or description for the abbreviation.
+    If present, title must contain this full description and nothing else.
+
+To create an abbreviation in ``rst2html5`` use the ``:abbr:`` role:
+
+.. code:: rst
+
+    * :abbr:`SPA (Single-Page Application)`
+    * :abbr:`ASGI (Asynchronous Server Gateway Interface)` is a spiritual successor to :abbr:`WSGI`
+    * :abbr:`WSGI (Web Server Gateway Interface)`
+
+
+Resulting in:
+
+.. code:: html
+
+    <ul>
+        <li>
+            <abbr title="Single-Page Application">SPA</abbr>
+        </li>
+        <li>
+            <abbr title="Asynchronous Server Gateway Interface">ASGI</abbr>
+        is a spiritual successor to
+            <abbr>WSGI</abbr>
+        </li>
+        <li>
+            <abbr title="Web Server Gateway Interface">WSGI</abbr>
+        </li>
+    </ul>
+
+
+Note that if the abbreviation follows the pattern ``ABBR (Description for the abbreviation)``,
+the description is extracted and becomes the ``title``.
 
 
 Links

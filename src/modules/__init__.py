@@ -1,6 +1,7 @@
 from docutils.parsers.rst.directives import register_directive
 
 from .directives import CodeBlock, Define, IfDef, IfNDef, Script, StyleSheet, Template, Undefine
+from .roles import abbreviation  # noqa: F401
 
 
 def register_directives() -> None:

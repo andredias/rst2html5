@@ -2645,3 +2645,28 @@ External hyperlinks, like Python_.
     </section>''',
     'part': 'body',
 }
+
+
+abbreviations = {
+    'rst': '''
+* :abbr:`SPA (Single-Page Application)`
+* :abbr:`ASGI (Asynchronous Server Gateway Interface)` is a spiritual successor to :abbr:`WSGI`
+* :abbr:`WSGI (Web Server Gateway Interface)`
+''',
+    'out': '''
+    <ul>
+        <li>
+            <abbr title="Single-Page Application">SPA</abbr>
+        </li>
+        <li>
+            <abbr title="Asynchronous Server Gateway Interface">ASGI</abbr>
+         is a spiritual successor to
+            <abbr>WSGI</abbr>
+        </li>
+        <li>
+            <abbr title="Web Server Gateway Interface">WSGI</abbr>
+        </li>
+    </ul>
+''',
+    'part': 'body',
+}
