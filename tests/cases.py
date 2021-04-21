@@ -139,22 +139,28 @@ Section Title
 =============
 
 ...''',
-    'out': '<section id="document-title">'
-    '<h1>Document Title</h1><h2>Subtitle</h2>'
-    '<section id="section-title"><h1>Section Title</h1>'
-    '<p>...</p></section>'
-    '</section>',
+    'out': (
+        '<section id="document-title">'
+        '<h1>Document Title</h1><h2>Subtitle</h2>'
+        '<section id="section-title"><h1>Section Title</h1>'
+        '<p>...</p></section>'
+        '</section>'
+    ),
     'indent_output': False,
     'part': 'body',
 }
 
 
 paragraph = {
-    'rst': 'Lorem    ipsum dolor sit amet,        consectetur '
-    'adipiscing          elit.\n'
-    'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.',
-    'out': '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-    'Vestibulum dignissim lacinia blandit. Suspendisse potenti.</p>',
+    'rst': (
+        'Lorem    ipsum dolor sit amet,        consectetur '
+        'adipiscing          elit.\n'
+        'Vestibulum    dignissim lacinia blandit. Suspendisse potenti.'
+    ),
+    'out': (
+        '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+        'Vestibulum dignissim lacinia blandit. Suspendisse potenti.</p>'
+    ),
     'indent_output': False,
     'part': 'body',
 }
@@ -176,16 +182,18 @@ short.
    text, typically used for quoting other text.
 
 This is another one.''',
-    'out': "<p>This is a paragraph. It's quite short.</p>"
-    '<blockquote><p>This paragraph will result in an indented '
-    'block of text, typically used for quoting other text.'
-    '</p></blockquote><p>This is another one.</p>',
+    'out': (
+        "<p>This is a paragraph. It's quite short.</p>"
+        '<blockquote><p>This paragraph will result in an indented '
+        'block of text, typically used for quoting other text.'
+        '</p></blockquote><p>This is another one.</p>'
+    ),
     'indent_output': False,
     'part': 'body',
 }
 
 
-image = {
+image_1 = {
     'rst': '''.. _target:
 
 target paragraph
@@ -198,24 +206,58 @@ target paragraph
    :class: top
 
 ''',
-    'out': '<p id="target">target paragraph</p><a href="#target">'
-    '<img width="50px" alt="alternate text" src="images/biohazard.png" '
-    'class="top" height="100px" /></a>',
+    'out': (
+        '<p id="target">target paragraph</p><a href="#target">'
+        '<img width="50" alt="alternate text" src="images/biohazard.png" '
+        'class="top" height="100" /></a>'
+    ),
     'indent_output': False,
     'part': 'body',
+}
+
+
+image_2 = {
+    'rst': '''
+.. image:: images/biohazard.png
+   :width: 50
+   :height: 100px
+
+''',
+    'out': '<img width="50" alt="" src="images/biohazard.png" height="100" /></a>',
+    'indent_output': False,
+    'part': 'body',
+}
+
+
+image_3 = {
+    'rst': '''
+.. image:: images/biohazard.png
+   :width: 50em
+   :height: 10cm
+   :align: center
+   :scale: 3
+''',
+    'out': '<img width="50em" height="10cm" src="images/biohazard.png" alt="" />',
+    'indent_output': False,
+    'part': 'body',
+    'error': (
+        '<string>:: (WARNING/2) Property :align: was ignore for image\n'
+        '<string>:: (WARNING/2) Property :scale: was ignore for image\n'
+        '<string>:: (WARNING/2) Property height must use "px" or no unit at all\n'
+        '<string>:: (WARNING/2) Property width must use "px" or no unit at all\n'
+    ),
 }
 
 
 figure = {
     'rst': '''.. figure:: picture.png
    :name: buried treasure
-   :scale: 50%
    :alt: map to buried treasure
 
    This is the caption of the figure (a simple paragraph).''',
     'out': '''
     <figure id="buried-treasure">
-        <img alt="map to buried treasure" scale="50" src="picture.png" />
+        <img alt="map to buried treasure" src="picture.png" />
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
     </figure>
 ''',
@@ -1916,7 +1958,6 @@ Singing...</pre>
 
 legend = {
     'rst': '''.. figure:: picture.png
-   :scale: 50%
    :alt: map to buried treasure
 
    This is the caption of the figure (a simple paragraph).
@@ -1926,7 +1967,7 @@ legend = {
 ''',
     'out': '''
     <figure>
-        <img alt="map to buried treasure" scale="50" src="picture.png" />
+        <img alt="map to buried treasure" src="picture.png" />
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
         <div class="legend">The legend consists of all elements after the \
 caption. In this case, the legend consists of this paragraph.</div>
@@ -1937,7 +1978,6 @@ caption. In this case, the legend consists of this paragraph.</div>
 
 legend_more = {
     'rst': '''.. figure:: picture.png
-   :scale: 50%
    :alt: map to buried treasure
 
    This is the caption of the figure (a simple paragraph).
@@ -1951,7 +1991,7 @@ legend_more = {
 ''',
     'out': '''
     <figure>
-        <img alt="map to buried treasure" scale="50" src="picture.png" />
+        <img alt="map to buried treasure" src="picture.png" />
         <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
         <div class="legend">
             <p>The legend consists of all elements after the \

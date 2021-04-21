@@ -27,6 +27,7 @@ from docutils.nodes import (
     figure,
     footnote,
     footnote_reference,
+    image,
     line,
     line_block,
     literal,
@@ -491,7 +492,7 @@ class HTML5Translator(nodes.NodeVisitor):
         'generated': (None, 'do_nothing', None),
         'header': (None, dv, dp),
         'hint': ('aside', 'visit_aside', 'depart_aside', True),
-        'image': ('img', dv, dp),
+        'image': ('img', 'visit_image', 'depart_image'),
         'important': ('aside', 'visit_aside', 'depart_aside', True),
         'inline': ('span', dv, dp, False, False),
         'label': ('th', 'visit_reference', 'depart_label'),
@@ -1181,6 +1182,34 @@ class HTML5Translator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.list_item):
             raise nodes.SkipDeparture
         self.default_visit(node)
+
+    def visit_image(self, node: image) -> None:
+        def ignore_attr(attr: str) -> None:
+            if attr in node:
+                del node.attributes[attr]
+                self.document.reporter.warning(f'Property :{attr}: was ignore for image')
+
+        def check_unit(attr: str) -> None:
+            if attr in node:
+                value = re.findall(r'^(\d+)(px)?$', node.attributes[attr])
+                if not value:
+                    self.document.reporter.warning(f'Property {attr} must use "px" or no unit at all')
+                else:
+                    node.attributes[attr] = value[0][0]  # only the number
+
+        ignore_attr('align')
+        ignore_attr('scale')
+        check_unit('height')
+        check_unit('width')
+        node.attributes.setdefault('alt', '')
+        self.default_visit(node)
+
+    def depart_image(self, node: image) -> None:
+        tag_name, indent, attributes = self.parse(node)
+        attributes.setdefault('alt', '')
+        elem = getattr(tag, tag_name)(**attributes)
+        self.context.commit_elem(elem, indent)
+        return
 
 
 def _strip_spaces(text: str) -> str:
