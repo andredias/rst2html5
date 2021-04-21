@@ -2,18 +2,19 @@
 Changelog
 =========
 
-* 2.0.0 - 2021-04-21
+* 2.0 - 2021-04-21
 
-    * Drop support for Python < 3.6
-    * New :abbr: role
+    * Drop support for Python ``< 3.6``
+    * Restructuring of internal directories. ``rst2html5_`` renamed to ``rst2html5``
+    * New ``:abbr:`` role
     * New section on README to use ``rst2html5`` programmatically
-    * Fix <figcaption> construct
+    * Fix ``<figcaption>`` construct
     * Improve ``image`` directive handling
     * Add type annotations
     * Add linting checks
-    * Replace nose with pytest
-    * Replace Pipenv with Poetry
-    * Replace setup.py with pyproject.toml
+    * Replace ``nose`` with ``pytest``
+    * Replace ``Pipenv`` with ``Poetry``
+    * Replace ``setup.py`` with ``pyproject.toml``
 
 * 1.10.6 - 2020-04-21
 

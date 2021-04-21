@@ -17,6 +17,7 @@ It is a complete rewrite of the docutils' *rst2html* and uses new HTML5 construc
    README
    CHANGELOG
    license
+   authors
    contributing
    design_notes
    design_notes.pt_br

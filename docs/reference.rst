@@ -2,8 +2,8 @@
 Reference
 =========
 
-rst2html5\_ Module
-==================
+rst2html5 Module
+================
 
 .. automodule:: rst2html5
     :members:

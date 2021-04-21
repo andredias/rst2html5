@@ -1,11 +1,15 @@
-
-Authors
-=======
+Author
+======
 
 * André Felipe Dias <andre.dias@pronus.io>
+
+
+Contributors
+============
+
 * Axel Haustant <noirbizarre@gmail.com>
-* Pavel Puchkin <neoascetic@gmail.com>
-* Russ Webber <russ@rw.id.au>
+* Carmen Bianca Bakker <c.b.bakker@carmenbianca.eu>
 * Lee Loucks <leeloucks@gmail.com>
 * Martín Gaitán <gaitan@gmail.com>
-* Carmen Bianca Bakker <c.b.bakker@carmenbianca.eu>
+* Russ Webber <russ@rw.id.au>
+* Pavel Puchkin <neoascetic@gmail.com>
