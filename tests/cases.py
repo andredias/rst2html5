@@ -1968,9 +1968,11 @@ legend = {
     'out': '''
     <figure>
         <img alt="map to buried treasure" src="picture.png" />
-        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
-        <div class="legend">The legend consists of all elements after the \
-caption. In this case, the legend consists of this paragraph.</div>
+        <figcaption>
+            <p>This is the caption of the figure (a simple paragraph).</p>
+            <p>The legend consists of all elements after the \
+caption. In this case, the legend consists of this paragraph.</p>
+        </figcaption>
     </figure>
 ''',
     'part': 'body',
@@ -1992,12 +1994,12 @@ legend_more = {
     'out': '''
     <figure>
         <img alt="map to buried treasure" src="picture.png" />
-        <figcaption>This is the caption of the figure (a simple paragraph).</figcaption>
-        <div class="legend">
+        <figcaption>
+            <p>This is the caption of the figure (a simple paragraph).</p>
             <p>The legend consists of all elements after the \
 caption. In this case, the legend consists of this paragraph.</p>
-            <img alt="image of x mark" src="x-mark.png" id="xmark" />
-        </div>
+            <img id="xmark" alt="image of x mark" src="x-mark.png" />
+        </figcaption>
     </figure>
 ''',
     'part': 'body',

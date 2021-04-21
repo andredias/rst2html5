@@ -1162,11 +1162,23 @@ class HTML5Translator(nodes.NodeVisitor):
         return
 
     def visit_figure(self, node: figure) -> None:
-        # move up the ids of child img
-        for child in node:
-            if isinstance(child, nodes.image) and 'ids' in child:
-                node['ids'].extend(child['ids'])
-                child['ids'] = []
+        image = node.children[0] if len(node.children) > 0 else None
+        caption = node.children[1] if len(node.children) > 1 else None
+        legend = node.children[2] if len(node.children) > 2 else None
+
+        # move up the ids of image
+        if isinstance(image, nodes.image) and 'ids' in image:
+            node['ids'].extend(image['ids'])
+            image['ids'] = []
+
+        # group legend's children into caption
+        if isinstance(legend, nodes.legend):
+            if isinstance(caption.children[0], nodes.Text):
+                text = caption.pop().astext()
+                paragraph = nodes.paragraph(text=text)
+                caption.append(paragraph)
+            caption.extend(legend.children)
+            node.remove(legend)
 
         self.default_visit(node)
 
