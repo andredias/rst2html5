@@ -1,5 +1,5 @@
-import os
-from io import StringIO, open
+from io import StringIO
+from pathlib import Path
 from tempfile import gettempdir
 from typing import Any, Dict, Iterable, Tuple
 
@@ -57,13 +57,11 @@ def test_rst_case(test_case: TestCase) -> None:
     if case['part'] in ('head', 'body', 'whole'):
         result = BeautifulSoup(result, 'html.parser').find_all()
         expected = BeautifulSoup(expected, 'html.parser').find_all()
-    if result != expected:
-        filename = os.path.join(tmpdir, test_name)
-        with open(filename + '.rst', encoding='utf-8', mode='w') as f:
-            f.write(case['rst'])
-        with open(filename + '.result', encoding='utf-8', mode='w') as f:
-            f.write(result_)
-        with open(filename + '.expected', encoding='utf-8', mode='w') as f:
-            f.write(case['out'])
-    assert expected == result  # better diff visualization
+    if result != expected or case.get('error', '') != error:
+        filename = Path(tmpdir, test_name)
+        filename.with_suffix('.rst').write_text(case['rst'])
+        filename.with_suffix('.result').write_text(result_)
+        filename.with_suffix('.expected').write_text(case['out'])
+        filename.with_suffix('.error').write_text(case.get('error', ''))
+    assert expected == result
     assert case.get('error', '') == error
