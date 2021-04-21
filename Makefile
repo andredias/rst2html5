@@ -2,7 +2,7 @@
 
 
 test: lint
-	pytest -svx --cov-report term-missing --cov-report html --cov-branch --cov src/
+	pytest -svx --cov-report term-missing --cov-report html --cov-branch --cov rst2html5/
 
 
 lint:
