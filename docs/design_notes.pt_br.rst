@@ -215,17 +215,15 @@ da doctree e com a endentação::
 A ação padrão de um método ``visit_TIPO_NÓ``
 é iniciar um novo contexto para o nó sendo tratado:
 
-.. literalinclude:: ../src/rst2html5_.py
+.. literalinclude:: ../rst2html5/__init__.py
     :pyobject: HTML5Translator.default_visit
-    :linenos:
     :emphasize-lines: 12
 
 A ação padrão no ``depart_TIPO_NÓ``
 é criar o elemento HTML5 de acordo com o contexto salvo:
 
-.. literalinclude:: ../src/rst2html5_.py
+.. literalinclude:: ../rst2html5/__init__.py
     :pyobject: HTML5Translator.default_departure
-    :linenos:
     :emphasize-lines: 6-8
 
 
@@ -239,10 +237,10 @@ e podem compartilhar o mesmo método ``visit_`` e/ou ``depart_``.
 Para aproveitar essas similaridades,
 é feito um mapeamento entre o nó rst e os métodos correspondentes pelo dicionário ``rst_terms``:
 
-.. literalinclude:: ../src/rst2html5_.py
-    :language: python
-    :linenos:
-    :lines: 207-326
+
+.. literalinclude:: ../rst2html5/__init__.py
+    :pyobject: HTML5Translator
+    :lines: 3-141
 
 
 Construção de Tags HTML5
@@ -401,4 +399,3 @@ Em que ``NOME_CASO_TESTE`` é o nome da variável que contém o dicionário do c
 A partir desses arquivos é mais fácil comparar as diferenças::
 
     $ kdiff3 /tmp/NOME_CASO_TESTE.result /tmp/NOME_CASO_TESTE.expected
-

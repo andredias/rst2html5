@@ -7,7 +7,7 @@ import pytest
 from bs4 import BeautifulSoup
 from docutils.core import publish_parts
 
-from rst2html5.rst2html5_ import HTML5Writer
+from rst2html5 import HTML5Writer
 
 tmpdir = gettempdir()
 TestCase = Tuple[str, Dict[str, Any]]

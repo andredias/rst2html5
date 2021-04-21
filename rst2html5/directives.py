@@ -5,6 +5,7 @@ from typing import Any, Dict, List, Union
 from docutils import nodes
 from docutils.nodes import Element, literal_block, table
 from docutils.parsers.rst import Directive, directives
+from docutils.parsers.rst.directives import register_directive
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -321,3 +322,16 @@ class Template(Directive):
         settings = self.state.document.settings
         settings.template = len(self.arguments) and self.arguments[0] or '\n'.join(self.content)
         return []
+
+
+register_directive('code-block', CodeBlock)
+register_directive('code', CodeBlock)
+register_directive('sourcecode', CodeBlock)
+register_directive('define', Define)
+register_directive('undef', Undefine)
+register_directive('undefine', Undefine)
+register_directive('ifdef', IfDef)
+register_directive('ifndef', IfNDef)
+register_directive('stylesheet', StyleSheet)
+register_directive('script', Script)
+register_directive('template', Template)

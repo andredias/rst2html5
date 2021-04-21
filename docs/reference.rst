@@ -5,7 +5,7 @@ Reference
 rst2html5\_ Module
 ==================
 
-.. automodule:: src.rst2html5_
+.. automodule:: rst2html5
     :members:
 
 
