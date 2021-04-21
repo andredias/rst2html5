@@ -324,6 +324,42 @@ Note that if the abbreviation follows the pattern ``ABBR (Description for the ab
 the description is extracted and becomes the ``title``.
 
 
+How To Use rst2html5 Programmatically
+=====================================
+
+``docutils.core`` provides a few ``publish_*` methods that transform ``rst`` to other formats.
+In the case that the input and output will be in memory,
+``publish_parts`` is the best fit:
+
+.. code:: python
+
+    from docutils.core import publish_parts
+    from rst2html5_ import HTML5Writer
+    text = r'''
+    The area of a circle is :math:`A_\text{c} = (\pi/4) d^2`.
+
+    .. math::
+
+        \frac{ \sum_{t=0}^{N}f(t,k) }{N}
+    '''
+
+    body = publish_parts(writer=HTML5Writer(), source=text)['body']
+    print(body)
+
+
+Resulting in:
+
+.. code:: html
+
+    <p>The area of a circle is
+        <span class="math">\(A_\text{c} = (\pi/4) d^2\)</span>
+    .</p>
+    <div class="math">\(\frac{ \sum_{t=0}^{N}f(t,k) }{N}\)</div>
+
+
+See also: `The Docutils Publisher <https://docutils.sourceforge.io/docs/api/publisher.html>`_
+
+
 Links
 =====
 
