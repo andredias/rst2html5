@@ -1,6 +1,7 @@
 import re
 import sys
 from collections import OrderedDict
+from importlib import metadata
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 import docutils
@@ -60,15 +61,16 @@ from genshi.output import XHTMLSerializer
 from . import directives, roles  # noqa: F401
 
 __docformat__ = 'reStructuredText'
-__version__ = '2.0.0'
+try:
+    __version__ = metadata.version('rst2html5')
+except metadata.PackageNotFoundError:
+    __version__ = '__development__'
 
 # monkeypatch OptionParser to set 'version'
-OptionParser.version_template = '%%prog %s (Docutils %s%s, Python %s, on %s)' % (
-    __version__,
-    docutils.__version__,
-    docutils.__version_details__ and ' [%s]' % docutils.__version_details__ or '',
-    sys.version.split()[0],
-    sys.platform,
+OptionParser.version_template = (
+    f'%prog {__version__} '
+    f'(Docutils {docutils.__version__}, '
+    f'Python {sys.version.split()[0]}, on {sys.platform.capitalize()})'
 )
 
 
