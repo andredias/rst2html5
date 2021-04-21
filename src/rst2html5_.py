@@ -717,7 +717,7 @@ class HTML5Translator(nodes.NodeVisitor):
             for id in node['ids'][1:]:
                 self.context.begin_elem()
                 self.context.commit_elem(tag.a(id=id))
-            node.attributes['ids'] = node.attributes['ids'][0:1]
+            node['ids'] = node['ids'][0:1]
         self.context.begin_elem()
         return
 
@@ -919,7 +919,7 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def visit_reference(self, node: TextElement) -> None:
         if 'ids' in node:
-            del node.attributes['ids']
+            del node['ids']
         self.default_visit(node)
         return
 
@@ -968,7 +968,7 @@ class HTML5Translator(nodes.NodeVisitor):
         if language:
             node['classes'].remove('code')
             node['classes'].remove(language)
-            node.attributes['data-language'] = language[len('language-') : :]
+            node['data-language'] = language[len('language-') : :]
 
         self.preserve_space = 1
         self.default_visit(node)
@@ -1099,7 +1099,7 @@ class HTML5Translator(nodes.NodeVisitor):
     def visit_option_argument(self, node: option_argument) -> None:
         if 'delimiter' in node:
             self.context.append(node['delimiter'], indent=False)
-            del node.attributes['delimiter']
+            del node['delimiter']
         self.default_visit(node)
 
     def visit_citation_reference(self, node: Union[footnote_reference, citation_reference]) -> None:
@@ -1154,11 +1154,11 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_visit(node)
         self.context.begin_elem()  # h1
         backrefs = [tag(' ', tag.a(v, href='#' + v)) for v in node['backrefs']]
-        node.attributes.setdefault('line', '')
+        node.setdefault('line', '')
         text = 'System Message: {type}/{level} ({source} line ' '{line})'.format(**node.attributes)
         h1 = tag.h1(text, *backrefs)
         self.context.commit_elem(h1)
-        node.attributes = {'classes': [], 'ids': node.attributes['ids']}
+        node.attributes = {'classes': [], 'ids': node['ids']}
         return
 
     def visit_figure(self, node: figure) -> None:
@@ -1198,22 +1198,22 @@ class HTML5Translator(nodes.NodeVisitor):
     def visit_image(self, node: image) -> None:
         def ignore_attr(attr: str) -> None:
             if attr in node:
-                del node.attributes[attr]
+                del node[attr]
                 self.document.reporter.warning(f'Property :{attr}: was ignore for image')
 
         def check_unit(attr: str) -> None:
             if attr in node:
-                value = re.findall(r'^(\d+)(px)?$', node.attributes[attr])
+                value = re.findall(r'^(\d+)(px)?$', node[attr])
                 if not value:
                     self.document.reporter.warning(f'Property {attr} must use "px" or no unit at all')
                 else:
-                    node.attributes[attr] = value[0][0]  # only the number
+                    node[attr] = value[0][0]  # only the number
 
         ignore_attr('align')
         ignore_attr('scale')
         check_unit('height')
         check_unit('width')
-        node.attributes.setdefault('alt', '')
+        node.setdefault('alt', '')
         self.default_visit(node)
 
     def depart_image(self, node: image) -> None:
