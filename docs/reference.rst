@@ -5,7 +5,7 @@ Reference
 rst2html5\_ Module
 ==================
 
-.. automodule:: rst2html5_
+.. automodule:: src.rst2html5_
     :members:
 
 
@@ -32,6 +32,7 @@ Genshi
 ======
 
 .. autoclass:: genshi.builder.tag
+
 
 Bibliography
 ============

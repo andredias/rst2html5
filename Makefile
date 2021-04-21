@@ -1,4 +1,4 @@
-.PHONE: lint
+.PHONY: lint docs
 
 
 test: lint
@@ -15,3 +15,8 @@ lint:
 format:
 	isort .
 	blue .
+
+
+docs:
+	make -C docs clean
+	make -C docs html
