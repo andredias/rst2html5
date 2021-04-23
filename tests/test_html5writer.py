@@ -54,6 +54,7 @@ def test_rst_case(test_case: TestCase) -> None:
     result, error = rst_to_html5_part(case)
     result_ = result
     expected = case['out']
+    case_error = case.get('error', '')
     if case['part'] in ('head', 'body', 'whole'):
         result = BeautifulSoup(result, 'html.parser').find_all()
         expected = BeautifulSoup(expected, 'html.parser').find_all()
@@ -62,6 +63,8 @@ def test_rst_case(test_case: TestCase) -> None:
         filename.with_suffix('.rst').write_text(case['rst'])
         filename.with_suffix('.result').write_text(result_)
         filename.with_suffix('.expected').write_text(case['out'])
-        filename.with_suffix('.error').write_text(case.get('error', ''))
+    if case_error != error:
+        filename.with_suffix('.error.expected').write_text(error)
+        filename.with_suffix('.error.result').write_text(case_error)
     assert expected == result
-    assert case.get('error', '') == error
+    assert case_error == error
