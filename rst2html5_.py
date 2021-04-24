@@ -1,7 +1,7 @@
 """
 This file fixes the conflict between docutils and rst2html5 scripts.
-See the section "rst2html5 Installation Workaround to Solve Conflicts with Docutils"
-on docs/design_notes.rst for more information.
+See the section "Workaround to Conflicts with Docutils" on docs/design_notes.rst
+for more information.
 """
 
 import sys

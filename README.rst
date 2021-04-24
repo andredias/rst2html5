@@ -20,7 +20,7 @@ Usage
 
 .. code-block:: bash
 
-	$ rst2html5 [options] SOURCE
+	$ rst2html5 [options] SOURCE [DEST]
 
 Options:
 
@@ -52,11 +52,13 @@ Options:
                         used multiple times)
 
 
+If ``DEST`` is not provided, the output is send to ``stdout``.
+
 
 Example
 -------
 
-Consider the following rst snippet:
+Consider a file called ``example.rst`` that contains:
 
 .. code-block:: rst
 
@@ -78,7 +80,12 @@ Consider the following rst snippet:
         _`hyperlink targets`, and `references <http://www.python.org/>`_
 
 
-The html5 produced is clean and tidy:
+The command to produce an ``example.html`` output file is::
+
+    $ rst2html5 example.rst example.html
+
+
+The HTML5 produced is clean and tidy:
 
 .. code-block:: html
 
@@ -109,7 +116,7 @@ The html5 produced is clean and tidy:
 Stylesheets and Scripts
 -----------------------
 
-No stylesheets or scripts are spread over the html5 by default.
+No stylesheets or scripts are spread over the HTML5 by default.
 However stylesheets and javascripts URLs or paths can be included through ``stylesheet`` and ``script`` options:
 
 .. parsed-literal::
@@ -143,7 +150,7 @@ However stylesheets and javascripts URLs or paths can be included through ``styl
     ...
 
 
-Html tag attributes can be included through ``html-tag-attr`` option:
+HTML tag attributes can be included through ``html-tag-attr`` option:
 
 .. parsed-literal::
 
@@ -159,7 +166,7 @@ Html tag attributes can be included through ``html-tag-attr`` option:
 Templates
 ---------
 
-Custom html5 template via the :literal:`--template` option. Example:
+Custom HTML5 template via the :literal:`--template` option. Example:
 
 .. parsed-literal::
 
@@ -327,16 +334,17 @@ the description is extracted and becomes the ``title``.
 How To Use rst2html5 Programmatically
 =====================================
 
-``docutils.core`` provides a few ``publish_*` methods that transform ``rst`` to other formats.
+You should use ``rst2html5.HTML5Writer`` with one of the ``publish_*` methods available in ``docutils.core``.
 In the case that the input and output will be in memory,
 ``publish_parts`` is the best fit:
 
 .. code:: python
 
     from docutils.core import publish_parts
-    from rst2html5_ import HTML5Writer
-    text = r'''
-    The area of a circle is :math:`A_\text{c} = (\pi/4) d^2`.
+
+    from rst2html5 import HTML5Writer
+
+    text = r'''The area of a circle is :math:`A_\text{c} = (\pi/4) d^2`.
 
     .. math::
 
@@ -355,6 +363,15 @@ Resulting in:
         <span class="math">\(A_\text{c} = (\pi/4) d^2\)</span>
     .</p>
     <div class="math">\(\frac{ \sum_{t=0}^{N}f(t,k) }{N}\)</div>
+
+
+.. attention::
+
+    Version 2.0 renames the module ``rst2html5_`` back to ``rst2html5``
+    since the conflict with docutils installation is solved.
+    Importing ``rst2html5_.HTML5Writer`` still works though.
+    See the section "**Workaround to Conflicts with Docutils**"
+    on ``docs/design_notes.rst`` for more information.
 
 
 See also: `The Docutils Publisher <https://docutils.sourceforge.io/docs/api/publisher.html>`_
