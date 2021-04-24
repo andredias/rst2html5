@@ -13,7 +13,6 @@ import os
 import re
 import sys
 from datetime import datetime
-from typing import Dict
 
 import toml
 

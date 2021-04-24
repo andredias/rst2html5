@@ -21,7 +21,7 @@ classifiers = [
     "Topic :: Text Processing :: Markup :: HTML",
 ]
 packages = [
-    { include = "rst2html5"}
+    {include = "rst2html5"}
 ]
 include = ["rst2html5_.py"]
 
