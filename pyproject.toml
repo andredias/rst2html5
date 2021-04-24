@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rst2html5"
-version = "1.11.7"
+version = "2.0"
 description = "Generates (X)HTML5 documents from standalone reStructuredText sources"
 authors = ["André Felipe Dias <andref.dias@gmail.com>"]
 license = "MIT"

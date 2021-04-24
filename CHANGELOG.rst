@@ -2,12 +2,13 @@
 Changelog
 =========
 
-* 2.0 - 2021-04-21
+* 2.0 - 2021-04-23
 
     * Drop support for Python ``< 3.6``
-    * Restructuring of internal directories. ``rst2html5_`` renamed to ``rst2html5``
+    * New solution to conflict with docutils installation.
+      ``rst2html5_`` renamed back to ``rst2html5`` but importing ``rst2html5_.HTML5Writer`` still works.
     * New ``:abbr:`` role
-    * New section on README to use ``rst2html5`` programmatically
+    * New section on README about how to use ``rst2html5`` programmatically
     * Fix ``<figcaption>`` construct
     * Improve ``image`` directive handling
     * Add type annotations
