@@ -120,12 +120,12 @@ according to its type and content.
                     |             +--------------|---------------+
                     |                            |
                     v                            v
-           +-----------------+          +------------------+
-           |                 |          |                  |
-           |   NodeVisitor   |          |   NodeVisitor    |
-           | visit_NODE_TYPE |          | depart_NODE_TYPE |
-           |                 |          |                  |
-           +-----------------+          +------------------+
+          +-------------------+        +--------------------+
+          |                   |        |                    |
+          |   NodeVisitor     |        |   NodeVisitor      |
+          | visit_<NODE_TYPE> |        | depart_<NODE_TYPE> |
+          |                   |        |                    |
+          +-------------------+        +--------------------+
 
 
 .. http://www.asciiflow.com/#Draw
@@ -138,7 +138,7 @@ The former is called early in the node visitation.
 Then, all children nodes :func:`~docutils.nodes.Node.walkabout` are visited, and lastly,
 the latter dispatch method is called.
 Each dispatch method calls another method whose name follows the pattern
-``visit_NODE_TYPE`` or ``depart_NODE_TYPE``
+``visit_<NODE_TYPE>`` or ``depart_<NODE_TYPE>``
 such as ``visit_paragraph`` or ``depart_title``,
 that should be implemented by the |NodeVisitor| subclass object.
 
@@ -152,7 +152,7 @@ In :mod:`rst2html5`,
 :class:`~rst2html5.HTML5Writer` and :class:`~rst2html5.HTML5Translator` classes.
 
 :class:`rst2html5.HTML5Translator` is a |NodeVisitor| subclass
-that implements all ``visit_NODE_TYPE`` and ``depart_NODE_TYPE`` methods
+that implements all ``visit_<NODE_TYPE>`` and ``depart_<NODE_TYPE>`` methods
 needed to translate a doctree to its HTML5 content.
 The :class:`rst2html5.HTML5Translator` uses
 an object of the :class:`~rst2html5.ElemStack` helper class that controls a context stack
@@ -176,14 +176,14 @@ to handle indentation and the nesting of the doctree traversal::
                 |     +-----------+     |
                 +-----------------------+
 
-The standard ``visit_NODE_TYPE`` action initiates a new node context:
+The standard ``visit_<NODE_TYPE>`` action is called ``default_visit`` and it initiates a new element context:
 
 .. literalinclude:: ../rst2html5/__init__.py
     :pyobject: HTML5Translator.default_visit
     :emphasize-lines: 12
 
-The standard ``depart_NODE_TYPE`` action creates the HTML5 element
-according to the saved context:
+The standard ``depart_<NODE_TYPE>`` action is ``default_departure`` and it creates the HTML5 element
+corresponding to the saved context:
 
 .. literalinclude:: ../rst2html5/__init__.py
     :pyobject: HTML5Translator.default_departure
@@ -193,11 +193,13 @@ Not all rst elements follow this procedure.
 The ``Text`` element, for example, is a leaf-node and thus doesn't need a specific context.
 Other elements have a common processing and can share the same ``visit_`` and/or ``depart_`` method.
 To take advantage of theses similarities,
-the ``rst_terms`` dict maps a node type to a ``visit_`` and ``depart_`` methods:
+the ``rst_terms`` dict maps a node type to its ``visit_`` and ``depart_`` methods:
 
 .. literalinclude:: ../rst2html5/__init__.py
     :pyobject: HTML5Translator
     :lines: 3-141
+
+where ``dv`` is ``default_visit`` and ``dp`` means ``default_departure``.
 
 
 HTML5 Tag Construction
