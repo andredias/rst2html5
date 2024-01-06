@@ -20,18 +20,16 @@ classifiers = [
     "Topic :: Utilities",
     "Topic :: Text Processing :: Markup :: HTML",
 ]
-packages = [
-    {include = "rst2html5"}
-]
+packages = [{ include = "rst2html5" }]
 include = ["rst2html5_.py"]
 
 [tool.poetry.scripts]
-rst2html5 = "rst2html5_:main"  # overwrites docutils' rst2html5
+rst2html5 = "rst2html5_:main" # overwrites docutils' rst2html5
 # do not overwrite docutils original rst2html5.py
 # "rst2html5.py" = "rst2html5_:main"
 
 [tool.poetry.dependencies]
-python = ">=3.6, <4"
+python = "^3.8"
 docutils = ">=0.13.1"
 Genshi = ">=0.7"
 Pygments = ">=2.5"
