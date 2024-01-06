@@ -17,6 +17,9 @@ sys.path.insert(0, str(Path(__file__).parent.absolute()))
 from rst2html5 import HTML5Writer  # noqa E402
 
 
-def main():
-    description = 'Generates (X)HTML5 documents from standalone reStructuredText sources.' + default_description
+def main() -> None:
+    description = (
+        'Generates (X)HTML5 documents from standalone reStructuredText sources.'
+        + default_description
+    )
     publish_cmdline(writer=HTML5Writer(), description=description)

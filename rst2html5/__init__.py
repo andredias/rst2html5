@@ -7,9 +7,8 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import docutils
 from docutils import nodes, writers
 from docutils.frontend import OptionParser, Values
-from docutils.nodes import Bibliographic
-from docutils.nodes import Element as NodeElement
 from docutils.nodes import (
+    Bibliographic,
     Text,
     TextElement,
     address,
@@ -35,6 +34,7 @@ from docutils.nodes import (
     literal_block,
     math,
     math_block,
+    meta,
     option,
     option_argument,
     option_group,
@@ -52,6 +52,7 @@ from docutils.nodes import (
     thead,
     title,
 )
+from docutils.nodes import Element as NodeElement
 from docutils.transforms import Transform
 from docutils.utils.math import pick_math_environment
 from genshi.builder import Element, Fragment, tag
@@ -172,18 +173,19 @@ class WrapTopTitle(Transform):
         return
 
 
-def _script_callback_option_parser(option, opt_str, value, parser):
+def _script_callback_option_parser(
+    option: str, opt_str: str, value: str, parser: OptionParser
+) -> None:
     """
     Store a script's URL or path along to its attribute 'defer', 'async' or None
     """
     attr = 'defer' in opt_str and 'defer' or 'async' in opt_str and 'async' or None
-    parser.values.script = parser.values.script or []
-    parser.values.script.append((value, attr))
-    return
+    if parser.values:
+        parser.values.script = parser.values.script or []
+        parser.values.script.append((value, attr))
 
 
 class HTML5Writer(writers.Writer):
-
     supported = ('html', 'html5', 'html5css3')
 
     config_section = 'html5writer'
@@ -310,11 +312,12 @@ class HTML5Writer(writers.Writer):
     def __init__(self) -> None:
         writers.Writer.__init__(self)
         self.translator_class = HTML5Translator
-        return
 
     def translate(self) -> None:
         self.parts['pseudoxml'] = self.document.pformat()  # get pseudoxml before HTML5.translate
-        self.document.reporter.debug('%s pseudoxml:\n %s' % (self.__class__.__name__, self.parts['pseudoxml']))
+        self.document.reporter.debug(
+            '%s pseudoxml:\n %s' % (self.__class__.__name__, self.parts['pseudoxml'])
+        )
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.output
@@ -322,7 +325,6 @@ class HTML5Writer(writers.Writer):
         self.body = visitor.body
         self.title = visitor.title
         self.docinfo = visitor.docinfo
-        return
 
     def assemble_parts(self) -> None:
         writers.Writer.assemble_parts(self)
@@ -330,9 +332,8 @@ class HTML5Writer(writers.Writer):
         self.parts['body'] = self.body
         self.parts['title'] = self.title
         self.parts['docinfo'] = self.docinfo
-        return
 
-    def get_transforms(self):
+    def get_transforms(self) -> List[Transform]:
         return writers.Writer.get_transforms(self) + [
             FooterToBottom,
             WrapTopTitle,
@@ -342,7 +343,7 @@ class HTML5Writer(writers.Writer):
 StackElement = Union[Fragment, Element, str, Markup]
 
 
-class ElemStack(object):
+class ElemStack:
 
     """
     Helper class to handle nested contexts and indentation
@@ -380,7 +381,6 @@ class ElemStack(object):
         Append to current element
         """
         self.stack[-1].append(self._indent_elem(element, indent))
-        return
 
     def begin_elem(self) -> None:
         """
@@ -388,7 +388,6 @@ class ElemStack(object):
         """
         self.stack.append([])
         self.indent_level += 1
-        return
 
     def commit_elem(self, elem: Union[Fragment, Element], indent: bool = True) -> None:
         """
@@ -399,7 +398,6 @@ class ElemStack(object):
         elem(*pop)
         self.indent_level -= 1
         self.append(elem, indent)
-        return
 
     def pop(self) -> Element:
         return self.pop_elements(1)[0]
@@ -422,7 +420,6 @@ pass_ = 'no_op'
 
 
 class HTML5Translator(nodes.NodeVisitor):
-
     rst_terms = {
         # 'term': ('tag', 'visit_func', 'depart_func', use_term_in_class,
         #          indent_elem)
@@ -562,7 +559,9 @@ class HTML5Translator(nodes.NodeVisitor):
         'warning': ('aside', 'visit_aside', 'depart_aside', True),
     }
 
-    default_template = '<!DOCTYPE html>\n<html{html_attr}>\n' '<head>{head}</head>\n<body>{body}</body>\n</html>'
+    default_template = (
+        '<!DOCTYPE html>\n<html{html_attr}>\n' '<head>{head}</head>\n<body>{body}</body>\n</html>'
+    )
 
     def _map_terms_to_functions(self) -> None:
         """
@@ -575,7 +574,6 @@ class HTML5Translator(nodes.NodeVisitor):
                 setattr(self, 'visit_' + term, visit_func)
             if depart_func:
                 setattr(self, 'depart_' + term, depart_func)
-        return
 
     def __init__(self, document: document) -> None:
         nodes.NodeVisitor.__init__(self, document)
@@ -586,7 +584,6 @@ class HTML5Translator(nodes.NodeVisitor):
         self.docinfo: Dict = OrderedDict()
         self._parse_params()
         self._map_terms_to_functions()
-        return
 
     def _parse_params(self) -> None:
         self.metatags = [tag.meta(charset=self.document.settings.output_encoding)]
@@ -607,7 +604,6 @@ class HTML5Translator(nodes.NodeVisitor):
             if attributes:
                 script = script(**{attributes: attributes})
             self.scripts.append(script)
-        return
 
     def _get_template(self) -> str:
         template = self.document.settings.template
@@ -719,7 +715,6 @@ class HTML5Translator(nodes.NodeVisitor):
                 self.context.commit_elem(tag.a(id=id))
             node['ids'] = node['ids'][0:1]
         self.context.begin_elem()
-        return
 
     def default_departure(self, node: NodeElement) -> None:
         """
@@ -729,7 +724,6 @@ class HTML5Translator(nodes.NodeVisitor):
         tag_name, indent, attributes = self.parse(node)
         elem = getattr(tag, tag_name)(**attributes)
         self.context.commit_elem(elem, indent)
-        return
 
     def _compacted_paragraph(self, node: paragraph) -> bool:
         """
@@ -752,8 +746,9 @@ class HTML5Translator(nodes.NodeVisitor):
             or 'paragraph' != node.__class__.__name__
         ):
             return False
-        first = isinstance(node.parent[0], nodes.label)  # skip label
-        for child in node.parent.children[first:]:
+        # skip label
+        first = isinstance(node.parent[0], nodes.label)  # type: ignore
+        for child in node.parent.children[first:]:  # type: ignore
             # only first paragraph can be compact
             if isinstance(child, nodes.Invisible):
                 continue
@@ -763,7 +758,9 @@ class HTML5Translator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.list_item):
             # first child of a list_item
             return True
-        parent_length = len([n for n in node.parent if not isinstance(n, (nodes.Invisible, nodes.label))])
+        parent_length = len(
+            [n for n in node.parent if not isinstance(n, (nodes.Invisible, nodes.label))]  # type: ignore
+        )
         return parent_length == 1
 
     def visit_paragraph(self, node: paragraph) -> None:
@@ -771,7 +768,7 @@ class HTML5Translator(nodes.NodeVisitor):
             raise nodes.SkipDeparture
         self.default_visit(node)
 
-    def visit_Text(self, node: Text):
+    def visit_Text(self, node: Text) -> None:
         text = node.astext()
         if not getattr(self, 'preserve_space', None):
             text = _strip_spaces(text)
@@ -831,7 +828,7 @@ class HTML5Translator(nodes.NodeVisitor):
             del node['suffix']
         self.default_departure(node)
 
-    def skip_node(self, node: substitution_definition):
+    def skip_node(self, node: substitution_definition) -> None:
         """Internal only"""
         raise nodes.SkipNode
 
@@ -884,7 +881,6 @@ class HTML5Translator(nodes.NodeVisitor):
         """
         if 'stub' in node:
             self.th_required += 1
-        return
 
     def visit_thead(self, node: thead) -> None:
         self.in_thead = True
@@ -921,7 +917,6 @@ class HTML5Translator(nodes.NodeVisitor):
         if 'ids' in node:
             del node['ids']
         self.default_visit(node)
-        return
 
     def depart_reference(self, node: TextElement) -> None:
         if 'name' in node:
@@ -929,7 +924,6 @@ class HTML5Translator(nodes.NodeVisitor):
         if 'refid' in node:
             node['refid'] = '#' + node['refid']
         self.default_departure(node)
-        return
 
     def visit_target(self, node: TextElement) -> None:
         if not node.astext():
@@ -940,7 +934,6 @@ class HTML5Translator(nodes.NodeVisitor):
     def visit_literal(self, node: literal) -> None:
         self.preserve_space = getattr(self, 'preserve_space', 0) + 1
         self.default_visit(node)
-        return
 
     def depart_literal(self, node: literal) -> None:
         self.preserve_space -= 1
@@ -949,7 +942,6 @@ class HTML5Translator(nodes.NodeVisitor):
         if node['classes']:
             node['classes'] = node['classes'][-1]
         self.default_departure(node)
-        return
 
     def visit_literal_block(self, node: Union[literal_block, doctest_block]) -> None:
         """
@@ -972,12 +964,10 @@ class HTML5Translator(nodes.NodeVisitor):
 
         self.preserve_space = 1
         self.default_visit(node)
-        return
 
     def depart_literal_block(self, node: Union[literal_block, doctest_block]) -> None:
         del self.preserve_space
         self.default_departure(node)
-        return
 
     def visit_math_block(self, node: Union[math, math_block]) -> None:
         """
@@ -1018,7 +1008,6 @@ class HTML5Translator(nodes.NodeVisitor):
 
     def depart_document(self, node: document) -> None:
         self.context.stack = self.context.stack[0]
-        return
 
     def visit_raw(self, node: raw) -> None:
         if 'html' in node.get('format', ''):
@@ -1041,7 +1030,7 @@ class HTML5Translator(nodes.NodeVisitor):
         node['classes'] = []
         self.default_departure(node)
 
-    def visit_field(self, node: field):
+    def visit_field(self, node: field) -> None:
         self.docinfo[node.children[0].astext()] = _strip_spaces(node.children[1].astext())
         raise nodes.SkipNode
 
@@ -1081,7 +1070,10 @@ class HTML5Translator(nodes.NodeVisitor):
         self.default_visit(node)
 
     def depart_option_group(self, node: option_group) -> None:
-        if self.document.settings.option_limit and len(node.astext()) > self.document.settings.option_limit:
+        if (
+            self.document.settings.option_limit
+            and len(node.astext()) > self.document.settings.option_limit
+        ):
             node['morecols'] = 2
             self.default_departure(node)
             self.context.commit_elem(tag.tr)  # closes this tr
@@ -1138,7 +1130,7 @@ class HTML5Translator(nodes.NodeVisitor):
             del self.line_level
             self.default_departure(node)
 
-    def visit_meta(self, node) -> None:
+    def visit_meta(self, node: meta) -> None:
         waste, waste_, attr = self.parse(node)
         self.metatags.append(tag.meta(**attr))
         raise nodes.SkipNode
@@ -1148,7 +1140,6 @@ class HTML5Translator(nodes.NodeVisitor):
         if len(node['ids']) > 1:
             node['ids'] = node['ids'][0]
         self.default_visit(node)
-        return
 
     def visit_system_message(self, node: system_message) -> None:
         self.default_visit(node)
@@ -1159,7 +1150,6 @@ class HTML5Translator(nodes.NodeVisitor):
         h1 = tag.h1(text, *backrefs)
         self.context.commit_elem(h1)
         node.attributes = {'classes': [], 'ids': node['ids']}
-        return
 
     def visit_figure(self, node: figure) -> None:
         image = node.children[0] if len(node.children) > 0 else None
@@ -1205,7 +1195,9 @@ class HTML5Translator(nodes.NodeVisitor):
             if attr in node:
                 value = re.findall(r'^(\d+)(px)?$', node[attr])
                 if not value:
-                    self.document.reporter.warning(f'Property {attr} must use "px" or no unit at all')
+                    self.document.reporter.warning(
+                        f'Property {attr} must use "px" or no unit at all'
+                    )
                 else:
                     node[attr] = value[0][0]  # only the number
 
@@ -1221,7 +1213,6 @@ class HTML5Translator(nodes.NodeVisitor):
         attributes.setdefault('alt', '')
         elem = getattr(tag, tag_name)(**attributes)
         self.context.commit_elem(elem, indent)
-        return
 
 
 def _strip_spaces(text: str) -> str:

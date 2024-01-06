@@ -1,20 +1,26 @@
 .PHONY: lint docs
 
 
-test: lint
+test:
 	pytest -svx --cov-report term-missing --cov-report html --cov-branch --cov rst2html5/
 
 
 lint:
-	isort --diff -c .
-	flake8 .
-	blue --check --diff .
+	ruff check --diff .
+	@echo
+	ruff format --diff .
+	@echo
 	mypy .
 
 
 format:
-	isort .
-	blue .
+	ruff check --silent --exit-zero --fix .
+	@echo
+	ruff format .
+
+
+audit:
+	pip-audit
 
 
 docs:

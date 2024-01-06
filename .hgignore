@@ -40,3 +40,4 @@ htmlcov
 .pytest_cache
 .python-version
 .mypy_cache
+.ruff_cache

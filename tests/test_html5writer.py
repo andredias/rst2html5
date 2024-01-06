@@ -40,7 +40,9 @@ def extract_test_cases() -> Iterable[TestCase]:
     from . import cases
 
     return (
-        (v, getattr(cases, v)) for v in dir(cases) if not v.startswith('__') and isinstance(getattr(cases, v), dict)
+        (v, getattr(cases, v))
+        for v in dir(cases)
+        if not v.startswith('__') and isinstance(getattr(cases, v), dict)
     )
 
 

@@ -177,7 +177,7 @@ htmlhelp_basename = f'{project}_doc'
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 # texinfo_show_urls = 'footnote'
 
-rst_epilog = '''
+rst_epilog = """
 
 .. _Docutils: http://docutils.sourceforge.net/README.html#purpose
 .. _restructuredText: http://docutils.sourceforge.net/rst.html
@@ -188,4 +188,4 @@ rst_epilog = '''
 .. |NodeVisitor| replace:: :class:`~docutils.nodes.NodeVisitor`
 .. |Writer| replace::  :class:`~docutils.writers.Writer`
 .. |HTML5Translator| replace:: :class:`rst2html5.HTML5Translator`
-'''
+"""

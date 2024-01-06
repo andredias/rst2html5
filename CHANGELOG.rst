@@ -2,6 +2,13 @@
 Changelog
 =========
 
+* 2.0.1 - 2024-01-06
+
+    * Improve documentation about how to use ``rst2html5`` programmatically
+    * Adopt ``ruff`` as lint tool replacing ``isort``, ``blue`` and ``flake8``
+    * Adjust test cases to Pygments 2.17.2 and Docutils 0.20.1
+    * Conformity to MyPy 1.8.1
+
 * 2.0 - 2021-04-23
 
     * Drop support for Python ``< 3.6``

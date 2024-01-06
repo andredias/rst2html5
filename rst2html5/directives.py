@@ -11,7 +11,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
 
-def pygmentize(code: str, language: str, **kwargs) -> str:
+def pygmentize(code: str, language: str, **kwargs: Any) -> str:
     lexer = get_lexer_by_name(language)
     formatter = HtmlFormatter(**kwargs)
     return highlight(code, lexer, formatter)
@@ -229,7 +229,10 @@ class IfDef(Directive):
             show_content = identifier in identifiers
         else:
             if 'operator' not in self.options:
-                raise self.error('You must define an operator when more than one ' 'identifier is passed as argument.')
+                raise self.error(
+                    'You must define an operator when more than one '
+                    'identifier is passed as argument.'
+                )
             operator = self.options['operator']
             operation = {
                 'and': (lambda x, y: x and y),
