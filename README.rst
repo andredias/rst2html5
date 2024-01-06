@@ -28,6 +28,10 @@ Options:
 --stylesheet=<URL or path>
                         Specify a stylesheet URL to be included.
                         (This option can be used multiple times)
+--stylesheet-inline=<path>
+                        Specify a stylesheet file whose contents will be
+                        included into the output HTML file. (This option can
+                        be used multiple times)
 --script=<URL or path>  Specify a script URL to be included.
                         (This option can be used multiple times)
 --script-defer=<URL or path>
@@ -351,18 +355,35 @@ In the case that the input and output will be in memory,
         \frac{ \sum_{t=0}^{N}f(t,k) }{N}
     '''
 
-    body = publish_parts(writer=HTML5Writer(), source=text)['body']
-    print(body)
+    override = {
+        'html_tag_attr': ['lang="pt-BR"'],
+        'stylesheet': ['https://example.com/css/default.css'],
+        'script': [('https://blog.pronus.xyz/test.js', 'async')],
+    }
+    html = publish_parts(writer=HTML5Writer(), source=text, settings_overrides=override)['whole']
+    print(html)
 
 
 Resulting in:
 
 .. code:: html
 
-    <p>The area of a circle is
-        <span class="math">\(A_\text{c} = (\pi/4) d^2\)</span>
-    .</p>
-    <div class="math">\(\frac{ \sum_{t=0}^{N}f(t,k) }{N}\)</div>
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://example.com/css/default.css" />
+        <script src="https://blog.pronus.xyz/test.js" async="async"></script>
+        <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <p>The area of a circle is
+            <span class="math">\(A_\text{c} = (\pi/4) d^2\)</span>
+        .</p>
+        <div class="math">\(\frac{ \sum_{t=0}^{N}f(t,k) }{N}\)</div>
+    </body>
+    </html>
+
 
 
 .. attention::
